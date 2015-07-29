@@ -589,4 +589,9 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 		
 	}
 
+	@Override
+	public void setLaborActive(boolean active) {
+		this.setActive(active, StaticValues.MKT_LABOR);
+	}
+
 }

@@ -15,8 +15,6 @@
 package interbank.agents;
 
 import interbank.StaticValues;
-import interbank.agents.Bank;
-import interbank.agents.Government;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

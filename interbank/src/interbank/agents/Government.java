@@ -638,4 +638,9 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 	public double getInterestsReceived() {
 		return interestsReceived;
 	}
+
+	@Override
+	public void setLaborActive(boolean active) {
+		this.setActive(active, StaticValues.MKT_LABOR);		
+	}
 }

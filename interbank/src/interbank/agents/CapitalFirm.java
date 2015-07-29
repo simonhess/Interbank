@@ -1051,6 +1051,12 @@ public class CapitalFirm extends AbstractFirm implements GoodSupplier,
 		
 		
 	}
+
+	@Override
+	public void setLaborActive(boolean active) {
+		this.setActive(active, StaticValues.MKT_LABOR);
+		
+	}
 	
 	
 	

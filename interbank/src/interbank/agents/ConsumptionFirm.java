@@ -1141,5 +1141,10 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 		}	
 		
 	}
+
+	@Override
+	public void setLaborActive(boolean active) {
+		this.setActive(active, StaticValues.MKT_LABOR);
+	}
 	
 }
