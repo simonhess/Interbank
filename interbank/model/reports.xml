@@ -8,40 +8,45 @@
 
 <!-- Nominal GDP Report -->
 <bean id="nominalGDPComputer" class="jmab.report.NominalGDPComputer">
-	<property name="componentsGDPIds">
+	<property name="gdpPopulationIds">
 		<list>
-	        <util:constant static-field="modellone.StaticValues.SM_CAPGOOD"/>
-	        <util:constant static-field="modellone.StaticValues.SM_CONSGOOD"/>
+	        <util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/>
 	 	</list>
 	</property>
-	<property name="householdsPopIds">
+	<property name="gdpGoodsIds">
 		<list>
-	        <util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/>
+	        <util:constant static-field="interbank.StaticValues.SM_CAPGOOD"/>
+	        <util:constant static-field="interbank.StaticValues.SM_CONSGOOD"/>
 	 	</list>
 	</property>
-	<property name="goodsSMIds">
+	<property name="gdpGoodsAges">
 		<list>
-	        <util:constant static-field="modellone.StaticValues.SM_CAPGOOD"/>
-	        <util:constant static-field="modellone.StaticValues.SM_CONSGOOD"/>
+	        <value>0</value>
+	        <value>1</value>
 	 	</list>
 	</property>
+	<property name="governmentPopulationId"><util:constant static-field="interbank.StaticValues.GOVERNMENT_ID"/></property>
 	<property name="goodPassedValueMap">
 			<map>
 				<entry> 
 					<key>
-						<util:constant static-field="modellone.StaticValues.SM_CAPGOOD"/>
+						<util:constant static-field="interbank.StaticValues.SM_CAPGOOD"/>
 					</key>
-					<util:constant static-field="modellone.StaticValues.LAG_NOMINALINVENTORIES"/> 
+					<util:constant static-field="interbank.StaticValues.LAG_NOMINALINVENTORIES"/> 
 				</entry>
 				<entry> 
 					<key>
-						<util:constant static-field="modellone.StaticValues.SM_CONSGOOD"/>
+						<util:constant static-field="interbank.StaticValues.SM_CONSGOOD"/>
 					</key>
-					<util:constant static-field="modellone.StaticValues.LAG_NOMINALINVENTORIES"/>
+					<util:constant static-field="interbank.StaticValues.LAG_NOMINALINVENTORIES"/>
 				</entry>
 			</map>
 		</property>
-	<property name="governmentPopulationId"><util:constant static-field="modellone.StaticValues.GOVERNMENT_ID" /></property>
+	<property name="priceIndexProducerId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID" /></property>
+	<property name="priceGoodId"><util:constant static-field="interbank.StaticValues.SM_CAPGOOD" /></property>
+	<property name="realSaleId"><util:constant static-field="interbank.StaticValues.LAG_REALSALES" /></property>
 </bean>
 
 <bean id="nominalGDPEventReport" class="jmab.report.MacroSimEventReport">
@@ -50,7 +55,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.GDPREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.GDPREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="nominalGDPTimeSeries"/>
 </bean>
@@ -68,7 +73,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.GDPREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.GDPREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="nominalGDPCSVReportVariables"/>
 </bean>
@@ -90,8 +95,8 @@
 
 <!-- C AveragePrice Report -->
 <bean id="cAvPriceComputer" class="jmab.report.AveragePriceComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID" /></property>
-	<property name="goodId"><util:constant static-field="modellone.StaticValues.SM_CONSGOOD" /></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID" /></property>
+	<property name="goodId"><util:constant static-field="interbank.StaticValues.SM_CONSGOOD" /></property>
 </bean>
 
 <bean id="cAvPriceEventReport" class="jmab.report.MacroSimEventReport">
@@ -100,7 +105,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AVCPRICEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AVCPRICEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cAvPriceTimeSeries"/>
 </bean>
@@ -118,7 +123,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AVCPRICEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AVCPRICEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cAvPriceCSVReportVariables"/>
 </bean>
@@ -140,8 +145,8 @@
 
 <!-- K AveragePrice Report -->
 <bean id="kAvPriceComputer" class="jmab.report.AveragePriceComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID" /></property>
-	<property name="goodId"><util:constant static-field="modellone.StaticValues.SM_CAPGOOD" /></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID" /></property>
+	<property name="goodId"><util:constant static-field="interbank.StaticValues.SM_CAPGOOD" /></property>
 </bean>
 
 <bean id="kAvPriceEventReport" class="jmab.report.MacroSimEventReport">
@@ -150,7 +155,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AVKPRICEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AVKPRICEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kAvPriceTimeSeries"/>
 </bean>
@@ -168,7 +173,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AVKPRICEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AVKPRICEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kAvPriceCSVReportVariables"/>
 </bean>
@@ -190,8 +195,8 @@
 
 <!-- loan Average interest Report -->
 <bean id="loanAvInterestComputer" class="jmab.report.AverageCreditInterestRateComputer">
-	<property name="banksId"><util:constant static-field="modellone.StaticValues.BANKS_ID" /></property>
-	<property name="stockId"><util:constant static-field="modellone.StaticValues.SM_LOAN" /></property>
+	<property name="banksId"><util:constant static-field="interbank.StaticValues.BANKS_ID" /></property>
+	<property name="stockId"><util:constant static-field="interbank.StaticValues.SM_LOAN" /></property>
 </bean>
 
 <bean id="loanAvInterestEventReport" class="jmab.report.MacroSimEventReport">
@@ -200,7 +205,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AVLOANINTERESTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AVLOANINTERESTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="loanAvInterestTimeSeries"/>
 </bean>
@@ -218,7 +223,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AVLOANINTERESTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AVLOANINTERESTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="loanAvInterestCSVReportVariables"/>
 </bean>
@@ -240,8 +245,8 @@
 
 <!-- dep Average interest Report -->
 <bean id="depAvInterestComputer" class="jmab.report.AverageDepositInterestRateComputer">
-	<property name="banksId"><util:constant static-field="modellone.StaticValues.BANKS_ID" /></property>
-	<property name="stockId"><util:constant static-field="modellone.StaticValues.SM_DEP" /></property>
+	<property name="banksId"><util:constant static-field="interbank.StaticValues.BANKS_ID" /></property>
+	<property name="stockId"><util:constant static-field="interbank.StaticValues.SM_DEP" /></property>
 </bean>
 
 <bean id="depAvInterestEventReport" class="jmab.report.MacroSimEventReport">
@@ -250,7 +255,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AVDEPINTERESTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AVDEPINTERESTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="depAvInterestTimeSeries"/>
 </bean>
@@ -268,7 +273,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AVDEPINTERESTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AVDEPINTERESTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="depAvInterestCSVReportVariables"/>
 </bean>
@@ -290,7 +295,7 @@
 
 <!-- av Wage Report -->
 <bean id="avWageComputer" class="interbank.report.AverageWageComputer">
-	<property name="householdId"><util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID" /></property>
+	<property name="householdId"><util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID" /></property>
 </bean>
 
 <bean id="avWageEventReport" class="jmab.report.MacroSimEventReport">
@@ -299,7 +304,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AVWAGEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AVWAGEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="avWageTimeSeries"/>
 </bean>
@@ -317,7 +322,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AVWAGEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AVWAGEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="avWageCSVReportVariables"/>
 </bean>
@@ -339,7 +344,7 @@
 
 <!-- av net income Report -->
 <bean id="avNetIncomeComputer" class="interbank.report.AverageNetIncomeComputer">
-	<property name="householdId"><util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID" /></property>
+	<property name="householdId"><util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID" /></property>
 </bean>
 
 <bean id="avNetIncomeEventReport" class="jmab.report.MacroSimEventReport">
@@ -348,7 +353,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AVNETINCOMEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AVNETINCOMEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="avNetIncomeTimeSeries"/>
 </bean>
@@ -366,7 +371,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AVNETINCOMEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AVNETINCOMEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="avNetIncomeCSVReportVariables"/>
 </bean>
@@ -388,8 +393,8 @@
 
 <!-- agg constrained credit Report -->
 <bean id="cAggConsCreditComputer" class="interbank.report.ConstrainedCreditComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID" /></property>
-	<property name="idLoanSM"><util:constant static-field="modellone.StaticValues.SM_LOAN" /></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID" /></property>
+	<property name="idLoanSM"><util:constant static-field="interbank.StaticValues.SM_LOAN" /></property>
 
 </bean>
 
@@ -399,7 +404,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CAGGCONSCREDITREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CAGGCONSCREDITREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cAggConsCreditTimeSeries"/>
 </bean>
@@ -417,7 +422,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CAGGCONSCREDITREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CAGGCONSCREDITREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cAggConsCreditCSVReportVariables"/>
 </bean>
@@ -440,8 +445,8 @@
 
 
 <bean id="kAggConsCreditComputer" class="interbank.report.ConstrainedCreditComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID" /></property>
-	<property name="idLoanSM"><util:constant static-field="modellone.StaticValues.SM_LOAN" /></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID" /></property>
+	<property name="idLoanSM"><util:constant static-field="interbank.StaticValues.SM_LOAN" /></property>
 	
 </bean>
 
@@ -451,7 +456,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KAGGCONSCREDITREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KAGGCONSCREDITREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kAggConsCreditTimeSeries"/>
 </bean>
@@ -469,7 +474,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KAGGCONSCREDITREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KAGGCONSCREDITREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kAggConsCreditCSVReportVariables"/>
 </bean>
@@ -494,12 +499,12 @@
 <bean id="nominalInvComputer" class="jmab.report.NominalInvestmentComputer">
 	<property name="capitalSMIds">
 		<list>
-	        <util:constant static-field="modellone.StaticValues.SM_CAPGOOD"/>
+	        <util:constant static-field="interbank.StaticValues.SM_CAPGOOD"/>
 	 	</list>
 	</property>
 	<property name="investorsPopIds">
 		<list>
-	        <util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/>
 	 	</list>
 	</property>
 </bean>
@@ -510,7 +515,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.INVREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.INVREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="nominalInvestmentTimeSeries"/>
 </bean>
@@ -528,7 +533,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.INVREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.INVREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="nominalInvestmentCSVReportVariables"/>
 </bean>
@@ -552,7 +557,7 @@
 <bean id="unemploymentComputer" class="jmab.report.UnemploymentRateComputer">
 	<property name="householdPopIds">
 		<list>
-	        <util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/>
+	        <util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/>
 	 	</list>
 	</property>
 </bean>
@@ -563,7 +568,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.UNEMPLOYMENTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.UNEMPLOYMENTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="unemploymentTimeSeries"/>
 </bean>
@@ -573,7 +578,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.UNEMPLOYMENTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.UNEMPLOYMENTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="unemploymentCSVReportVariables"/>
 </bean>
@@ -605,7 +610,7 @@
 
 <!-- C Firms Bankruptcy computer -->
 <bean id="cFirmsBankruptcyComputer" class="interbank.report.BankruptcyComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="cFirmsBankruptcyEventReport" class="jmab.report.MacroSimEventReport">
@@ -614,7 +619,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSBANKRUPTCYREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSBANKRUPTCYREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsBankruptcyTimeSeries"/>
 </bean>
@@ -624,7 +629,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSBANKRUPTCYREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSBANKRUPTCYREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsBankruptcyCSVReportVariables"/>
 </bean>
@@ -649,7 +654,7 @@
 
 <!-- K Firms Bankruptcy computer -->
 <bean id="kFirmsBankruptcyComputer" class="interbank.report.BankruptcyComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 
 <bean id="kFirmsBankruptcyEventReport" class="jmab.report.MacroSimEventReport">
@@ -658,7 +663,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSBANKRUPTCYREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSBANKRUPTCYREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsBankruptcyTimeSeries"/>
 </bean>
@@ -668,7 +673,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSBANKRUPTCYREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSBANKRUPTCYREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsBankruptcyCSVReportVariables"/>
 </bean>
@@ -693,7 +698,7 @@
 
 <!-- Banks' Bankruptcy computer -->
 <bean id="banksBankruptcyComputer" class="interbank.report.BankruptcyComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
 </bean>
 
 <bean id="banksBankruptcyEventReport" class="jmab.report.MacroSimEventReport">
@@ -702,7 +707,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSBANKRUPTCYREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSBANKRUPTCYREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksBankruptcyTimeSeries"/>
 </bean>
@@ -712,7 +717,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSBANKRUPTCYREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSBANKRUPTCYREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksBankruptcyCSVReportVariables"/>
 </bean>
@@ -737,8 +742,8 @@
 
 <!-- Outstanding Credit Network Degree Distribution -->
 <bean id="creditNetworkDegreeComputer" class="jmab.report.MicroDegreeDistributionBipartiteComputer">
-	<property name="upperPopulationId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
-	<property name="stockId"><util:constant static-field="modellone.StaticValues.SM_LOAN"/></property>
+	<property name="upperPopulationId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
+	<property name="stockId"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
 	<property name="asset" value="true" />
 </bean>
 
@@ -748,7 +753,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROCREDITDEGREEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROCREDITDEGREEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="creditDegreeTimeSeries"/>
 </bean>
@@ -758,7 +763,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROCREDITDEGREEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROCREDITDEGREEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="creditDegreeCSVReportVariables"/>
 </bean>
@@ -782,8 +787,8 @@
 
 <!-- Banks total outstanding credit report -->
 <bean id="microBankCreditComputer" class="jmab.report.MicroOutstandingCreditComputer">
-	<property name="loansId"><util:constant static-field="modellone.StaticValues.SM_LOAN"/></property>
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
+	<property name="loansId"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
 </bean>
 
 <bean id="bankCreditEventReport" class="jmab.report.MicroSimEventReport">
@@ -792,7 +797,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROBANKCREDITREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROBANKCREDITREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microBankCreditTimeSeries"/>
 </bean>
@@ -802,7 +807,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROBANKCREDITREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROBANKCREDITREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microBankCreditCSVReportVariables"/>
 </bean>
@@ -835,8 +840,8 @@
 <!-- C and K firms outstanding loans report -->
 
 <bean id="cAggregateDebtComputer" class="jmab.report.AggregateOutstandingDebtComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
-	<property name="loansId"><util:constant static-field="modellone.StaticValues.SM_LOAN"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="loansId"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
 </bean>
 
 <bean id="cAggregateDebtEventReport" class="jmab.report.MacroSimEventReport">
@@ -845,7 +850,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CAGGREGATEDEBTREPORT"/>
+	        <util:constant static-field="interbank.StaticValues.CAGGREGATEDEBTREPORT"/>
 	</property>
 	<property name="reportVariables" ref="cAggregateDebtTimeSeries"/>
 </bean>
@@ -855,7 +860,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CAGGREGATEDEBTREPORT"/>
+	        <util:constant static-field="interbank.StaticValues.CAGGREGATEDEBTREPORT"/>
 	</property>
 	<property name="reportVariables" ref="cAggregateDebtCSVReportVariables"/>
 </bean>
@@ -879,8 +884,8 @@
 
 
 <bean id="kAggregateDebtComputer" class="jmab.report.AggregateOutstandingDebtComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
-	<property name="loansId"><util:constant static-field="modellone.StaticValues.SM_LOAN"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="loansId"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
 </bean>
 
 <bean id="kAggregateDebtEventReport" class="jmab.report.MacroSimEventReport">
@@ -889,7 +894,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KAGGREGATEDEBTREPORT"/>
+	        <util:constant static-field="interbank.StaticValues.KAGGREGATEDEBTREPORT"/>
 	</property>
 	<property name="reportVariables" ref="kAggregateDebtTimeSeries"/>
 </bean>
@@ -899,7 +904,7 @@
 		<bean class="jmab.events.MacroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KAGGREGATEDEBTREPORT"/>
+	        <util:constant static-field="interbank.StaticValues.KAGGREGATEDEBTREPORT"/>
 	</property>
 	<property name="reportVariables" ref="kAggregateDebtCSVReportVariables"/>
 </bean>
@@ -923,12 +928,12 @@
 
 <!-- micro -->
 <bean id="microLoansKComputer" class="jmab.report.MicroOutstandingLoansComputer">
-	<property name="loansId"><util:constant static-field="modellone.StaticValues.SM_LOAN"/></property>
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="loansId"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 <bean id="microLoansCComputer" class="jmab.report.MicroOutstandingLoansComputer">
-	<property name="loansId"><util:constant static-field="modellone.StaticValues.SM_LOAN"/></property>
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="loansId"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="loanKEventReport" class="jmab.report.MicroSimEventReport">
@@ -937,7 +942,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROLOANSKREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROLOANSKREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microLoansKTimeSeries"/>
 </bean>
@@ -948,7 +953,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROLOANSCREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROLOANSCREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microLoansCTimeSeries"/>
 </bean>
@@ -958,7 +963,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROLOANSKREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROLOANSKREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microLoansKCSVReportVariables"/>
 </bean>
@@ -976,7 +981,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROLOANSCREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROLOANSCREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microLoansCCSVReportVariables"/>
 </bean>
@@ -1017,10 +1022,10 @@
 <!-- K and C Output -->
 
 <bean id="microOutputKComputer" class="interbank.report.MicroOutputComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 <bean id="microOutputCComputer" class="interbank.report.MicroOutputComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="microOutputKEventReport" class="jmab.report.MicroSimEventReport">
@@ -1029,7 +1034,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KOUTPUTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KOUTPUTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microOutputKTimeSeries"/>
 </bean>
@@ -1040,7 +1045,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.COUTPUTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.COUTPUTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microOutputCTimeSeries"/>
 </bean>
@@ -1050,7 +1055,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KOUTPUTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KOUTPUTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microOutputKCSVReportVariables"/>
 </bean>
@@ -1068,7 +1073,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.COUTPUTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.COUTPUTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microOutputCCSVReportVariables"/>
 </bean>
@@ -1110,12 +1115,12 @@
 <!-- K and C Credit Obtained -->
 
 <bean id="microCreditObtainedKComputer" class="jmab.report.MicroFirmsCreditObtainedComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
-    <property name="idLoanSM"><util:constant static-field="modellone.StaticValues.SM_LOAN"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
+    <property name="idLoanSM"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
 </bean>
 <bean id="microCreditObtainedCComputer" class="jmab.report.MicroFirmsCreditObtainedComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
-	<property name="idLoanSM"><util:constant static-field="modellone.StaticValues.SM_LOAN"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="idLoanSM"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
 </bean>
 
 <bean id="microCreditObtainedKEventReport" class="jmab.report.MicroSimEventReport">
@@ -1124,7 +1129,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KCREDITOBTAINEDREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KCREDITOBTAINEDREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microCreditObtainedKTimeSeries"/>
 </bean>
@@ -1135,7 +1140,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CCREDITOBTAINEDREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CCREDITOBTAINEDREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microCreditObtainedCTimeSeries"/>
 </bean>
@@ -1145,7 +1150,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KCREDITOBTAINEDREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KCREDITOBTAINEDREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microCreditObtainedKCSVReportVariables"/>
 </bean>
@@ -1163,7 +1168,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CCREDITOBTAINEDREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CCREDITOBTAINEDREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microCreditObtainedCCSVReportVariables"/>
 </bean>
@@ -1204,10 +1209,10 @@
 <!-- K and C real sales -->
 
 <bean id="microRealSalesKComputer" class="interbank.report.MicroRealSalesComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 <bean id="microRealSalesCComputer" class="interbank.report.MicroRealSalesComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="microRealSalesKEventReport" class="jmab.report.MicroSimEventReport">
@@ -1216,7 +1221,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KREALSALESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KREALSALESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealSalesKTimeSeries"/>
 </bean>
@@ -1227,7 +1232,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CREALSALESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CREALSALESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealSalesCTimeSeries"/>
 </bean>
@@ -1237,7 +1242,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KREALSALESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KREALSALESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealSalesKCSVReportVariables"/>
 </bean>
@@ -1255,7 +1260,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CREALSALESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CREALSALESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealSalesCCSVReportVariables"/>
 </bean>
@@ -1296,10 +1301,10 @@
 <!-- K and C taxes -->
 
 <bean id="microTaxesKComputer" class="interbank.report.MicroTaxesComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 <bean id="microTaxesCComputer" class="interbank.report.MicroTaxesComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="microTaxesKEventReport" class="jmab.report.MicroSimEventReport">
@@ -1308,7 +1313,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSTAXESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSTAXESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microTaxesKTimeSeries"/>
 </bean>
@@ -1319,7 +1324,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSTAXESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSTAXESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microTaxesCTimeSeries"/>
 </bean>
@@ -1329,7 +1334,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSTAXESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSTAXESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microTaxesKCSVReportVariables"/>
 </bean>
@@ -1347,7 +1352,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSTAXESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSTAXESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microTaxesCCSVReportVariables"/>
 </bean>
@@ -1388,10 +1393,10 @@
 <!-- K and C Bailout Costs -->
 
 <bean id="microBailoutCostKComputer" class="interbank.report.MicroBailoutCostComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 <bean id="microBailoutCostCComputer" class="interbank.report.MicroBailoutCostComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="microBailoutCostKEventReport" class="jmab.report.MicroSimEventReport">
@@ -1400,7 +1405,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KBAILOUTCOSTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KBAILOUTCOSTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microBailoutCostKTimeSeries"/>
 </bean>
@@ -1411,7 +1416,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CBAILOUTCOSTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CBAILOUTCOSTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microBailoutCostCTimeSeries"/>
 </bean>
@@ -1421,7 +1426,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KBAILOUTCOSTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KBAILOUTCOSTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microBailoutCostKCSVReportVariables"/>
 </bean>
@@ -1439,7 +1444,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CBAILOUTCOSTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CBAILOUTCOSTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microBailoutCostCCSVReportVariables"/>
 </bean>
@@ -1479,7 +1484,7 @@
 
 <!-- Banks bailoutCosts computer -->
 <bean id="microBailoutCostBanksComputer" class="interbank.report.MicroBailoutCostComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
 </bean>
 
 <bean id="microBailoutCostBanksEventReport" class="jmab.report.MicroSimEventReport">
@@ -1488,7 +1493,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSBAILOUTCOSTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSBAILOUTCOSTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microBailoutCostBanksTimeSeries"/>
 </bean>
@@ -1498,7 +1503,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSBAILOUTCOSTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSBAILOUTCOSTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microBailoutCostBanksCSVReportVariables"/>
 </bean>
@@ -1531,10 +1536,10 @@
 <!-- HHS and Banks taxes -->
 
 <bean id="microTaxesBanksComputer" class="interbank.report.MicroTaxesComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
 </bean>
 <bean id="microTaxesHHComputer" class="interbank.report.MicroTaxesComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/></property>
 </bean>
 
 <bean id="microTaxesBanksEventReport" class="jmab.report.MicroSimEventReport">
@@ -1543,7 +1548,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSTAXESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSTAXESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microTaxesBanksTimeSeries"/>
 </bean>
@@ -1554,7 +1559,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.HHTAXESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.HHTAXESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microTaxesHHTimeSeries"/>
 </bean>
@@ -1564,7 +1569,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSTAXESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSTAXESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microTaxesBanksCSVReportVariables"/>
 </bean>
@@ -1582,7 +1587,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.HHTAXESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.HHTAXESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microTaxesHHCSVReportVariables"/>
 </bean>
@@ -1624,10 +1629,10 @@
 <!-- K and C nominal sales -->
 
 <bean id="microNominalSalesKComputer" class="interbank.report.MicroNominalSalesComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 <bean id="microNominalSalesCComputer" class="interbank.report.MicroNominalSalesComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="microNominalSalesKEventReport" class="jmab.report.MicroSimEventReport">
@@ -1636,7 +1641,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KNOMINALSALESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KNOMINALSALESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microNominalSalesKTimeSeries"/>
 </bean>
@@ -1647,7 +1652,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CNOMINALSALESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CNOMINALSALESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microNominalSalesCTimeSeries"/>
 </bean>
@@ -1657,7 +1662,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KNOMINALSALESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KNOMINALSALESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microNominalSalesKCSVReportVariables"/>
 </bean>
@@ -1675,7 +1680,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CNOMINALSALESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CNOMINALSALESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microNominalSalesCCSVReportVariables"/>
 </bean>
@@ -1715,10 +1720,10 @@
 <!-- K and C dividends -->
 
 <bean id="microDividendsKComputer" class="interbank.report.MicroDividendsComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 <bean id="microDividendsCComputer" class="interbank.report.MicroDividendsComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="microDividendsKEventReport" class="jmab.report.MicroSimEventReport">
@@ -1727,7 +1732,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KDIVIDENDSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KDIVIDENDSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microDividendsKTimeSeries"/>
 </bean>
@@ -1738,7 +1743,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CDIVIDENDSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CDIVIDENDSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microDividendsCTimeSeries"/>
 </bean>
@@ -1748,7 +1753,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KDIVIDENDSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KDIVIDENDSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microDividendsKCSVReportVariables"/>
 </bean>
@@ -1766,7 +1771,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CDIVIDENDSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CDIVIDENDSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microDividendsCCSVReportVariables"/>
 </bean>
@@ -1805,7 +1810,7 @@
 
 <!-- Banks dividends computer -->
 <bean id="microDividendsBanksComputer" class="interbank.report.MicroDividendsComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
 </bean>
 
 <bean id="microDividendsBanksEventReport" class="jmab.report.MicroSimEventReport">
@@ -1814,7 +1819,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSDIVIDENDSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSDIVIDENDSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microDividendsBanksTimeSeries"/>
 </bean>
@@ -1824,7 +1829,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSDIVIDENDSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSDIVIDENDSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microDividendsBanksCSVReportVariables"/>
 </bean>
@@ -1856,10 +1861,10 @@
 <!-- K and C expected Average Variable Costs -->
 
 <bean id="microExpAvVarCostsKComputer" class="interbank.report.MicroExpectedAverageVariableCostsComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 <bean id="microExpAvVarCostsCComputer" class="interbank.report.MicroExpectedAverageVariableCostsComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="microExpAvVarCostsKEventReport" class="jmab.report.MicroSimEventReport">
@@ -1868,7 +1873,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KEXPAVVARCOSTSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KEXPAVVARCOSTSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microExpAvVarCostsKTimeSeries"/>
 </bean>
@@ -1879,7 +1884,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CEXPAVVARCOSTSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CEXPAVVARCOSTSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microExpAvVarCostsCTimeSeries"/>
 </bean>
@@ -1889,7 +1894,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KEXPAVVARCOSTSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KEXPAVVARCOSTSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microExpAvVarCostsKCSVReportVariables"/>
 </bean>
@@ -1907,7 +1912,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CEXPAVVARCOSTSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CEXPAVVARCOSTSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microExpAvVarCostsCCSVReportVariables"/>
 </bean>
@@ -1946,12 +1951,12 @@
 
 <!-- K and C operating cash flow-->
 <bean id="kOperatingCashFlowComputer" class="interbank.report.MicroOperatingCashFlowComputer">
-	<property name="firmsId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
-	<property name="oCFId"><util:constant static-field="modellone.StaticValues.LAG_OPERATINGCASHFLOW"/></property>
+	<property name="firmsId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="oCFId"><util:constant static-field="interbank.StaticValues.LAG_OPERATINGCASHFLOW"/></property>
 </bean>
 <bean id="cOperatingCashFlowComputer" class="interbank.report.MicroOperatingCashFlowComputer">
-	<property name="firmsId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
-	<property name="oCFId"><util:constant static-field="modellone.StaticValues.LAG_OPERATINGCASHFLOW"/></property>
+	<property name="firmsId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="oCFId"><util:constant static-field="interbank.StaticValues.LAG_OPERATINGCASHFLOW"/></property>
 </bean>
 
 <bean id="cOCFEventReport" class="jmab.report.MicroSimEventReport">
@@ -1960,7 +1965,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.COPERATINGCASHFLOWREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.COPERATINGCASHFLOWREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cOCFTimeSeries"/>
 </bean>
@@ -1971,7 +1976,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KOPERATINGCASHFLOWREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KOPERATINGCASHFLOWREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kOCFTimeSeries"/>
 </bean>
@@ -1981,7 +1986,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.COPERATINGCASHFLOWREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.COPERATINGCASHFLOWREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cOCFCSVReportVariables"/>
 </bean>
@@ -1999,7 +2004,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KOPERATINGCASHFLOWREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KOPERATINGCASHFLOWREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kOCFCSVReportVariables"/>
 </bean>
@@ -2041,8 +2046,8 @@
 <!--Real Consumption -->
 
 <bean id="microRealConsComputer" class="jmab.report.MicroRealConsumptionComputer">
-	<property name="consGoodId"><util:constant static-field="modellone.StaticValues.SM_CONSGOOD"/></property>
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/></property>
+	<property name="consGoodId"><util:constant static-field="interbank.StaticValues.SM_CONSGOOD"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/></property>
 </bean>
 
 <bean id="realConsEventReport" class="jmab.report.MicroSimEventReport">
@@ -2051,7 +2056,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROREALCONSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROREALCONSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealConsTimeSeries"/>
 </bean>
@@ -2061,7 +2066,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROREALCONSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROREALCONSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealConsCSVReportVariables"/>
 </bean>
@@ -2092,8 +2097,8 @@
 <!--Real Desired Consumption -->
 
 <bean id="microRealDesConsComputer" class="interbank.report.MicroRealDesiredConsumptionComputer">
-	<property name="consGoodId"><util:constant static-field="modellone.StaticValues.SM_CONSGOOD"/></property>
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/></property>
+	<property name="consGoodId"><util:constant static-field="interbank.StaticValues.SM_CONSGOOD"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/></property>
 </bean>
 
 <bean id="microRealDesConsEventReport" class="jmab.report.MicroSimEventReport">
@@ -2102,7 +2107,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROREALDESCONSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROREALDESCONSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealDesConsTimeSeries"/>
 </bean>
@@ -2112,7 +2117,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROREALDESCONSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROREALDESCONSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealDesConsCSVReportVariables"/>
 </bean>
@@ -2143,8 +2148,8 @@
 <!--Nominal Consumption -->
 
 <bean id="microNominalConsComputer" class="jmab.report.MicroNominalConsumptionComputer">
-	<property name="consGoodId"><util:constant static-field="modellone.StaticValues.SM_CONSGOOD"/></property>
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/></property>
+	<property name="consGoodId"><util:constant static-field="interbank.StaticValues.SM_CONSGOOD"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/></property>
 </bean>
 
 <bean id="nominalConsEventReport" class="jmab.report.MicroSimEventReport">
@@ -2153,7 +2158,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICRONOMINALCONSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICRONOMINALCONSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microNominalConsTimeSeries"/>
 </bean>
@@ -2163,7 +2168,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICRONOMINALCONSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICRONOMINALCONSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microNominalConsCSVReportVariables"/>
 </bean>
@@ -2195,8 +2200,8 @@
 <!--Real Investment -->
 
 <bean id="microRealInvComputer" class="jmab.report.MicroRealInvestmentComputer">
-	<property name="capGoodId"><util:constant static-field="modellone.StaticValues.SM_CAPGOOD"/></property>
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="capGoodId"><util:constant static-field="interbank.StaticValues.SM_CAPGOOD"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="realInvEventReport" class="jmab.report.MicroSimEventReport">
@@ -2205,7 +2210,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROREALINVREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROREALINVREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealInvTimeSeries"/>
 </bean>
@@ -2215,7 +2220,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROREALINVREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROREALINVREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealInvCSVReportVariables"/>
 </bean>
@@ -2246,8 +2251,8 @@
 <!--Real Desired Investment -->
 
 <bean id="microRealDesInvComputer" class="jmab.report.MicroRealDesiredInvestmentComputer">
-	<property name="capGoodId"><util:constant static-field="modellone.StaticValues.SM_CAPGOOD"/></property>
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="capGoodId"><util:constant static-field="interbank.StaticValues.SM_CAPGOOD"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="realDesInvEventReport" class="jmab.report.MicroSimEventReport">
@@ -2256,7 +2261,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROREALDESINVREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROREALDESINVREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealDesInvTimeSeries"/>
 </bean>
@@ -2266,7 +2271,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROREALDESINVREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROREALDESINVREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealDesInvCSVReportVariables"/>
 </bean>
@@ -2297,8 +2302,8 @@
 <!--Nominal Investment -->
 
 <bean id="microNominalInvComputer" class="jmab.report.MicroNominalInvestmentComputer">
-	<property name="capGoodId"><util:constant static-field="modellone.StaticValues.SM_CAPGOOD"/></property>
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="capGoodId"><util:constant static-field="interbank.StaticValues.SM_CAPGOOD"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="nominalInvEventReport" class="jmab.report.MicroSimEventReport">
@@ -2307,7 +2312,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICRONOMINALINVREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICRONOMINALINVREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microNominalInvTimeSeries"/>
 </bean>
@@ -2317,7 +2322,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICRONOMINALINVREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICRONOMINALINVREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microNominalInvCSVReportVariables"/>
 </bean>
@@ -2348,8 +2353,8 @@
 <!--Real Inventories C Firms -->
 
 <bean id="microRealCInventComputer" class="jmab.report.MicroRealInventoriesComputer">
-	<property name="goodId"><util:constant static-field="modellone.StaticValues.SM_CONSGOOD"/></property>
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="goodId"><util:constant static-field="interbank.StaticValues.SM_CONSGOOD"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="realCInventEventReport" class="jmab.report.MicroSimEventReport">
@@ -2358,7 +2363,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROREALCINVENTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROREALCINVENTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealCInventTimeSeries"/>
 </bean>
@@ -2368,7 +2373,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROREALCINVENTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROREALCINVENTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealCInventCSVReportVariables"/>
 </bean>
@@ -2399,8 +2404,8 @@
 <!--Real Inventories K Firms -->
 
 <bean id="microRealKInventComputer" class="jmab.report.MicroRealInventoriesComputer">
-	<property name="goodId"><util:constant static-field="modellone.StaticValues.SM_CAPGOOD"/></property>
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="goodId"><util:constant static-field="interbank.StaticValues.SM_CAPGOOD"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 
 <bean id="realKInventEventReport" class="jmab.report.MicroSimEventReport">
@@ -2409,7 +2414,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROREALKINVENTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROREALKINVENTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealKInventTimeSeries"/>
 </bean>
@@ -2419,7 +2424,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROREALKINVENTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROREALKINVENTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microRealKInventCSVReportVariables"/>
 </bean>
@@ -2450,7 +2455,7 @@
 <!--C Firms desired growth -->
 
 <bean id="microCGrowthComputer" class="interbank.report.MicroGrowthConsFirmsComputer">
-	<property name="consumptionFirmsId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="consumptionFirmsId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="cGrowthEventReport" class="jmab.report.MicroSimEventReport">
@@ -2459,7 +2464,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROCGROWTHREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROCGROWTHREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microCGrowthTimeSeries"/>
 </bean>
@@ -2469,7 +2474,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROCGROWTHREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROCGROWTHREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microCGrowthCSVReportVariables"/>
 </bean>
@@ -2500,7 +2505,7 @@
 <!--C Firms capacity   -->
 
 <bean id="microCCapacityComputer" class="interbank.report.MicroCapacityComputer">
-	<property name="consumptionFirmsId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="consumptionFirmsId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="cCapacityEventReport" class="jmab.report.MicroSimEventReport">
@@ -2509,7 +2514,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROCCAPACITYREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROCCAPACITYREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microCCapacityTimeSeries"/>
 </bean>
@@ -2519,7 +2524,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROCCAPACITYREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROCCAPACITYREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microCCapacityCSVReportVariables"/>
 </bean>
@@ -2550,7 +2555,7 @@
 <!--C Firms capacity utilization  -->
 
 <bean id="microCCapacityUtilizationComputer" class="interbank.report.MicroCapacityUtilizationCComputer">
-	<property name="consumptionFirmsId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="consumptionFirmsId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="cCapacityUtilizationEventReport" class="jmab.report.MicroSimEventReport">
@@ -2559,7 +2564,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROCCAPACITYUTILIZATIONREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROCCAPACITYUTILIZATIONREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microCCapacityUtilizationTimeSeries"/>
 </bean>
@@ -2569,7 +2574,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.MICROCCAPACITYUTILIZATIONREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.MICROCCAPACITYUTILIZATIONREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="microCCapacityUtilizationCSVReportVariables"/>
 </bean>
@@ -2601,7 +2606,7 @@
 <!--HH BS -->
 
 <bean id="aggHHBSComputer" class="jmab.report.AggregateSectorBalanceSheetComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/></property>
 </bean>
 
 <bean id="aggHHBSEventReport" class="jmab.report.MicroSimEventReport">
@@ -2610,7 +2615,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AGGHHBSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AGGHHBSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="aggHHBSTimeSeries"/>
 </bean>
@@ -2620,7 +2625,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AGGHHBSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AGGHHBSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="aggHHBSCSVReportVariables"/>
 </bean>
@@ -2651,7 +2656,7 @@
 <!--CF BS -->
 
 <bean id="aggCFBSComputer" class="jmab.report.AggregateSectorBalanceSheetComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="aggCFBSEventReport" class="jmab.report.MicroSimEventReport">
@@ -2660,7 +2665,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AGGCFBSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AGGCFBSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="aggCFBSTimeSeries"/>
 </bean>
@@ -2670,7 +2675,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AGGCFBSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AGGCFBSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="aggCFBSCSVReportVariables"/>
 </bean>
@@ -2701,7 +2706,7 @@
 <!--HH BS -->
 
 <bean id="aggKFBSComputer" class="jmab.report.AggregateSectorBalanceSheetComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 
 <bean id="aggKFBSEventReport" class="jmab.report.MicroSimEventReport">
@@ -2710,7 +2715,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AGGKFBSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AGGKFBSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="aggKFBSTimeSeries"/>
 </bean>
@@ -2720,7 +2725,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AGGKFBSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AGGKFBSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="aggKFBSCSVReportVariables"/>
 </bean>
@@ -2751,7 +2756,7 @@
 <!--Banks BS -->
 
 <bean id="aggBBSComputer" class="jmab.report.AggregateSectorBalanceSheetComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
 </bean>
 
 <bean id="aggBBSEventReport" class="jmab.report.MicroSimEventReport">
@@ -2760,7 +2765,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AGGBBSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AGGBBSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="aggBBSTimeSeries"/>
 </bean>
@@ -2770,7 +2775,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AGGBBSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AGGBBSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="aggBBSCSVReportVariables"/>
 </bean>
@@ -2801,7 +2806,7 @@
 <!--Gov BS -->
 
 <bean id="aggGBSComputer" class="jmab.report.AggregateSectorBalanceSheetComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.GOVERNMENT_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.GOVERNMENT_ID"/></property>
 </bean>
 
 <bean id="aggGBSEventReport" class="jmab.report.MicroSimEventReport">
@@ -2810,7 +2815,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AGGGBSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AGGGBSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="aggGBSTimeSeries"/>
 </bean>
@@ -2820,7 +2825,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AGGGBSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AGGGBSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="aggGBSCSVReportVariables"/>
 </bean>
@@ -2851,7 +2856,7 @@
 <!--CB BS -->
 
 <bean id="aggCBBSComputer" class="jmab.report.AggregateSectorBalanceSheetComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CB_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CB_ID"/></property>
 </bean>
 
 <bean id="aggCBBSEventReport" class="jmab.report.MicroSimEventReport">
@@ -2860,7 +2865,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AGGCBBSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AGGCBBSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="aggCBBSTimeSeries"/>
 </bean>
@@ -2870,7 +2875,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.AGGCBBSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.AGGCBBSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="aggCBBSCSVReportVariables"/>
 </bean>
@@ -2901,7 +2906,7 @@
 <!--C DESIRED OUTPUT -->
 
 <bean id="realCDesOutputComputer" class="jmab.report.MicroRealDesiredProductionComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="realCDesOutputEventReport" class="jmab.report.MicroSimEventReport">
@@ -2910,7 +2915,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.REALCDESOUTPUTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.REALCDESOUTPUTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="realCDesOutputTimeSeries"/>
 </bean>
@@ -2920,7 +2925,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.REALCDESOUTPUTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.REALCDESOUTPUTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="realCDesOutputCSVReportVariables"/>
 </bean>
@@ -2951,7 +2956,7 @@
 <!--K DESIRED OUTPUT -->
 
 <bean id="realKDesOutputComputer" class="jmab.report.MicroRealDesiredProductionComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 
 <bean id="realKDesOutputEventReport" class="jmab.report.MicroSimEventReport">
@@ -2960,7 +2965,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.REALKDESOUTPUTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.REALKDESOUTPUTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="realKDesOutputTimeSeries"/>
 </bean>
@@ -2970,7 +2975,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.REALKDESOUTPUTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.REALKDESOUTPUTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="realKDesOutputCSVReportVariables"/>
 </bean>
@@ -3002,7 +3007,7 @@
 <!--C EMPLOYEES -->
 
 <bean id="cEmployeeComputer" class="jmab.report.MicroEmployeeComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="cEmployeeEventReport" class="jmab.report.MicroSimEventReport">
@@ -3011,7 +3016,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CEMPLOYEEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CEMPLOYEEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cEmployeeTimeSeries"/>
 </bean>
@@ -3021,7 +3026,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CEMPLOYEEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CEMPLOYEEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cEmployeeCSVReportVariables"/>
 </bean>
@@ -3052,7 +3057,7 @@
 <!--K EMPLOYEES -->
 
 <bean id="kEmployeeComputer" class="jmab.report.MicroEmployeeComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 
 <bean id="kEmployeeEventReport" class="jmab.report.MicroSimEventReport">
@@ -3061,7 +3066,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KEMPLOYEEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KEMPLOYEEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kEmployeeTimeSeries"/>
 </bean>
@@ -3071,7 +3076,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KEMPLOYEEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KEMPLOYEEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kEmployeeCSVReportVariables"/>
 </bean>
@@ -3102,8 +3107,8 @@
 <!--BANKS PROFITS -->
 
 <bean id="banksProfitsComputer" class="interbank.report.MicroProfitsComputer">
-	<property name="agentId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
-	<property name="profitId"><util:constant static-field="modellone.StaticValues.LAG_PROFITAFTERTAX"/></property>
+	<property name="agentId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
+	<property name="profitId"><util:constant static-field="interbank.StaticValues.LAG_PROFITAFTERTAX"/></property>
 </bean>
 
 <bean id="banksProfitsEventReport" class="jmab.report.MicroSimEventReport">
@@ -3112,7 +3117,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSPROFITSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSPROFITSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksProfitsTimeSeries"/>
 </bean>
@@ -3122,7 +3127,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSPROFITSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSPROFITSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksProfitsCSVReportVariables"/>
 </bean>
@@ -3154,7 +3159,7 @@
 <!--BANKS SPECIFIC INTEREST LOANS-->
 
 <bean id="banksSpecificInterestComputer" class="interbank.report.MicroBankSpecificInterest">
-	<property name="banksId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
+	<property name="banksId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
 </bean>
 
 <bean id="banksSpecificInterestEventReport" class="jmab.report.MicroSimEventReport">
@@ -3163,7 +3168,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSSPECIFICINTERESTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSSPECIFICINTERESTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksSpecificInterestTimeSeries"/>
 </bean>
@@ -3173,7 +3178,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSSPECIFICINTERESTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSSPECIFICINTERESTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksSpecificInterestCSVReportVariables"/>
 </bean>
@@ -3204,7 +3209,7 @@
 <!--BANKS Capital Ratio-->
 
 <bean id="banksCRComputer" class="interbank.report.MicroBankCRComputer">
-	<property name="banksId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
+	<property name="banksId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
 </bean>
 
 <bean id="banksCREventReport" class="jmab.report.MicroSimEventReport">
@@ -3213,7 +3218,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSCRREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSCRREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksCRTimeSeries"/>
 </bean>
@@ -3223,7 +3228,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSCRREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSCRREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksCRCSVReportVariables"/>
 </bean>
@@ -3254,7 +3259,7 @@
 <!--BANKS Liquidity Ratio-->
 
 <bean id="banksLRComputer" class="interbank.report.MicroBankLRComputer">
-	<property name="banksId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
+	<property name="banksId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
 </bean>
 
 <bean id="banksLREventReport" class="jmab.report.MicroSimEventReport">
@@ -3263,7 +3268,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSLRREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSLRREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksLRTimeSeries"/>
 </bean>
@@ -3273,7 +3278,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSLRREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSLRREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksLRCSVReportVariables"/>
 </bean>
@@ -3304,7 +3309,7 @@
 <!--BANKS Loss due to bad debt-->
 
 <bean id="banksLossComputer" class="interbank.report.MicroBankLossBadDebtComputer">
-	<property name="banksId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
+	<property name="banksId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
 </bean>
 
 <bean id="banksLossEventReport" class="jmab.report.MicroSimEventReport">
@@ -3313,7 +3318,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSLOSSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSLOSSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksLossTimeSeries"/>
 </bean>
@@ -3323,7 +3328,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSLOSSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSLOSSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksLossCSVReportVariables"/>
 </bean>
@@ -3356,7 +3361,7 @@
 <!--BANKS DEPOSIT INTEREST -->
 
 <bean id="banksDepositInterestComputer" class="interbank.report.BanksDepositInterestComputer">
-	<property name="banksId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
+	<property name="banksId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
 </bean>
 
 <bean id="banksDepositInterestEventReport" class="jmab.report.MicroSimEventReport">
@@ -3365,7 +3370,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSDEPOSITINTERESTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSDEPOSITINTERESTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksDepositInterestTimeSeries"/>
 </bean>
@@ -3375,7 +3380,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSDEPOSITINTERESTREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSDEPOSITINTERESTREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksDepositInterestCSVReportVariables"/>
 </bean>
@@ -3407,8 +3412,8 @@
 <!--BANKS DEPOSITS-->
 
 <bean id="banksDepositsComputer" class="jmab.report.BanksDepositsComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
-	<property name="depositsId"><util:constant static-field="modellone.StaticValues.SM_DEP"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
+	<property name="depositsId"><util:constant static-field="interbank.StaticValues.SM_DEP"/></property>
 	
 </bean>
 
@@ -3418,7 +3423,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSDEPOSITSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSDEPOSITSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksDepositsTimeSeries"/>
 </bean>
@@ -3428,7 +3433,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BANKSDEPOSITSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BANKSDEPOSITSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="banksDepositsCSVReportVariables"/>
 </bean>
@@ -3459,8 +3464,8 @@
 <!--CONSUMPTION FIRMS PROFITS -->
 
 <bean id="cFirmsProfitsComputer" class="interbank.report.MicroProfitsComputer">
-	<property name="agentId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
-	<property name="profitId"><util:constant static-field="modellone.StaticValues.LAG_PROFITAFTERTAX"/></property>
+	<property name="agentId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="profitId"><util:constant static-field="interbank.StaticValues.LAG_PROFITAFTERTAX"/></property>
 </bean>
 
 <bean id="cFirmsProfitsEventReport" class="jmab.report.MicroSimEventReport">
@@ -3469,7 +3474,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSPROFITSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSPROFITSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsProfitsTimeSeries"/>
 </bean>
@@ -3479,7 +3484,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSPROFITSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSPROFITSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsProfitsCSVReportVariables"/>
 </bean>
@@ -3510,8 +3515,8 @@
 <!--CAPITAL FIRMS PROFITS -->
 
 <bean id="kFirmsProfitsComputer" class="interbank.report.MicroProfitsComputer">
-	<property name="agentId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
-	<property name="profitId"><util:constant static-field="modellone.StaticValues.LAG_PROFITAFTERTAX"/></property>
+	<property name="agentId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="profitId"><util:constant static-field="interbank.StaticValues.LAG_PROFITAFTERTAX"/></property>
 </bean>
 
 <bean id="kFirmsProfitsEventReport" class="jmab.report.MicroSimEventReport">
@@ -3520,7 +3525,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSPROFITSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSPROFITSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsProfitsTimeSeries"/>
 </bean>
@@ -3530,7 +3535,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSPROFITSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSPROFITSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsProfitsCSVReportVariables"/>
 </bean>
@@ -3561,7 +3566,7 @@
 <!--HOUSEHOLD WAGE PROFITS -->
 
 <bean id="hhWageComputer" class="interbank.report.MicroWageComputer">
-	<property name="householdId"><util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/></property>
+	<property name="householdId"><util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/></property>
 </bean>
 
 <bean id="hhWageEventReport" class="jmab.report.MicroSimEventReport">
@@ -3570,7 +3575,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.HHWAGEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.HHWAGEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="hhWageTimeSeries"/>
 </bean>
@@ -3580,7 +3585,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.HHWAGEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.HHWAGEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="hhWageCSVReportVariables"/>
 </bean>
@@ -3611,7 +3616,7 @@
 <!--HOUSEHOLD NET INCOME PROFITS -->
 
 <bean id="hhNetIncomeComputer" class="interbank.report.MicroNetIncomeComputer">
-	<property name="householdId"><util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/></property>
+	<property name="householdId"><util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/></property>
 </bean>
 
 <bean id="hhNetIncomeEventReport" class="jmab.report.MicroSimEventReport">
@@ -3620,7 +3625,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.HHNETINCOMEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.HHNETINCOMEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="hhNetIncomeTimeSeries"/>
 </bean>
@@ -3630,7 +3635,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.HHNETINCOMEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.HHNETINCOMEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="hhNetIncomeCSVReportVariables"/>
 </bean>
@@ -3661,7 +3666,7 @@
 <!--HOUSEHOLD DEPOSITS -->
 
 <bean id="hhDepositsComputer" class="interbank.report.MicroDepositsComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/></property>
 </bean>
 
 <bean id="hhDepositsEventReport" class="jmab.report.MicroSimEventReport">
@@ -3670,7 +3675,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.HHDEPOSTSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.HHDEPOSTSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="hhDepositsTimeSeries"/>
 </bean>
@@ -3680,7 +3685,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.HHDEPOSTSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.HHDEPOSTSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="hhDepositsCSVReportVariables"/>
 </bean>
@@ -3711,8 +3716,8 @@
 <!--CONSUMPTION FIRMS PRICES -->
 
 <bean id="cFirmsPricesComputer" class="jmab.report.MicroFirmsPricesComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
-	<property name="goodId"><util:constant static-field="modellone.StaticValues.SM_CONSGOOD"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="goodId"><util:constant static-field="interbank.StaticValues.SM_CONSGOOD"/></property>
 </bean>
 
 <bean id="cFirmsPricesEventReport" class="jmab.report.MicroSimEventReport">
@@ -3721,7 +3726,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSPRICESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSPRICESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsPricesTimeSeries"/>
 </bean>
@@ -3731,7 +3736,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSPRICESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSPRICESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsPricesCSVReportVariables"/>
 </bean>
@@ -3762,8 +3767,8 @@
 <!--CAPITAL FIRMS PRICES -->
 
 <bean id="kFirmsPricesComputer" class="jmab.report.MicroFirmsPricesComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
-	<property name="goodId"><util:constant static-field="modellone.StaticValues.SM_CAPGOOD"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="goodId"><util:constant static-field="interbank.StaticValues.SM_CAPGOOD"/></property>
 </bean>
 
 <bean id="kFirmsPricesEventReport" class="jmab.report.MicroSimEventReport">
@@ -3772,7 +3777,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSPRICESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSPRICESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsPricesTimeSeries"/>
 </bean>
@@ -3782,7 +3787,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSPRICESREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSPRICESREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsPricesCSVReportVariables"/>
 </bean>
@@ -3813,10 +3818,10 @@
 <!--CONSUMPTION FIRMS ACTUAL LEVERAGE -->
 
 <bean id="cFirmsLevComputer" class="jmab.report.MicroFirmsLeverageComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 	<property name="liabilityIds">
 		<list>
-			<util:constant static-field="modellone.StaticValues.SM_LOAN"/>
+			<util:constant static-field="interbank.StaticValues.SM_LOAN"/>
 		</list>
 	</property>
 </bean>
@@ -3827,7 +3832,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSLEVREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSLEVREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsLevTimeSeries"/>
 </bean>
@@ -3837,7 +3842,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSLEVREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSLEVREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsLevCSVReportVariables"/>
 </bean>
@@ -3868,10 +3873,10 @@
 <!--CAPITAL FIRMS TARGETED LEVERAGE -->
 
 <bean id="kFirmsLevComputer" class="jmab.report.MicroFirmsLeverageComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 	<property name="liabilityIds">
 		<list>
-			<util:constant static-field="modellone.StaticValues.SM_LOAN"/>
+			<util:constant static-field="interbank.StaticValues.SM_LOAN"/>
 		</list>
 	</property>
 </bean>
@@ -3882,7 +3887,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSLEVREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSLEVREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsLevTimeSeries"/>
 </bean>
@@ -3892,7 +3897,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSLEVREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSLEVREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsLevCSVReportVariables"/>
 </bean>
@@ -3924,7 +3929,7 @@
 <!--CONSUMPTION FIRMS INTEREST RECEIVED -->
 
 <bean id="cFirmsIRComputer" class="interbank.report.MicroInterestReceivedComputer">
-	<property name="agentId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="agentId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="cFirmsIREventReport" class="jmab.report.MicroSimEventReport">
@@ -3933,7 +3938,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSIRREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSIRREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsIRTimeSeries"/>
 </bean>
@@ -3943,7 +3948,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSIRREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSIRREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsIRCSVReportVariables"/>
 </bean>
@@ -3974,7 +3979,7 @@
 <!--CAPITAL FIRMS INTEREST RECEIVED -->
 
 <bean id="kFirmsIRComputer" class="interbank.report.MicroInterestReceivedComputer">
-	<property name="agentId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="agentId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 
 <bean id="kFirmsIREventReport" class="jmab.report.MicroSimEventReport">
@@ -3983,7 +3988,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSIRREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSIRREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsIRTimeSeries"/>
 </bean>
@@ -3993,7 +3998,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSIRREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSIRREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsIRCSVReportVariables"/>
 </bean>
@@ -4024,7 +4029,7 @@
 <!--HOUSEHOLDS INTEREST RECEIVED -->
 
 <bean id="hhIRComputer" class="interbank.report.MicroInterestReceivedComputer">
-	<property name="agentId"><util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/></property>
+	<property name="agentId"><util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/></property>
 </bean>
 
 <bean id="hhIREventReport" class="jmab.report.MicroSimEventReport">
@@ -4033,7 +4038,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.HHIRREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.HHIRREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="hhIRTimeSeries"/>
 </bean>
@@ -4043,7 +4048,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.HHIRREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.HHIRREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="hhIRCSVReportVariables"/>
 </bean>
@@ -4074,7 +4079,7 @@
 <!--CONSUMPTION FIRMS INTEREST TO PAY -->
 
 <bean id="cFirmsIPComputer" class="interbank.report.MicroInterestToPayComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="cFirmsIPEventReport" class="jmab.report.MicroSimEventReport">
@@ -4083,7 +4088,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSINTERESTSTOPAYREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSINTERESTSTOPAYREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsIPTimeSeries"/>
 </bean>
@@ -4093,7 +4098,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSINTERESTSTOPAYREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSINTERESTSTOPAYREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsIPCSVReportVariables"/>
 </bean>
@@ -4124,7 +4129,7 @@
 <!--CAPITAL FIRMS INTEREST TO PAY -->
 
 <bean id="kFirmsIPComputer" class="interbank.report.MicroInterestToPayComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 
 <bean id="kFirmsIPEventReport" class="jmab.report.MicroSimEventReport">
@@ -4133,7 +4138,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSINTERESTSTOPAYREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSINTERESTSTOPAYREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsIPTimeSeries"/>
 </bean>
@@ -4143,7 +4148,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSINTERESTSTOPAYREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSINTERESTSTOPAYREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsIPCSVReportVariables"/>
 </bean>
@@ -4175,7 +4180,7 @@
 <!--CONSUMPTION FIRMS DEBT SERVICE -->
 
 <bean id="cFirmsDebtServiceComputer" class="interbank.report.MicroDebtServiceComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="cFirmsDebtServiceEventReport" class="jmab.report.MicroSimEventReport">
@@ -4184,7 +4189,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSDEBTSERVICEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSDEBTSERVICEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsDebtServiceTimeSeries"/>
 </bean>
@@ -4194,7 +4199,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSDEBTSERVICEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSDEBTSERVICEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsDebtServiceCSVReportVariables"/>
 </bean>
@@ -4225,7 +4230,7 @@
 <!--CAPITAL FIRMS DEBT SERVICE -->
 
 <bean id="kFirmsDebtServiceComputer" class="interbank.report.MicroDebtServiceComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 
 <bean id="kFirmsDebtServiceEventReport" class="jmab.report.MicroSimEventReport">
@@ -4234,7 +4239,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSDEBTSERVICEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSDEBTSERVICEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsDebtServiceTimeSeries"/>
 </bean>
@@ -4244,7 +4249,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSDEBTSERVICEREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSDEBTSERVICEREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsDebtServiceCSVReportVariables"/>
 </bean>
@@ -4275,7 +4280,7 @@
 <!--CONSUMPTION FIRMS WAGE BILL -->
 
 <bean id="cFirmsWageBillComputer" class="jmab.report.MicroWageBillComputer">
-	<property name="agentId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="agentId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 </bean>
 
 <bean id="cFirmsWageBillEventReport" class="jmab.report.MicroSimEventReport">
@@ -4284,7 +4289,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSWAGEBILLREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSWAGEBILLREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsWageBillTimeSeries"/>
 </bean>
@@ -4294,7 +4299,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSWAGEBILLREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSWAGEBILLREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsWageBillCSVReportVariables"/>
 </bean>
@@ -4325,7 +4330,7 @@
 <!--CAPITAL FIRMS WAGE BILL -->
 
 <bean id="kFirmsWageBillComputer" class="jmab.report.MicroWageBillComputer">
-	<property name="agentId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="agentId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 </bean>
 
 <bean id="kFirmsWageBillEventReport" class="jmab.report.MicroSimEventReport">
@@ -4334,7 +4339,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSWAGEBILLREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSWAGEBILLREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsWageBillTimeSeries"/>
 </bean>
@@ -4344,7 +4349,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSWAGEBILLREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSWAGEBILLREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsWageBillCSVReportVariables"/>
 </bean>
@@ -4376,8 +4381,8 @@
 <!--CONSUMPTION FIRMS REMAINING CREDIT -->
 
 <bean id="cFirmsConsCredComputer" class="jmab.report.MicroFirmsConstrainedCreditComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
-	<property name="idLoanSM"><util:constant static-field="modellone.StaticValues.SM_LOAN"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="idLoanSM"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
 </bean>
 
 <bean id="cFirmsConsCredEventReport" class="jmab.report.MicroSimEventReport">
@@ -4386,7 +4391,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSCONSCREDREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSCONSCREDREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsConsCredTimeSeries"/>
 </bean>
@@ -4396,7 +4401,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.CFIRMSCONSCREDREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.CFIRMSCONSCREDREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="cFirmsConsCredCSVReportVariables"/>
 </bean>
@@ -4427,8 +4432,8 @@
 <!--CAPITAL FIRMS REMAINING CREDIT -->
 
 <bean id="kFirmsConsCredComputer" class="jmab.report.MicroFirmsConstrainedCreditComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
-	<property name="idLoanSM"><util:constant static-field="modellone.StaticValues.SM_LOAN"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="idLoanSM"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
 </bean>
 
 <bean id="kFirmsConsCredEventReport" class="jmab.report.MicroSimEventReport">
@@ -4437,7 +4442,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSCONSCREDREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSCONSCREDREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsConsCredTimeSeries"/>
 </bean>
@@ -4447,7 +4452,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.KFIRMSCONSCREDREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.KFIRMSCONSCREDREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="kFirmsConsCredCSVReportVariables"/>
 </bean>
@@ -4478,8 +4483,8 @@
 <!--BANKS MAXIMUM EXPOSURE -->
 
 <bean id="bMaxExposureComputer" class="jmab.report.MicroLenderMaxExposureComputer">
-	<property name="populationId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
-	<property name="loansId"><util:constant static-field="modellone.StaticValues.SM_LOAN"/></property>
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
+	<property name="loansId"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
 </bean>
 
 <bean id="bMaxExposureEventReport" class="jmab.report.MicroSimEventReport">
@@ -4488,7 +4493,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BMAXEXPOSUREREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BMAXEXPOSUREREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="bMaxExposureTimeSeries"/>
 </bean>
@@ -4498,7 +4503,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.BMAXEXPOSUREREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.BMAXEXPOSUREREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="bMaxExposureCSVReportVariables"/>
 </bean>
@@ -4537,7 +4542,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.GOVWAGEBILLREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.GOVWAGEBILLREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="govWageBillTimeSeries"/>
 </bean>
@@ -4547,7 +4552,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.GOVWAGEBILLREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.GOVWAGEBILLREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="govWageBillCSVReportVariables"/>
 </bean>
@@ -4586,7 +4591,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.GOVDOLEEXPENDITUREREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.GOVDOLEEXPENDITUREREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="govDoleTimeSeries"/>
 </bean>
@@ -4596,7 +4601,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.GOVDOLEEXPENDITUREREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.GOVDOLEEXPENDITUREREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="govDoleCSVReportVariables"/>
 </bean>
@@ -4635,7 +4640,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.GOVCBPROFITSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.GOVCBPROFITSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="govCBProfitsTimeSeries"/>
 </bean>
@@ -4645,7 +4650,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.GOVCBPROFITSREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.GOVCBPROFITSREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="govCBProfitsCSVReportVariables"/>
 </bean>
@@ -4684,7 +4689,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.GOVINTERESTSBONDS_ID"/>
+	        <util:constant static-field="interbank.StaticValues.GOVINTERESTSBONDS_ID"/>
 	</property>
 	<property name="reportVariables" ref="govInterestsBondsTimeSeries"/>
 </bean>
@@ -4694,7 +4699,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.GOVINTERESTSBONDS_ID"/>
+	        <util:constant static-field="interbank.StaticValues.GOVINTERESTSBONDS_ID"/>
 	</property>
 	<property name="reportVariables" ref="govInterestsBondsCSVReportVariables"/>
 </bean>
@@ -4725,12 +4730,12 @@
 <!-- TFM report -->
 
 <bean id="TFMComputer" class="interbank.report.TFMComputer">
-	<property name="consumptionFirmsId"><util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
-	<property name="capitalFirmsId"><util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/></property>
-	<property name="householdsId"><util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/></property>
-	<property name="banksId"><util:constant static-field="modellone.StaticValues.BANKS_ID"/></property>
-	<property name="governmentId"><util:constant static-field="modellone.StaticValues.GOVERNMENT_ID"/></property>
-	<property name="centralBankId"><util:constant static-field="modellone.StaticValues.CB_ID"/></property>
+	<property name="consumptionFirmsId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+	<property name="capitalFirmsId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
+	<property name="householdsId"><util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/></property>
+	<property name="banksId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
+	<property name="governmentId"><util:constant static-field="interbank.StaticValues.GOVERNMENT_ID"/></property>
+	<property name="centralBankId"><util:constant static-field="interbank.StaticValues.CB_ID"/></property>
 </bean>
 
 <bean id="TFMEventReport" class="jmab.report.MicroSimEventReport">
@@ -4739,7 +4744,7 @@
 		</bean>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.TFMREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.TFMREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="TFMTimeSeries"/>
 </bean>
@@ -4749,7 +4754,7 @@
 		<bean class="jmab.events.MicroSimEvent"/>
 	</property>
 	<property name="variableId">
-	        <util:constant static-field="modellone.StaticValues.TFMREPORT_ID"/>
+	        <util:constant static-field="interbank.StaticValues.TFMREPORT_ID"/>
 	</property>
 	<property name="reportVariables" ref="TFMCSVReportVariables"/>
 </bean>
@@ -4764,7 +4769,7 @@
 
 <bean id="TFMReportVariables" class="jmab.report.MicroMultiVariablesReport">
 	<property name="name" value="TFM"/>
-	<property name="numberOfSeries"><util:constant static-field="modellone.StaticValues.TFM_SIZE"/></property>
+	<property name="numberOfSeries"><util:constant static-field="interbank.StaticValues.TFM_SIZE"/></property>
 </bean>
 
 <bean id="TFMTimeSeries" class="jmab.report.MicroSeriesReportVariables">
@@ -4777,27 +4782,27 @@
 	<property name="populationsId">
 		<list>
 			<!-- 
-			<util:constant static-field="modellone.StaticValues.GOVERNMENT_ID"/>
-			<util:constant static-field="modellone.StaticValues.CB_ID"/> 
+			<util:constant static-field="interbank.StaticValues.GOVERNMENT_ID"/>
+			<util:constant static-field="interbank.StaticValues.CB_ID"/> 
 			-->
-			<util:constant static-field="modellone.StaticValues.BANKS_ID"/>
-			<util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/>
-			<util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/>
+			<util:constant static-field="interbank.StaticValues.BANKS_ID"/>
+			<util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/>
+			<util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/>
 			<!-- 
-			<util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/> 
+			<util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/> 
 			-->
 		</list>
 	</property>
 	<property name="assetsId">
 		<list>
 			<!-- 
-			<util:constant static-field="modellone.StaticValues.SM_DEP"/> 
+			<util:constant static-field="interbank.StaticValues.SM_DEP"/> 
 			-->
-			<util:constant static-field="modellone.StaticValues.SM_LOAN"/>
+			<util:constant static-field="interbank.StaticValues.SM_LOAN"/>
 			<!-- 
-			<util:constant static-field="modellone.StaticValues.SM_BONDS"/>
-			<util:constant static-field="modellone.StaticValues.SM_ADVANCES"/>
-			<util:constant static-field="modellone.StaticValues.SM_RESERVES"/> 
+			<util:constant static-field="interbank.StaticValues.SM_BONDS"/>
+			<util:constant static-field="interbank.StaticValues.SM_ADVANCES"/>
+			<util:constant static-field="interbank.StaticValues.SM_RESERVES"/> 
 			-->
 		</list>
 	</property>
@@ -4812,23 +4817,23 @@
 <bean id="FlowNetworkComputer" class="jmab.report.FlowNetworkComputer">
 	<property name="populationsId">
 		<list>
-			<util:constant static-field="modellone.StaticValues.GOVERNMENT_ID"/>
-			<util:constant static-field="modellone.StaticValues.CB_ID"/>
-			<util:constant static-field="modellone.StaticValues.BANKS_ID"/>
-			<util:constant static-field="modellone.StaticValues.CAPITALFIRMS_ID"/>
-			<util:constant static-field="modellone.StaticValues.CONSUMPTIONFIRMS_ID"/>
-			<util:constant static-field="modellone.StaticValues.HOUSEHOLDS_ID"/>
+			<util:constant static-field="interbank.StaticValues.GOVERNMENT_ID"/>
+			<util:constant static-field="interbank.StaticValues.CB_ID"/>
+			<util:constant static-field="interbank.StaticValues.BANKS_ID"/>
+			<util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/>
+			<util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/>
+			<util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/>
 		</list>
 	</property>
 	<property name="assetsId">
 		<list>
-			<util:constant static-field="modellone.StaticValues.SM_DEP"/>
-			<util:constant static-field="modellone.StaticValues.SM_LOAN"/>
-			<util:constant static-field="modellone.StaticValues.SM_BONDS"/>
-			<util:constant static-field="modellone.StaticValues.SM_ADVANCES"/>
-			<util:constant static-field="modellone.StaticValues.SM_RESERVES"/>
-			<util:constant static-field="modellone.StaticValues.SM_CONSGOOD"/>
-			<util:constant static-field="modellone.StaticValues.SM_CAPGOOD"/>
+			<util:constant static-field="interbank.StaticValues.SM_DEP"/>
+			<util:constant static-field="interbank.StaticValues.SM_LOAN"/>
+			<util:constant static-field="interbank.StaticValues.SM_BONDS"/>
+			<util:constant static-field="interbank.StaticValues.SM_ADVANCES"/>
+			<util:constant static-field="interbank.StaticValues.SM_RESERVES"/>
+			<util:constant static-field="interbank.StaticValues.SM_CONSGOOD"/>
+			<util:constant static-field="interbank.StaticValues.SM_CAPGOOD"/>
 		</list>
 	</property>
 	<property name="weighted" value="true"/>

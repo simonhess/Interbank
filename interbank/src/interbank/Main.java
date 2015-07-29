@@ -14,7 +14,7 @@
  */
 package interbank;
 
-import net.sourceforge.jabm.SimulationManager;
+import net.sourceforge.jabm.DesktopSimulationManager;
 
 /**
  * @author Steve Phelps
@@ -22,6 +22,6 @@ import net.sourceforge.jabm.SimulationManager;
 public class Main {
     
     public static void main(String [] args) {
-        SimulationManager.main(new String[] {});
+        DesktopSimulationManager.main(new String[] {});
     }
 }
