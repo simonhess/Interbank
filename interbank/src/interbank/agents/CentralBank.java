@@ -34,6 +34,8 @@ import jmab.goods.Deposit;
 import jmab.goods.Item;
 import jmab.goods.Loan;
 import jmab.population.MacroPopulation;
+import jmab.strategies.InterestRateStrategy;
+import jmab.strategies.SupplyCreditStrategy;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.SimulationController;
 import net.sourceforge.jabm.agent.Agent;
@@ -58,6 +60,10 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	private double interestsOnBonds;
 	private double bondInterestsReceived;
 	protected double totInterestsReserves;
+	// new monetary policy variables
+	protected double expectedNaturalRate;
+	protected double expectedPotentialGDP;
+	private double totalAdvancesSupply;
 	
 	/**
 	 * @return the advancesInterestRate
@@ -140,6 +146,8 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 		if(event.getTic()==StaticValues.TIC_COMPUTEEXPECTATIONS){ 
 			this.interestsOnAdvances=0;
 			this.interestsOnBonds=0;
+			// compute expectations for monetary policy values
+			computeExpectations();
 			if (this.getItemsStockMatrix(true, StaticValues.SM_ADVANCES).size()!=0){
 				List<Item> advances=this.getItemsStockMatrix(true,StaticValues.SM_ADVANCES);
 				double advancesValue=0;
@@ -161,8 +169,81 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 			this.determineCBBondsPurchases();
 		else if (event.getTic()==StaticValues.TIC_RESINTERESTS)
 			this.payReservesInterests();
+		else if (event.getTic()==StaticValues.TIC_CBPOLICY)
+			// added new methods where the central bank determines its policies
+			// by determining both the rates on advances & reserves (monetary)
+			// as well as the supply of reserves and QE (moneteray)
+			// , and finally several macroprudential policy tools
+			this.determineAdvancesInterestRate();
+			this.determineReserveDepositInterestRate();
+			this.determineAdvancesSupply();
+			this.quantitativeEasing();
+			this.determineMicroMacroprudentialPolicy();
 	}
 	
+	
+	// Monetary and macroprudential policy methods
+	
+	/**
+	 * This method lets the central bank set its macroprudential 
+	 * policy tools according to some policy strategy
+	 * 1. Liquidity ratio's : Net stable funding ratio & Liquidity coverage ratio
+	 * 2. Capital ratio's : capital buffer ratio & leverage ratio
+	 * 3. ReserveRequirements
+	 * 4. Debt to Income ratio's 
+	 */
+	private void determineMicroMacroprudentialPolicy() {
+		// TODO Auto-generated method stub
+		
+	}
+	/**
+	 * This methods lets the central bank increase the amount of reserves in circulation
+	 * by purchasing government bonds (and or loans) from banks
+	 * The amount to purchase is based on the QuantitativeEasing strategy
+	 * But how do they buy? Open market operations right? Create a new market iteration?
+	 */
+	private void quantitativeEasing() {
+		// TODO Auto-generated method stub
+		
+	}
+	/**
+	 * This method lets the central bank determine how much advances it is willing to give
+	 * to banks in need of liquidity. 
+	 */
+	private void determineAdvancesSupply() {
+		// I copied this method from regular banks, however is this correct since
+		// the advances market works differently?? 
+		SupplyCreditStrategy strategy=(SupplyCreditStrategy)this.getStrategy(StaticValues.STRATEGY_ADVANCESSUPPLY);
+		double AdvancesSupply = strategy.computeCreditSupply();
+		setTotalAdvancesSupply(AdvancesSupply);
+		this.addValue(StaticValues.LAG_TOTADVANCESSUPPLY, AdvancesSupply);
+		if (this.getTotalAdvancesSupply()>0){
+			this.setActive(true, StaticValues.MKT_ADVANCES);
+			this.addToMarketPopulation(StaticValues.SM_ADVANCES, false);
+		}	
+		
+	}
+	/**
+	 * This methods lets the central bank update the interest rate it pays to reserve holders
+	 */
+	private void determineReserveDepositInterestRate() {
+		InterestRateStrategy strategy = (InterestRateStrategy)this.getStrategy(StaticValues.STRATEGY_RESDEPOSITRATE);
+		this.reserveInterestRate=strategy.computeInterestRate(null, 0, 0);
+		
+	}
+	/**
+	 * This method lets the central bank update the interest it charges on advances
+	 */
+	private void determineAdvancesInterestRate() {
+		// correct to use strategy advances? 
+		InterestRateStrategy strategy = (InterestRateStrategy)this.getStrategy(StaticValues.STRATEGY_ADVANCES);
+		this.advancesInterestRate=strategy.computeInterestRate(null,0,1);
+		
+	}
+	/**
+	 * This method allows the Central bank to pay interest to its reserve holders
+	 * For every reserve account the 
+	 */
 	private void payReservesInterests() {
 		List<Item> reserves = this.getItemsStockMatrix(false, StaticValues.SM_RESERVES);
 		double totInterests=0;
@@ -187,6 +268,7 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 		MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
 		Population banks = macroPop.getPopulation(StaticValues.BANKS_ID);
 		int banksBondDemand=0;
+		// calculate the total banksBondDemand
 		for(Agent b:banks.getAgents()){
 			Bank tempB= (Bank) b;
 			if(tempB.isActive(StaticValues.MKT_BONDS))
@@ -195,7 +277,9 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 		Population government=macroPop.getPopulation(StaticValues.GOVERNMENT_ID);
 		
 		Government gov= (Government) government.getAgentList().get(0);
+		// calculate the total government bond supply
 		int bondsSupply=gov.getBondSupply();
+		// determine own demand
 		this.bondDemand=bondsSupply-banksBondDemand;
 		Bond bondsIssued = (Bond) gov.getItemStockMatrix(false, StaticValues.SM_BONDS, gov); 
 		if (bondsIssued!=null && bondDemand>0){
@@ -205,8 +289,10 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 			int maturity=bondsIssued.getMaturity();
 			Bond bondsPurchased = new Bond(price*bondDemand, (double)bondDemand, this, gov, maturity, interestRate, price);
 			bondsIssued.setQuantity(bondsIssued.getQuantity()-bondDemand);
+			// transaction increase bonds and decrease bonds government
 			this.addItemStockMatrix(bondsPurchased, true, StaticValues.SM_BONDS);
 			gov.addItemStockMatrix(bondsPurchased, false, StaticValues.SM_BONDS);
+			// increase government reserves
 			Item govRes= (Item) gov.getItemStockMatrix(true, StaticValues.SM_RESERVES);
 			govRes.setValue(govRes.getValue()+price*bondDemand);
 			//7. If there are no more bonds to be sold, then the supplier is deactivated.
@@ -305,6 +391,15 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 		return bondInterestsReceived;
 	}
 	
+	
+	public double getTotalAdvancesSupply() {
+		return totalAdvancesSupply;
+	}
+
+	public void setTotalAdvancesSupply(double totalAdvancesSupply) {
+		this.totalAdvancesSupply = totalAdvancesSupply;
+	}
+
 	/**
 	 * Populates the agent characteristics using the byte array content. The structure is as follows:
 	 * [sizeMacroAgentStructure][MacroAgentStructure][advancesInterestRate][reserveInterestRate][interestsOnAdvances][interestsOnBonds]

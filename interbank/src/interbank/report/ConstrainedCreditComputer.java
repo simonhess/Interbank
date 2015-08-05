@@ -14,14 +14,12 @@
  */
 package interbank.report;
 
-import java.util.TreeMap;
-
-import net.sourceforge.jabm.Population;
-import net.sourceforge.jabm.agent.Agent;
 import jmab.agents.CreditDemander;
 import jmab.population.MacroPopulation;
 import jmab.report.VariableComputer;
 import jmab.simulations.MacroSimulation;
+import net.sourceforge.jabm.Population;
+import net.sourceforge.jabm.agent.Agent;
 
 /**
  * @author Alessandro Caiani and Antoine Godin

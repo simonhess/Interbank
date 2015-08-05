@@ -20,12 +20,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.util.List;
 
+import jmab.agents.BondDemander;
 import jmab.agents.BondSupplier;
 import jmab.agents.LaborDemander;
 import jmab.agents.LaborSupplier;
 import jmab.agents.LiabilitySupplier;
 import jmab.events.MacroTicEvent;
+import jmab.goods.Bond;
 import jmab.goods.Deposit;
 import jmab.goods.Item;
 import jmab.population.MacroPopulation;
@@ -108,7 +111,67 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 	}
 
 	/**
-	 * 
+	 * Pay interest and coupon on bonds using deposits until depleted, after that reserves
+	 */
+	protected void payInterests() {
+		List<Item> bonds=this.getItemsStockMatrix(false, StaticValues.SM_BONDS);
+		Item reserves=this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
+		List<Item> deposits = this.getItemsStockMatrix(true, StaticValues.SM_DEP);
+		double interestsBonds=0;
+		for(Item b:bonds){
+			Bond bond=(Bond)b;
+			if(bond.getAssetHolder() instanceof Government){
+				//This is due to bad rounding
+				bond.setQuantity(0);
+			}else{
+				// determine amount of interest to be payed
+				BondDemander holder = (BondDemander)bond.getAssetHolder();
+				holder.setBondInterestsReceived(bond.getValue()*bond.getInterestRate());
+				interestsBonds+=bond.getValue()*bond.getInterestRate();
+				// pay the central bank in reserves
+				if(holder instanceof CentralBank){
+					reserves.setValue(reserves.getValue()-bond.getValue()*bond.getInterestRate());
+					if(bond.getAge()==bond.getMaturity()){
+						reserves.setValue(reserves.getValue()-bond.getValue());
+						bond.setQuantity(0);
+					}
+				}
+				// pay banks in its own deposits first in then in reserves
+				else if(holder instanceof Bank){
+					Item deposit = getItemStockMatrix(true, StaticValues.SM_DEP, holder);
+					double repaymentBonds = 0; 
+					if(bond.getAge()==bond.getMaturity()) {
+						repaymentBonds = bond.getValue();
+					}
+					interestsBonds+=bond.getValue()*bond.getInterestRate();
+					double paymentDue = repaymentBonds + interestsBonds; 
+					double value = deposit.getValue();
+					// try to pay using deposits
+					if (paymentDue > 0) {
+						if (value <= paymentDue) {
+							// pay as much as possible using the deposit account at the bondholding bank
+							deposit.setValue(deposit.getValue()- value);
+							paymentDue -= value;
+						}else {
+							// if the deposit is sufficiently large pay the duePayment in total
+							deposit.setValue(deposit.getValue()- paymentDue); 
+							paymentDue = 0;
+						}
+					// if payments on bonds are not fully made using deposits, use reserves
+					}if (paymentDue > 0) {
+						Item hDep = holder.getItemStockMatrix(true, StaticValues.SM_RESERVES);
+						((LiabilitySupplier) holder).transfer(reserves, hDep, paymentDue);
+						paymentDue = 0;
+					}
+				}
+			}
+		}
+		totInterestsBonds=interestsBonds;
+	}
+	
+	/**
+	 * Pay unemployment benefits to unemployed households. First use deposit accounts 
+	 * if there are not enough deposits use reserves. 
 	 */
 	private void payUnemploymentBenefits(SimulationController simulationController) {
 		MacroPopulation macroPop = (MacroPopulation) simulationController.getPopulation();
@@ -127,14 +190,38 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 		double doleAmount=0;
 		for(Agent agent:households.getAgents()){
 			Households worker= (Households) agent;
-			
 			if (worker.getEmployer()==null){
 				LaborSupplier unemployed = (LaborSupplier) worker;
-				Deposit depositGov = (Deposit) this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
 				Item payableStock = unemployed.getPayableStock(StaticValues.MKT_LABOR);
-				LiabilitySupplier payingSupplier = (LiabilitySupplier) depositGov.getLiabilityHolder();
-				payingSupplier.transfer(depositGov, payableStock, unemploymentBenefit);
-				doleAmount+=unemploymentBenefit;
+				// first try to pay using deposit accounts (CAN I MOVE THIS OUT OF THE LOOP?)
+				List<Item> deposits = this.getItemsStockMatrix(true, StaticValues.SM_DEP);
+				for (Item dep:deposits) {
+					double value = dep.getValue();
+					// remove empty accounts from the list
+					if (value <= 0) deposits.remove(dep);
+					if (unemploymentBenefit > 0) {
+						// if there is insufficient amount in the deposit account to pay the bill
+						if (value <= unemploymentBenefit) {
+							// pay as much as possible
+							LiabilitySupplier payingSupplier = (LiabilitySupplier) dep.getLiabilityHolder();
+							payingSupplier.transfer(dep, payableStock, value);
+							unemploymentBenefit -= value;
+						}
+						else {
+							// if the deposit is sufficiently large pay the unemploymentBenefitbill in total
+							LiabilitySupplier payingSupplier = (LiabilitySupplier) dep.getLiabilityHolder();
+							payingSupplier.transfer(dep, payableStock, unemploymentBenefit);
+							unemploymentBenefit = 0;
+						}
+					}	
+				}
+				//If there are insufficient deposits pay using reserves
+				if (unemploymentBenefit > 0) {
+					Deposit depositGov = (Deposit) this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
+					LiabilitySupplier payingSupplier = (LiabilitySupplier) depositGov.getLiabilityHolder();
+					payingSupplier.transfer(depositGov, payableStock, unemploymentBenefit);
+					doleAmount+=unemploymentBenefit;
+				}	
 			}
 		}
 		this.doleExpenditure=doleAmount;
@@ -166,11 +253,52 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 		}
 		cleanEmployeeList();	
 	}
-
+	
+	/** 
+	 * This class uses this paywages function instead of the one from government mother class
+	 */
 	protected void payWages(){
+		// if there are any wages to pay
 		if(employees.size()>0){
-			Deposit deposit = (Deposit) this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
-			payWages(deposit,StaticValues.MKT_LABOR);
+			// Get wagebill 
+			double wageBillStep1 = this.getWageBill();
+			// get accounts to pay from, list of deposits + reserves
+			List<Item> deposits = this.getItemsStockMatrix(true, StaticValues.SM_DEP);
+			// pay the employees 
+			Collections.shuffle(this.employees);
+			for(int i=0;i<employees.size();i++){
+				LaborSupplier employee = (LaborSupplier) employees.get(i);
+				Item payableStock = employee.getPayableStock(StaticValues.MKT_LABOR);
+				double wage = employee.getWage();
+				// loop through the deposits to reduce government deposit accounts in wages
+				for (Item dep:deposits) {
+					double value = dep.getValue();
+					// remove empty accounts from the list
+					if (value <= 0) deposits.remove(dep);
+					if (wage > 0) {
+						// if there is insufficient amount in the deposit account to pay the bill
+						if (value <= wage) {
+							// pay as much as possible
+							LiabilitySupplier payingSupplier = (LiabilitySupplier) dep.getLiabilityHolder();
+							payingSupplier.transfer(dep, payableStock, value);
+							wage -= value;
+						}
+						else {
+							// if the deposit is sufficiently large pay the wagebill in total
+							LiabilitySupplier payingSupplier = (LiabilitySupplier) dep.getLiabilityHolder();
+							payingSupplier.transfer(dep, payableStock, wage);
+							wage = 0;
+						}
+					}	
+				}
+				// if not all wages are payed out of deposits pay the remained out of reserves
+				if (wage > 0) {
+					Deposit reserves = (Deposit) this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
+					LiabilitySupplier payingSupplier = (LiabilitySupplier) reserves.getLiabilityHolder();
+					payingSupplier.transfer(reserves, payableStock, wage);
+					wage = 0;
+				}
+			}	
 		}
 	}
 

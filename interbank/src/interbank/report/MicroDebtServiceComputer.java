@@ -14,6 +14,7 @@
  */
 package interbank.report;
 
+import interbank.agents.Bank;
 import interbank.agents.CapitalFirm;
 import interbank.agents.ConsumptionFirm;
 
@@ -77,6 +78,14 @@ private int populationId;
 				}
 				else{
 					result.put(firm.getAgentId(), Double.NaN);
+				}
+			}else if(i instanceof Bank){
+				Bank bank= (Bank) i;
+				if (!bank.isDead()){
+				result.put(bank.getAgentId(), bank.getDebtBurden());
+				}
+				else{
+					result.put(bank.getAgentId(), Double.NaN);
 				}
 			}
 		}

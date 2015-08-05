@@ -162,6 +162,13 @@
 				<ref bean="banksBailoutCostReportTic" />
 				<ref bean="cFirmsBailoutCostReportTic" />
 				<ref bean="kFirmsBailoutCostReportTic" />
+				<!-- New Interbank reporterTICs -->
+				<ref bean="microTotalInterBankLoansReportTic" />
+				<ref bean="microTotalInterBankCreditObtainedReportTic" />
+				<ref bean="microAverageInterBankAskRateReportTic" />
+				<ref bean="microTotalInterBankConstrainedCreditReportTic" />
+				<ref bean="microTotalInterBankDebtServiceReportTic" />
+				<!-- End of New interbank reporter TICs -->
 				<ref bean="BSNetworkReportTic" />
 				<ref bean="populationHandlerTic" />
 				<ref bean="updateExpectationsTic" />
@@ -1702,15 +1709,59 @@
 		<property name="computer" ref="banksDepositsComputer"></property>
 	</bean>
 
-	<bean id="banksCreditSupplyReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+	<bean id="microTotalInterBankLoansReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
 		<property name="tic">
-			<util:constant static-field="interbank.StaticValues.TIC_BANKSCREDITSUPPLYREPORT" />
+			<util:constant static-field="interbank.StaticValues.TIC_MICROTOTINTERBANKSUPPLYREPORT" />
 		</property>
 		<property name="variableId">
-			<util:constant static-field="interbank.StaticValues.BANKSCREDITSUPPLYREPORT_ID" />
+			<util:constant static-field="interbank.StaticValues.MICROTOTINTERBANKSUPPLY_ID" />
 		</property>
-		<property name="variableName" value="Banks Credit Supply"></property>
-		<property name="computer" ref="banksCreditSupplyComputer"></property>
+		<property name="variableName" value="Banks Interbank Credit Supply"></property>
+		<property name="computer" ref="microTotalInterBankLoansComputer"></property>
+	</bean>
+	
+	<bean id="microTotalInterBankCreditObtainedReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROTOTINTERBANKCREDITOBTAINEDREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROTOTINTERBANKCREDITOBTAINED_ID" />
+		</property>
+		<property name="variableName" value="Banks Interbank Obtained Credit"></property>
+		<property name="computer" ref="microTotalInterBankCreditObtainedComputer"></property>
+	</bean>
+	
+	<bean id="microAverageInterBankAskRateReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROAVINTERBANKRATEREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.AVINTERBANKRATEREPORT_ID" />
+		</property>
+		<property name="variableName" value="Banks Interbank Average Ask Rate"></property>
+		<property name="computer" ref="microAverageInterBankAskRateComputer"></property>
+	</bean>
+	
+	<bean id="microTotalInterBankConstrainedCreditReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROTOTCONSTRAINEDINTERBANKCREDITREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROTOTCONSTRAINEDINTERBANKCREDIT_ID" />
+		</property>
+		<property name="variableName" value="Banks Interbank Constrained Credit"></property>
+		<property name="computer" ref="microTotalInterBankConstrainedCreditComputer"></property>
+	</bean>
+	
+	<bean id="microTotalInterBankDebtServiceReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_INTERBANKDEBTSERVICEREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.INTERBANKDEBTSERVICEREPORT_ID" />
+		</property>
+		<property name="variableName" value="Banks Interbank Debt Service"></property>
+		<property name="computer" ref="microTotalInterBankDebtServiceComputer"></property>
 	</bean>
 
 	<bean id="govWageBillReportTic" class="jmab.events.MicroMultiVariablesTicEvent">

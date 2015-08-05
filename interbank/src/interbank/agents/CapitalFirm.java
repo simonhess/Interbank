@@ -625,10 +625,11 @@ public class CapitalFirm extends AbstractFirm implements GoodSupplier,
 				cash.setValue(cash.getValue()-cashTr);
 				deposit.setValue(taxes);
 			}
-			Item res = deposit.getLiabilityHolder().getItemStockMatrix(true,account.getSMId());
-			res.setValue(res.getValue()-taxes);
-			deposit.setValue(depValue-taxes);
-			account.setValue(account.getValue()+taxes);
+			((Bank) deposit.getLiabilityHolder()).transfer(deposit, account, taxes);
+			//Item res = deposit.getLiabilityHolder().getItemStockMatrix(true,account.getSMId());
+			//res.setValue(res.getValue()-taxes);
+			//deposit.setValue(depValue-taxes);
+			//account.setValue(account.getValue()+taxes);
 		}
 		
 	}

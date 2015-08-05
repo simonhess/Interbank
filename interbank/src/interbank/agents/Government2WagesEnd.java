@@ -90,8 +90,8 @@ public class Government2WagesEnd extends Government implements LaborDemander, Bo
 
 	protected void payWages(){
 		if(employees.size()>0){
-			Deposit deposit = (Deposit) this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
-			payWages(deposit,StaticValues.MKT_LABOR);
+			Deposit reserves = (Deposit) this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
+			payWages(reserves,StaticValues.MKT_LABOR);
 		}
 
 	}	

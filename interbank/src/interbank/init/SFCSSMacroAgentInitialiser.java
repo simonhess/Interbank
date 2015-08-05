@@ -499,6 +499,14 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 			hWorkerCounter++;
 		}
 		
+		//HERE ADD THE DEPOSIT ACCOUNT OF THE GOVERNMENT IN ALL PRIVATE BANKS
+		// for every bank add an empty government account
+		for(int i = 0; i<bSize; i++) {
+			MacroAgent bank = (MacroAgent) banks.getAgentList().get(i);
+			Deposit govtDep = new Deposit(0,govt, bank,this.iDep);
+			govt.addItemStockMatrix(govtDep, true, StaticValues.SM_DEP);
+			bank.addItemStockMatrix(govtDep, false, StaticValues.SM_DEP);			
+		}
 		
 		//Central Bank Deposit
 		Deposit govtRes = new Deposit(0,(SimpleAbstractAgent)govt,(SimpleAbstractAgent)cb,0);

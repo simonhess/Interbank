@@ -9,32 +9,36 @@ import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
 /**
- * @author joeri
- *
+ * @author Joeri Schasfoort
+ * This class lets the policy maker set a counter cyclical capital buffer
+ * based on a credit to GDP ratio. If this ratio gets higher the capital buffer 
+ * is increased up to a maxiumum of 2.5% on the base level, in line with Basel III 
  */
-public class CounterCyclicalCapitalBuffer extends AbstractStrategy implements
+public class CounterCyclicalCapitalBufferCreditGDP extends AbstractStrategy implements
 		MacroPrudentialStrategy {
 
 	/* (non-Javadoc)
-	 * @see interbank.strategies.MacroPrudentialStrategy#computePolicyTarget()
+	 * Main method used to calculate the capital buffer
 	 */
 	@Override
 	public double computePolicyTarget() {
-		// TODO Auto-generated method stub
+		// First calculate the credit to GDP ratio
+		
+		// then determine the markup on the capital buffer
 		return 0;
 	}
 	
 	/**
 	 * 
 	 */
-	public CounterCyclicalCapitalBuffer() {
+	public CounterCyclicalCapitalBufferCreditGDP() {
 		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @param agent
 	 */
-	public CounterCyclicalCapitalBuffer(Agent agent) {
+	public CounterCyclicalCapitalBufferCreditGDP(Agent agent) {
 		super(agent);
 		// TODO Auto-generated constructor stub
 	}
@@ -43,7 +47,7 @@ public class CounterCyclicalCapitalBuffer extends AbstractStrategy implements
 	 * @param scheduler
 	 * @param agent
 	 */
-	public CounterCyclicalCapitalBuffer(EventScheduler scheduler, Agent agent) {
+	public CounterCyclicalCapitalBufferCreditGDP(EventScheduler scheduler, Agent agent) {
 		super(scheduler, agent);
 		// TODO Auto-generated constructor stub
 	}

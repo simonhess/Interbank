@@ -32,12 +32,12 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
 
 /**
  * @author Alessandro Caiani and Antoine Godin
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class BondDemandStrategyReserves extends AbstractStrategy implements BondDemandStrategy{
 	
-	private double liquidityRatio;
+	private double liquidityRatio; 
 
 	/**
 	 * @return the liquidityRatio

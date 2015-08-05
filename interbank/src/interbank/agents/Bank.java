@@ -93,6 +93,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 	private double interbankAsk;
 	private double interbankDemand;
 	private double interbankSupply;
+	protected double debtBurden;
 	//	private boolean interbankBuyer; // to facilitate who is supplier demander?
 	//	private boolean interbankSeller; // to facilitate who is supplier demander?
 
@@ -174,6 +175,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 		switch(event.getTic()){
 		case StaticValues.TIC_COMPUTEEXPECTATIONS:
 			setBailoutCost(0);
+			setDebtBurden(0);
 			setCurrentNonPerformingLoans(StaticValues.SM_LOAN,0); // we delete non performing loans from previous period
 			this.defaulted=false;
 			computeExpectations();
@@ -282,6 +284,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 				this.totInterestsInterbank+=interests;
 				// use previous to calculate total amount to pay
 				amountToPay=interests+principal;
+				debtBurden=amountToPay;
 			}
 		}	
 		// end of loop --> total payment amount is now calculated
@@ -1281,6 +1284,14 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 
 	public void setInterbankDemand(double interbankDemand) {
 		this.interbankDemand = interbankDemand;
+	}
+
+	public double getDebtBurden() {
+		return debtBurden;
+	}
+
+	public void setDebtBurden(double debtBurden) {
+		this.debtBurden = debtBurden;
 	}
 
 }

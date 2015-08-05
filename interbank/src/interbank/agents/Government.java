@@ -214,6 +214,7 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 		for(Item b:bonds){
 			Bond bond=(Bond)b;
 			if(bond.getAssetHolder() instanceof Government){
+				//This is due to bad rounding
 				bond.setQuantity(0);
 			}else{
 				BondDemander holder = (BondDemander)bond.getAssetHolder();
@@ -246,15 +247,19 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 	 * @param simulationController
 	 */
 	protected void collectTaxes(SimulationController simulationController) {
-		Item account = this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
+		//Item account = this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
 		MacroPopulation populations = (MacroPopulation)simulationController.getPopulation();
 //		double taxesRevenues=0;
 		for(int popId:this.taxedPopulations){
 			Population pop = populations.getPopulation(popId);
+			// ask every agent to pay taxes in turn
 			for(Agent a:pop.getAgents()){
 				TaxPayer agent=(TaxPayer) a;
-				if(!agent.isDead())
+				if(!agent.isDead()){
+					Bank depositHolder = (Bank)agent.getItemStockMatrix(true, StaticValues.SM_DEP).getLiabilityHolder();
+					Item account = this.getItemStockMatrix(true, StaticValues.SM_DEP, depositHolder);
 					agent.payTaxes(account);
+				}
 			}
 		}
 		
@@ -297,8 +302,7 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 			payingSupplier.transfer(payingItem, payableStock, wage);
 			wages+=wage;
 		}
-		wageBill=wages;
-		
+		wageBill=wages;		
 	}
 	
 	protected void cleanEmployeeList(){

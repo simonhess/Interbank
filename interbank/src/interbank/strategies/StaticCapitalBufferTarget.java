@@ -9,8 +9,8 @@ import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
 /**
- * @author Joeri Schasfoort
- *
+ * @author Joeri Schasfoort this class lets the central bank set a 
+ * static capital buffer.
  */
 public class StaticCapitalBufferTarget extends AbstractStrategy implements
 		MacroPrudentialStrategy {

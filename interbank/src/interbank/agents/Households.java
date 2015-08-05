@@ -308,12 +308,15 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 	 */
 	@Override
 	public void payTaxes(Item account) {
+		//TODO change banks from transferring reserves to deposits
 		TaxPayerStrategy strategy = (TaxPayerStrategy)this.getStrategy(StaticValues.STRATEGY_TAXES);
+		// calculate liquidity
 		double taxes=strategy.computeTaxes();
 		Cash cash = (Cash)this.getItemStockMatrix(true, StaticValues.SM_CASH);
 		double liquidity=cash.getValue();
 		Deposit deposit= (Deposit)this.getItemStockMatrix(true, StaticValues.SM_DEP);
 		liquidity+=deposit.getValue();
+		// pay either the taxes in full or at least the liquidity
 		taxes=Math.min(taxes, liquidity);
 		double depValue=deposit.getValue();
 		if(depValue<taxes){
@@ -324,10 +327,13 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 			deposit.setValue(taxes);
 		}
 		this.addValue(StaticValues.LAG_TAXES, taxes);
-		Item res = deposit.getLiabilityHolder().getItemStockMatrix(true,account.getSMId());
-		res.setValue(res.getValue()-taxes);
-		deposit.setValue(depValue-taxes);
-		account.setValue(account.getValue()+taxes);
+		// This is where the reserves from banks are decreased, WHAT DOES GET SMid do? 
+		//Item res = deposit.getLiabilityHolder().getItemStockMatrix(true,account.getSMId());
+		((Bank) deposit.getLiabilityHolder()).transfer(deposit, account, taxes);
+		//res.setValue(res.getValue()-taxes);
+		//deposit.setValue(depValue-taxes);
+		// account is input for the method, SHOULD THIS BE CHANGED IN THE XML?
+		//account.setValue(account.getValue()+taxes);
 		double nW=this.getNetWealth();
 		this.addValue(StaticValues.LAG_NETWEALTH, nW);
 		this.dividendsReceived=0;

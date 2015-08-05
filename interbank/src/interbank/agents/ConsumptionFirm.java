@@ -551,10 +551,12 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 				cash.setValue(cash.getValue()-cashTr);
 				deposit.setValue(taxes);
 			}
-			Item res = deposit.getLiabilityHolder().getItemStockMatrix(true,account.getSMId());
-			res.setValue(res.getValue()-taxes);
-			deposit.setValue(depValue-taxes);
-			account.setValue(account.getValue()+taxes);
+			// Transfer deposits to government account in the same bank
+			((Bank) deposit.getLiabilityHolder()).transfer(deposit, account, taxes);
+			//Item res = deposit.getLiabilityHolder().getItemStockMatrix(true,account.getSMId());
+			//res.setValue(res.getValue()-taxes);
+			//deposit.setValue(depValue-taxes);
+			//account.setValue(account.getValue()+taxes);
 		}
 	}
 	

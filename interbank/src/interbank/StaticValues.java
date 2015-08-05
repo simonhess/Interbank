@@ -175,6 +175,12 @@ public interface StaticValues {
 	public static int TIC_INTERBANKPOSITIONREPORT=147;
 	public static int TIC_AVINTERBANKRATEREPORT=148;
 	public static int TIC_AGGINTERBANKCREDITREPORT=149;
+	public static int TIC_MICROTOTINTERBANKSUPPLYREPORT=150;
+	public static int TIC_MICROTOTINTERBANKCREDITOBTAINEDREPORT=151;
+	public static int TIC_MICROAVINTERBANKRATEREPORT=152;
+	public static int TIC_MICROTOTCONSTRAINEDINTERBANKCREDITREPORT=153;
+	public static int TIC_CBPOLICY=154;
+
 
 	
 	public static int EXPECTATIONS_NOMINALSALES=0;
@@ -210,6 +216,7 @@ public interface StaticValues {
 	public static int LAG_PRICE=22;
 	public static int LAG_TOTINTERBANKSUPPLY = 23;
 	public static int LAG_INTERBANKINTEREST = 24;
+	public static int LAG_TOTADVANCESSUPPLY = 25;
 	
 	public static int SM_CASH=0;
 	public static int SM_DEP=1;
@@ -258,6 +265,9 @@ public interface StaticValues {
 	public static int STRATEGY_INTERBANKSUPPLY = 25;
 	public static int STRATEGY_INTERBANKRATE = 26;
 	public static int STRATEGY_ILLIQUIDITY = 27;
+	public static int STRATEGY_MONETARY=28;
+	public static int STRATEGY_RESDEPOSITRATE=29;
+	public static int STRATEGY_ADVANCESSUPPLY=30;
 	
 	public static int CAPITALFIRMS_ID=0;
 	public static int CONSUMPTIONFIRMS_ID=1;
@@ -377,6 +387,9 @@ public interface StaticValues {
 	public static int INTERBANKPOSITIONREPORT_ID=105;
 	public static int AVINTERBANKRATEREPORT_ID=106;
 	public static int AGGINTERBANKCREDITREPORT_ID=107;	
+	public static int MICROTOTINTERBANKSUPPLY_ID=108;
+	public static int MICROTOTINTERBANKCREDITOBTAINED_ID=109;
+	public static int MICROTOTCONSTRAINEDINTERBANKCREDIT_ID=110;
 
 
 
