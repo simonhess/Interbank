@@ -142,6 +142,8 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 					double repaymentBonds = 0; 
 					if(bond.getAge()==bond.getMaturity()) {
 						repaymentBonds = bond.getValue();
+						// set bond quantity at 0 knowing that it will be repaid. 
+						bond.setQuantity(0);
 					}
 					interestsBonds+=bond.getValue()*bond.getInterestRate();
 					double paymentDue = repaymentBonds + interestsBonds; 
