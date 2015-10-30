@@ -15,38 +15,13 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
 public class StaticReserveRequirements extends AbstractStrategy implements
 		MacroPrudentialStrategy {
 
-	private double staticCapitalBufferTarget;
+	private double staticReserveRequirements;
 	/* (non-Javadoc)
 	 * @see interbank.strategies.MacroPrudentialStrategy#computePolicyTarget()
 	 */
 	@Override
 	public double computePolicyTarget() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	/**
-	 * 
-	 */
-	public StaticReserveRequirements() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param agent
-	 */
-	public StaticReserveRequirements(Agent agent) {
-		super(agent);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param scheduler
-	 * @param agent
-	 */
-	public StaticReserveRequirements(EventScheduler scheduler, Agent agent) {
-		super(scheduler, agent);
-		// TODO Auto-generated constructor stub
+		return staticReserveRequirements;
 	}
 
 	/* (non-Javadoc)

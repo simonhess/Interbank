@@ -65,7 +65,6 @@ SupplyCreditStrategy {
 		return newLoansSupply;
 	}
 	//TODO: Shouldn't we remove from the variation in reserve, the quantity of advances already taken that should disapear?
-	//TODO: Joeri: what do I change under here to make it suitable for interbank loans? 	
 	/**
 	 * Generate the byte array structure of the strategy. The structure is as follow:
 	 * [capitalAdequacyRatio][depositsExpectationsId][depositsId][loansId][nbAssets][assetsIds][assetsWeights]

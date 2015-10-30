@@ -25,30 +25,6 @@ public class StaticNetFundingRatio extends AbstractStrategy implements
 		return staticNetFundingRatio;
 	}
 	
-	/**
-	 * 
-	 */
-	public StaticNetFundingRatio() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param agent
-	 */
-	public StaticNetFundingRatio(Agent agent) {
-		super(agent);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param scheduler
-	 * @param agent
-	 */
-	public StaticNetFundingRatio(EventScheduler scheduler, Agent agent) {
-		super(scheduler, agent);
-		// TODO Auto-generated constructor stub
-	}
-
 	/* (non-Javadoc)
 	 * @see jmab.strategies.SingleStrategy#getBytes()
 	 */

@@ -5,6 +5,10 @@ import net.sourceforge.jabm.EventScheduler;
 import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
+/**
+ * @author Joeri Schasfoort
+ * This class lets the central bank set a fixed interest rate
+ */
 public class StaticMonetary extends AbstractStrategy implements
 		MonetaryPolicyStrategy {
 	

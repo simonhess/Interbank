@@ -15,25 +15,34 @@
 package interbank.agents;
 
 import interbank.StaticValues;
+import interbank.strategies.MacroPrudentialStrategy;
+import interbank.strategies.QEStrategy;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import jmab.agents.AbstractBank;
+import jmab.agents.AbstractFirm;
 import jmab.agents.BondDemander;
 import jmab.agents.BondSupplier;
 import jmab.agents.CreditSupplier;
 import jmab.agents.DepositDemander;
 import jmab.agents.DepositSupplier;
+import jmab.agents.LaborDemander;
+import jmab.agents.LaborSupplier;
 import jmab.agents.MacroAgent;
 import jmab.events.MacroTicEvent;
+import jmab.goods.AbstractGood;
 import jmab.goods.Bond;
 import jmab.goods.Deposit;
 import jmab.goods.Item;
 import jmab.goods.Loan;
 import jmab.population.MacroPopulation;
+import jmab.simulations.MacroSimulation;
+import jmab.strategies.BondDemandStrategy;
 import jmab.strategies.InterestRateStrategy;
 import jmab.strategies.SupplyCreditStrategy;
 import net.sourceforge.jabm.Population;
@@ -53,6 +62,7 @@ import net.sourceforge.jabm.event.RoundFinishedEvent;
 @SuppressWarnings("serial")
 public class CentralBank extends AbstractBank implements CreditSupplier, DepositSupplier, BondDemander {
 
+	private static final boolean QEActive = false;
 	private double advancesInterestRate;
 	private double reserveInterestRate;
 	private int bondDemand;
@@ -61,9 +71,22 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	private double bondInterestsReceived;
 	protected double totInterestsReserves;
 	// new monetary policy variables
+	private double totalAdvancesSupply;
+	private BondSupplier selectedAssetSupplier;
+	private int QEAssetDemand;
 	protected double expectedNaturalRate;
 	protected double expectedPotentialGDP;
-	private double totalAdvancesSupply;
+	protected double nominalGDP;
+	protected double inflation;
+	// variables used to calculate GDP & inflation
+	private int governmentPopulationId; // the id of the government
+	private LinkedHashMap<Integer,Integer> goodPassedValueMap;
+	private int[] gdpPopulationIds;//These are all the populations ids of agents that have either bought or produced goods entering in GDP
+	private int[] gdpGoodsIds;//These are all the stock matrix ids of goods that enter in GDP
+	private int[] gdpGoodsAges;//These are all age limit of goods that enter in GDP
+	private int priceIndexProducerId;//This is the population id of agents that produce the goods entering in the CPI
+	private int priceGoodId;//This is the stock matrix if of the good entering in the CPI
+	private int realSaleId;//This is the id of the lagged value of real sales
 	
 	/**
 	 * @return the advancesInterestRate
@@ -171,9 +194,11 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 			this.payReservesInterests();
 		else if (event.getTic()==StaticValues.TIC_CBPOLICY)
 			// added new methods where the central bank determines its policies
+			// first the cb calculates macro variables
 			// by determining both the rates on advances & reserves (monetary)
 			// as well as the supply of reserves and QE (moneteray)
 			// , and finally several macroprudential policy tools
+			this.calculateMacroVariables();
 			this.determineAdvancesInterestRate();
 			this.determineReserveDepositInterestRate();
 			this.determineAdvancesSupply();
@@ -193,30 +218,55 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	 * 4. Debt to Income ratio's 
 	 */
 	private void determineMicroMacroprudentialPolicy() {
-		// TODO Auto-generated method stub
-		
+		// cast and set the net stable funding ratio and liquidity coverage ratio
+		MacroPrudentialStrategy netStableFundingRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_NETSTABLEFUNDING);
+		MacroPrudentialStrategy liquidityCoverageRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_LIQUIDITYCOVERAGE);
+		netStableFundingRatio.computePolicyTarget();
+		liquidityCoverageRatio.computePolicyTarget();
+		// cast and set the capital buffer ratio and leverage ratio
+		MacroPrudentialStrategy capitalBufferRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_CAPITALBUFFER);
+		MacroPrudentialStrategy leverageRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_LEVERAGERATIO);
+		capitalBufferRatio.computePolicyTarget();
+		leverageRatio.computePolicyTarget();
+		// cast and set the reserve requirements
+		MacroPrudentialStrategy reserveRequirements = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_RESERVEREQUIREMENTS);
+		reserveRequirements.computePolicyTarget();
+		// cast and set debt to income ratio's 
+		MacroPrudentialStrategy incomeRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_INCOMERATIO);
+		incomeRatio.computePolicyTarget();
 	}
 	/**
 	 * This methods lets the central bank increase the amount of reserves in circulation
-	 * by purchasing government bonds (and or loans) from banks
-	 * The amount to purchase is based on the QuantitativeEasing strategy
-	 * But how do they buy? Open market operations right? Create a new market iteration?
+	 * by purchasing government bonds from banks
+	 * The amount and from whom to purchase is based on the QuantitativeEasing strategy
 	 */
 	private void quantitativeEasing() {
-		// TODO Auto-generated method stub
-		
+		// determine total amount of reserve creation that can be spent to purchase QE assets
+		QEStrategy strategy = (QEStrategy)this.getStrategy(StaticValues.STRATEGY_QUANTITATIVEEASING);
+		// determine if the central bank is already in a QE program
+		if (this.QEActive==false) {
+			this.QEAssetDemand=strategy.assetDemand();
+			// Purchase bonds from banks depending on strategy chosen
+			if (this.QEAssetDemand>0){
+				strategy.QEPurchase();
+			}
+		}
+		else {
+			// TODO maybe add some different input for QEPurchase method
+			strategy.QEPurchase();
+		}
 	}
 	/**
 	 * This method lets the central bank determine how much advances it is willing to give
 	 * to banks in need of liquidity. 
 	 */
 	private void determineAdvancesSupply() {
-		// I copied this method from regular banks, however is this correct since
-		// the advances market works differently?? 
 		SupplyCreditStrategy strategy=(SupplyCreditStrategy)this.getStrategy(StaticValues.STRATEGY_ADVANCESSUPPLY);
+		// compute the supply of advances according to advances strategy
 		double AdvancesSupply = strategy.computeCreditSupply();
 		setTotalAdvancesSupply(AdvancesSupply);
 		this.addValue(StaticValues.LAG_TOTADVANCESSUPPLY, AdvancesSupply);
+		// activate the central bank in the market for advances if is has a positive supply
 		if (this.getTotalAdvancesSupply()>0){
 			this.setActive(true, StaticValues.MKT_ADVANCES);
 			this.addToMarketPopulation(StaticValues.SM_ADVANCES, false);
@@ -232,10 +282,9 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 		
 	}
 	/**
-	 * This method lets the central bank update the interest it charges on advances
+	 * This method lets the central bank update the interest it charges on advances using strategy advances
 	 */
 	private void determineAdvancesInterestRate() {
-		// correct to use strategy advances? 
 		InterestRateStrategy strategy = (InterestRateStrategy)this.getStrategy(StaticValues.STRATEGY_ADVANCES);
 		this.advancesInterestRate=strategy.computeInterestRate(null,0,1);
 		
@@ -261,6 +310,70 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 
 	public double getCBProfits(){
 		return this.interestsOnAdvances+this.interestsOnBonds;
+	}
+	
+	/*
+	 * This method is used to calculate / update the banks macroVariables and expectations
+	 * 1. Expected natural rate
+	 * 2. Expected potential output
+	 */
+	private void calculateMacroVariables(){
+		SimulationController controller = (SimulationController)this.getScheduler();
+		MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
+		Population pop = macroPop.getPopulation(priceIndexProducerId);
+		// calculate and set inflation
+		double totalSales=0;
+		double averagePrice=0;
+		for (Agent a:pop.getAgents()){
+			AbstractFirm firm= (AbstractFirm) a;
+			totalSales+=firm.getPassedValue(realSaleId, 0);
+			AbstractGood good = (AbstractGood)firm.getItemStockMatrix(true, priceGoodId);
+			averagePrice+=good.getPrice()*firm.getPassedValue(realSaleId,0);
+		}
+		double inflation = averagePrice/totalSales;
+		setInflation(inflation);
+		// calculate and set nominal GDP
+		double gdpGoodsComponent=0;
+		double pastInventories=0;
+		double publicServantsWages=0;
+		double nominalGDP=0;
+		for(int popId:gdpPopulationIds){
+			pop = macroPop.getPopulation(popId);
+			//Population pop = macroPop.getPopulation(i); GET RID OF THIS?
+			for(Agent j:pop.getAgents()){
+				MacroAgent agent=(MacroAgent) j;
+				for(int k=0; k<gdpGoodsIds.length;k++){
+					List<Item> items= agent.getItemsStockMatrix(true, gdpGoodsIds[k]);
+					for(Item item:items){
+						if(item.getAge()<gdpGoodsAges[k]){
+							gdpGoodsComponent+=item.getValue();
+						}
+						AbstractGood good = (AbstractGood)item;
+						if(good.getProducer().getAgentId()==agent.getAgentId()){
+							int passedValueId = goodPassedValueMap.get(good.getSMId());
+							pastInventories+=agent.getPassedValue(passedValueId, 1);
+						}
+					}
+				}					
+			}
+			gdpGoodsComponent-=pastInventories;
+			if(governmentPopulationId!=-1){
+				LaborDemander govt = (LaborDemander)macroPop.getPopulation(governmentPopulationId).getAgentList().get(0);
+				for(MacroAgent agent:govt.getEmployees()){
+					LaborSupplier publicServant = (LaborSupplier)agent;
+					publicServantsWages+=publicServant.getWage();
+				}
+				nominalGDP = gdpGoodsComponent+publicServantsWages;
+			}else
+				nominalGDP = gdpGoodsComponent;
+		}
+		setNominalGDP(nominalGDP);
+		// set expected natural rate depending on growth rate of output
+		// 
+		// TODO
+		//  add expected natural rate calculation here or in strategy? 
+		// set expected potential output
+		// TODO add expected potential output calculation here or do it in strategy?
 	}
 	
 	private void determineCBBondsPurchases() {
@@ -398,6 +511,46 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 
 	public void setTotalAdvancesSupply(double totalAdvancesSupply) {
 		this.totalAdvancesSupply = totalAdvancesSupply;
+	}
+
+	public int getQEAssetDemand() {
+		return QEAssetDemand;
+	}
+
+	public void setQEAssetDemand(int qEAssetDemand) {
+		this.QEAssetDemand = qEAssetDemand;
+	}
+
+	public double getExpectedNaturalRate() {
+		return expectedNaturalRate;
+	}
+
+	public void setExpectedNaturalRate(double expectedNaturalRate) {
+		this.expectedNaturalRate = expectedNaturalRate;
+	}
+
+	public double getExpectedPotentialGDP() {
+		return expectedPotentialGDP;
+	}
+
+	public void setExpectedPotentialGDP(double expectedPotentialGDP) {
+		this.expectedPotentialGDP = expectedPotentialGDP;
+	}
+
+	public double getNominalGDP() {
+		return nominalGDP;
+	}
+
+	public void setNominalGDP(double nominalGDP) {
+		this.nominalGDP = nominalGDP;
+	}
+
+	public double getInflation() {
+		return inflation;
+	}
+
+	public void setInflation(double inflation) {
+		this.inflation = inflation;
 	}
 
 	/**

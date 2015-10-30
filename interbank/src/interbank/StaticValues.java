@@ -268,6 +268,15 @@ public interface StaticValues {
 	public static int STRATEGY_MONETARY=28;
 	public static int STRATEGY_RESDEPOSITRATE=29;
 	public static int STRATEGY_ADVANCESSUPPLY=30;
+	public static int STRATEGY_QUANTITATIVEEASING=31;
+	public static int STRATEGY_MACROPRUDENTIAL=32;
+	public static int STRATEGY_NETSTABLEFUNDING=33;
+	public static int STRATEGY_LIQUIDITYCOVERAGE=34;
+	public static int STRATEGY_CAPITALBUFFER=35;
+	public static int STRATEGY_LEVERAGERATIO=36;
+	public static int STRATEGY_RESERVEREQUIREMENTS=37;
+	public static int STRATEGY_INCOMERATIO=38;
+	
 	
 	public static int CAPITALFIRMS_ID=0;
 	public static int CONSUMPTIONFIRMS_ID=1;

@@ -3,11 +3,24 @@
  */
 package interbank.strategies;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+
 import interbank.agents.Bank;
+import interbank.agents.CentralBank;
 import jmab.agents.AbstractBank;
+import jmab.agents.AbstractFirm;
 import jmab.agents.CreditSupplier;
+import jmab.agents.LaborDemander;
+import jmab.agents.LaborSupplier;
+import jmab.agents.MacroAgent;
+import jmab.agents.SimpleAbstractAgent;
+import jmab.goods.AbstractGood;
+import jmab.goods.Item;
 import jmab.population.MacroPopulation;
+import jmab.simulations.MacroSimulation;
 import net.sourceforge.jabm.EventScheduler;
+import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
@@ -24,6 +37,14 @@ public class MonetaryTaylor extends AbstractStrategy implements
 	private int inflationCoefficientId;
 	private int outputCoefficientId;
 	private double taylorInterestRate;
+	private int priceIndexProducerId;//This is the population id of agents that produce the goods entering in the CPI
+	private int realSaleId;//This is the id of the lagged value of real sales
+	private int priceGoodId;//This is the stock matrix if of the good entering in the CPI
+	private int[] gdpPopulationIds;//These are all the populations ids of agents that have either bought or produced goods entering in GDP
+	private int[] gdpGoodsIds;//These are all the stock matrix ids of goods that enter in GDP
+	private int[] gdpGoodsAges;//These are all age limit of goods that enter in GDP
+	private LinkedHashMap<Integer,Integer> goodPassedValueMap;
+	private int governmentPopulationId; // the id of the government
 	
 	public double getTaylorInterestRate() {
 		return this.taylorInterestRate;
@@ -42,22 +63,20 @@ public class MonetaryTaylor extends AbstractStrategy implements
 	 */
 	@Override
 	public double computeAdvancesRate() {
-		/*
-		// get from macrosimulation computer???:
-		// 1. inflation
-		// 2. output or RealGDP
-		agent= this.getAgent();
-		double inflation = agent.getAggregateValue(inflationAVID, 1);
-		double GDP = agent.getAggregateValue(gdpAVID, 1);
+		// 1. calculate inflation
+		double inflation = calculateInflation(null); //TODO what argument to add to incorporate the macro simulation?
+		// 2. calculate nominal GDP
+		double nominalGDP = calculateNominalGDP(null); // TODO argument? 
+		// 3. calculate real GDP 
+		double realGDP = nominalGDP / inflation;
+		CentralBank agent= (CentralBank) this.getAgent();
 		// get from central bank 
-		// 1. expectedNaturalRate
-		// 2. assumedPotentialOutput
-		double expectedAssumedInflation = agent.get;
-		double expectedGDP = agent.getExpectation(key);
-		// define the bank
-		AbstractBank bank = (AbstractBank) this.agent; 
-		// Compute the interest rate according to the taylor rule
-		double AdvancesRate = inflation + expectedAssumedInflation + () + ();
+		// 4. expectedNaturalRate
+		// 5. assumed potential output
+		double expectedNaturalRate = agent.getExpectedNaturalRate();
+		double expectedGDP = agent.getExpectedPotentialGDP();
+		// Compute the interest rate according to the taylor rule, TODO replace magic numbers by parameter 1, inflation target & parameter 2
+		double AdvancesRate = inflation + expectedNaturalRate + 0.2*(inflation - 2) + 0.4* (realGDP - expectedGDP);
 		
 		return AdvancesRate; // return the AdvancesRate
 		/*/
@@ -65,6 +84,68 @@ public class MonetaryTaylor extends AbstractStrategy implements
 		//*/
 	}
 	
+	/*
+	 * Helper function used to calculate inflation
+	 */
+	public double calculateInflation (MacroSimulation sim) {
+		MacroPopulation macroPop = (MacroPopulation) sim.getPopulation();
+		Population pop = macroPop.getPopulation(priceIndexProducerId);
+		double totalSales=0;
+		double averagePrice=0;
+		for (Agent a:pop.getAgents()){
+			AbstractFirm firm= (AbstractFirm) a;
+			totalSales+=firm.getPassedValue(realSaleId, 0);
+			AbstractGood good = (AbstractGood)firm.getItemStockMatrix(true, priceGoodId);
+			averagePrice+=good.getPrice()*firm.getPassedValue(realSaleId,0);
+		}
+		double inflation = averagePrice/totalSales;
+		return inflation;
+	}
+	
+	/*
+	 * Helper function defined to calculate nominal GDP 
+	 */
+	public double calculateNominalGDP(MacroSimulation sim) {
+		MacroPopulation macroPop = (MacroPopulation) sim.getPopulation();
+		Population pop = macroPop.getPopulation(priceIndexProducerId);
+		double gdpGoodsComponent=0;
+			double pastInventories=0;
+			double publicServantsWages=0;
+			double nominalGDP=0;
+			for(int popId:gdpPopulationIds){
+				pop = macroPop.getPopulation(popId);
+				//Population pop = macroPop.getPopulation(i); GET RID OF THIS?
+				for(Agent j:pop.getAgents()){
+					MacroAgent agent=(MacroAgent) j;
+					for(int k=0; k<gdpGoodsIds.length;k++){
+						List<Item> items= agent.getItemsStockMatrix(true, gdpGoodsIds[k]);
+						for(Item item:items){
+							if(item.getAge()<gdpGoodsAges[k]){
+								gdpGoodsComponent+=item.getValue();
+							}
+							AbstractGood good = (AbstractGood)item;
+							if(good.getProducer().getAgentId()==agent.getAgentId()){
+								int passedValueId = goodPassedValueMap.get(good.getSMId());
+								pastInventories+=agent.getPassedValue(passedValueId, 1);
+							}
+						}
+					}					
+				}
+				gdpGoodsComponent-=pastInventories;
+				if(governmentPopulationId!=-1){
+					LaborDemander govt = (LaborDemander)macroPop.getPopulation(governmentPopulationId).getAgentList().get(0);
+					for(MacroAgent agent:govt.getEmployees()){
+						LaborSupplier publicServant = (LaborSupplier)agent;
+						publicServantsWages+=publicServant.getWage();
+					}
+					nominalGDP = gdpGoodsComponent+publicServantsWages;
+				}else
+					nominalGDP = gdpGoodsComponent;
+			}
+			return nominalGDP;
+	}
+	
+			
 	
 	@Override
 	public byte[] getBytes() {
@@ -96,10 +177,6 @@ public class MonetaryTaylor extends AbstractStrategy implements
 	public void setInflationAVID(int inflationAVID) {
 		this.inflationAVID = inflationAVID;
 	}
-
-	/* (non-Javadoc)
-	 * @see interbank.strategies.MonetaryPolicyStrategy#computeAdvancesRate()
-	 */
 
 
 }
