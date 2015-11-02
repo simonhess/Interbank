@@ -41,8 +41,6 @@ import jmab.goods.Deposit;
 import jmab.goods.Item;
 import jmab.goods.Loan;
 import jmab.population.MacroPopulation;
-import jmab.simulations.MacroSimulation;
-import jmab.strategies.BondDemandStrategy;
 import jmab.strategies.InterestRateStrategy;
 import jmab.strategies.SupplyCreditStrategy;
 import net.sourceforge.jabm.Population;
@@ -278,7 +276,7 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	 */
 	private void determineReserveDepositInterestRate() {
 		InterestRateStrategy strategy = (InterestRateStrategy)this.getStrategy(StaticValues.STRATEGY_RESDEPOSITRATE);
-		this.reserveInterestRate=strategy.computeInterestRate(null, 0, 0);
+//		this.reserveInterestRate=strategy.computeInterestRate(null, 0, 0);
 		
 	}
 	/**
@@ -286,7 +284,7 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	 */
 	private void determineAdvancesInterestRate() {
 		InterestRateStrategy strategy = (InterestRateStrategy)this.getStrategy(StaticValues.STRATEGY_ADVANCES);
-		this.advancesInterestRate=strategy.computeInterestRate(null,0,1);
+		//	this.advancesInterestRate=strategy.computeInterestRate(null,0,1);
 		
 	}
 	/**

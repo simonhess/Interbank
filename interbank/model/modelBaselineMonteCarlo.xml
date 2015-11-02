@@ -4024,9 +4024,48 @@
 		class="jmab.strategies.MacroMultipleStrategy">
 		<property name="strategies">
 			<map>
+				<entry value-ref="advancesInterestRateStrategy">
+					<key>
+						<util:constant static-field="interbank.StaticValues.STRATEGY_ADVANCES" />
+					</key>
+				</entry>
+				<entry value-ref="reservesInterestRateStrategy">
+					<key>
+						<util:constant static-field="interbank.StaticValues.STRATEGY_RESDEPOSITRATE" />
+					</key>
+				</entry>
+				<entry value-ref="advancesSupplyStrategy">
+					<key>
+						<util:constant static-field="interbank.StaticValues.STRATEGY_ADVANCESSUPPLY" />
+					</key>
+				</entry>
 			</map>
 		</property>
 		<property name="scheduler" ref="simulationController" />
+	</bean>
+
+	<bean id="advancesInterestRateStrategy" scope="prototype"
+		parent="strategy" class="interbank.CopyOfAdaptiveInterestRateAverageThreshold">
+		<property name="distribution" ref="foldedNormal1" />
+		<property name="mktId">
+			<util:constant static-field="interbank.StaticValues.MKT_CREDIT" />
+		</property>
+		<property name="increase" value="false" />
+		<!-- <property name="adaptiveParameter" value="1"/> -->
+		<property name="adaptiveParameter" value="1" />
+		<property name="threshold" value="0.17995897" />
+	</bean>
+	
+	<bean id="reservesInterestRateStrategy" scope="prototype"
+		parent="strategy" class="interbank.CopyOfAdaptiveInterestRateAverageThreshold">
+		<property name="distribution" ref="foldedNormal1" />
+		<property name="mktId">
+			<util:constant static-field="interbank.StaticValues.MKT_CREDIT" />
+		</property>
+		<property name="increase" value="false" />
+		<!-- <property name="adaptiveParameter" value="1"/> -->
+		<property name="adaptiveParameter" value="1" />
+		<property name="threshold" value="0.17995897" />
 	</bean>
 
 	<bean id="foldedNormal1" class="jmab.distribution.FoldedNormalDistribution">
