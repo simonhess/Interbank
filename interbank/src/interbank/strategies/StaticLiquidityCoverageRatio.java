@@ -9,21 +9,23 @@ import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
 /**
- * @author joeri
- *
+ * @author joeri this class is used by central banks to 
+ * impose a fixed liquidity coverage ratio
  */
-public class StaticLeverageRatioRatio extends AbstractStrategy implements
+public class StaticLiquidityCoverageRatio extends AbstractStrategy implements
 		MacroPrudentialStrategy {
 
-	private double staticCapitalBufferTarget;
-	
-	/* (non-Javadoc)
-	 * @see interbank.strategies.MacroPrudentialStrategy#computePolicyTarget()
+	private double staticLiquidityCoverageTarget;
+	/* 
+	 * Compute the liquidity coverage ratio as a fixed target
 	 */
 	@Override
 	public double computePolicyTarget() {
-		return staticCapitalBufferTarget;
+		return staticLiquidityCoverageTarget;
 	}
+	
+	
+	
 	
 	/* (non-Javadoc)
 	 * @see jmab.strategies.SingleStrategy#getBytes()
@@ -42,5 +44,7 @@ public class StaticLeverageRatioRatio extends AbstractStrategy implements
 		// TODO Auto-generated method stub
 
 	}
+
+
 
 }
