@@ -12,6 +12,7 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
  * @author joeri
  *
  */
+@SuppressWarnings("serial")
 public class StaticLeverageRatioRatio extends AbstractStrategy implements
 		MacroPrudentialStrategy {
 
@@ -42,5 +43,21 @@ public class StaticLeverageRatioRatio extends AbstractStrategy implements
 		// TODO Auto-generated method stub
 
 	}
+
+	/**
+	 * @return the staticCapitalBufferTarget
+	 */
+	public double getStaticCapitalBufferTarget() {
+		return staticCapitalBufferTarget;
+	}
+
+	/**
+	 * @param staticCapitalBufferTarget the staticCapitalBufferTarget to set
+	 */
+	public void setStaticCapitalBufferTarget(double staticCapitalBufferTarget) {
+		this.staticCapitalBufferTarget = staticCapitalBufferTarget;
+	}
+	
+	
 
 }

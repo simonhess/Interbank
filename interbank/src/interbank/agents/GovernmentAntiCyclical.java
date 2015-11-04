@@ -116,7 +116,6 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 	protected void payInterests() {
 		List<Item> bonds=this.getItemsStockMatrix(false, StaticValues.SM_BONDS);
 		Item reserves=this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
-		List<Item> deposits = this.getItemsStockMatrix(true, StaticValues.SM_DEP);
 		double interestsBonds=0;
 		for(Item b:bonds){
 			Bond bond=(Bond)b;
@@ -162,7 +161,7 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 					// if payments on bonds are not fully made using deposits, use reserves
 					}if (paymentDue > 0) {
 						Item hDep = holder.getItemStockMatrix(true, StaticValues.SM_RESERVES);
-						((LiabilitySupplier) holder).transfer(reserves, hDep, paymentDue);
+						((LiabilitySupplier) hDep.getLiabilityHolder()).transfer(reserves, hDep, paymentDue);
 						paymentDue = 0;
 					}
 				}
@@ -200,7 +199,7 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 				for (Item dep:deposits) {
 					double value = dep.getValue();
 					// remove empty accounts from the list
-					if (value <= 0) deposits.remove(dep);
+					//	if (value <= 0) deposits.remove(dep);
 					if (unemploymentBenefit > 0) {
 						// if there is insufficient amount in the deposit account to pay the bill
 						if (value <= unemploymentBenefit) {
@@ -263,7 +262,7 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 		// if there are any wages to pay
 		if(employees.size()>0){
 			// Get wagebill 
-			double wageBillStep1 = this.getWageBill();
+			// double wageBillStep1 = this.getWageBill();						UNUSED!!
 			// get accounts to pay from, list of deposits + reserves
 			List<Item> deposits = this.getItemsStockMatrix(true, StaticValues.SM_DEP);
 			// pay the employees 
@@ -276,7 +275,7 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 				for (Item dep:deposits) {
 					double value = dep.getValue();
 					// remove empty accounts from the list
-					if (value <= 0) deposits.remove(dep);
+					//if (value <= 0) deposits.remove(dep);
 					if (wage > 0) {
 						// if there is insufficient amount in the deposit account to pay the bill
 						if (value <= wage) {

@@ -195,7 +195,7 @@
 
 <!-- loan Average interest Report -->
 <bean id="loanAvInterestComputer" class="jmab.report.AverageCreditInterestRateComputer">
-	<property name="populationId"><util:constant static-field="interbank.StaticValues.BANKS_ID" /></property>
+	<property name="banksId"><util:constant static-field="interbank.StaticValues.BANKS_ID" /></property>
 	<property name="stockId"><util:constant static-field="interbank.StaticValues.SM_LOAN" /></property>
 	<property name="demand" value="false"/>
 </bean>
@@ -4841,14 +4841,14 @@
 
 <!--NEW AVERAGE INTERBANK ASK RATE -->
 
-<bean id="microAverageInterBankAskRateComputer" class="jmab.report.MicroAverageCreditInterestRateComputer">
-	<property name="populationId">
+
+<bean id="microAverageInterBankAskRateComputer" class="jmab.report.MicroBankSpecificInterest">
+	<property name="banksId">
 	        <util:constant static-field="interbank.StaticValues.BANKS_ID"/>
 	</property>
-	<property name="stockId">
-	        <util:constant static-field="interbank.StaticValues.SM_INTERBANK"/>
+	<property name="mktId">
+	        <util:constant static-field="interbank.StaticValues.MKT_INTERBANK"/>
 	</property>
-	<property name="demand" value="false"/>
 </bean>
 
 <bean id="microAverageInterBankAskRateEventReport" class="jmab.report.MicroSimEventReport">

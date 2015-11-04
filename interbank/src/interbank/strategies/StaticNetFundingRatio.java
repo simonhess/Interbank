@@ -4,14 +4,13 @@
 package interbank.strategies;
 
 import jmab.population.MacroPopulation;
-import net.sourceforge.jabm.EventScheduler;
-import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
 /**
  * @author joeri
  *
  */
+@SuppressWarnings("serial")
 public class StaticNetFundingRatio extends AbstractStrategy implements
 		MacroPrudentialStrategy {
 
@@ -41,6 +40,20 @@ public class StaticNetFundingRatio extends AbstractStrategy implements
 	public void populateFromBytes(byte[] content, MacroPopulation pop) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @return the staticNetFundingRatio
+	 */
+	public double getStaticNetFundingRatio() {
+		return staticNetFundingRatio;
+	}
+
+	/**
+	 * @param staticNetFundingRatio the staticNetFundingRatio to set
+	 */
+	public void setStaticNetFundingRatio(double staticNetFundingRatio) {
+		this.staticNetFundingRatio = staticNetFundingRatio;
 	}
 
 

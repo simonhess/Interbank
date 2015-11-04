@@ -12,6 +12,7 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
  * @author Joeri Schasfoort this class lets the central bank set a 
  * static capital buffer.
  */
+@SuppressWarnings("serial")
 public class StaticCapitalBufferTarget extends AbstractStrategy implements
 		MacroPrudentialStrategy {
 
@@ -64,6 +65,20 @@ public class StaticCapitalBufferTarget extends AbstractStrategy implements
 	public void populateFromBytes(byte[] content, MacroPopulation pop) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @return the staticCapitalBufferTarget
+	 */
+	public double getStaticCapitalBufferTarget() {
+		return staticCapitalBufferTarget;
+	}
+
+	/**
+	 * @param staticCapitalBufferTarget the staticCapitalBufferTarget to set
+	 */
+	public void setStaticCapitalBufferTarget(double staticCapitalBufferTarget) {
+		this.staticCapitalBufferTarget = staticCapitalBufferTarget;
 	}
 
 

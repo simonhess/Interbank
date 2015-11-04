@@ -3,23 +3,19 @@
  */
 package interbank.strategies;
 
+import interbank.agents.CentralBank;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import interbank.agents.Bank;
-import interbank.agents.CentralBank;
-import jmab.agents.AbstractBank;
 import jmab.agents.AbstractFirm;
-import jmab.agents.CreditSupplier;
 import jmab.agents.LaborDemander;
 import jmab.agents.LaborSupplier;
 import jmab.agents.MacroAgent;
-import jmab.agents.SimpleAbstractAgent;
 import jmab.goods.AbstractGood;
 import jmab.goods.Item;
 import jmab.population.MacroPopulation;
 import jmab.simulations.MacroSimulation;
-import net.sourceforge.jabm.EventScheduler;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
@@ -29,13 +25,14 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
  * This strategy lets the central bank set its advances interest rate
  * adaptively using a Taylor rule 
  */
+@SuppressWarnings("serial")
 public class MonetaryTaylor extends AbstractStrategy implements
 		MonetaryPolicyStrategy {
 	
 	private int gdpAVID;
 	private int inflationAVID;
-	private int inflationCoefficientId;
-	private int outputCoefficientId;
+	//private int inflationCoefficientId;
+	//private int outputCoefficientId;
 	private double taylorInterestRate;
 	private int priceIndexProducerId;//This is the population id of agents that produce the goods entering in the CPI
 	private int realSaleId;//This is the id of the lagged value of real sales
@@ -59,7 +56,7 @@ public class MonetaryTaylor extends AbstractStrategy implements
 	 * advancesInterestRate = 
 	 * inflation + expectedNaturalRate  
 	 * + inflationCoefficient * (inflation - desiredInflation) 
-	 * + outputCoefficient * (Math.log(Output) – Math.log(PotentialOutput))
+	 * + outputCoefficient * (Math.log(Output) ï¿½ Math.log(PotentialOutput))
 	 */
 	@Override
 	public double computeAdvancesRate() {

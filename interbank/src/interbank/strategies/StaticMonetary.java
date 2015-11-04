@@ -1,14 +1,13 @@
 package interbank.strategies;
 
 import jmab.population.MacroPopulation;
-import net.sourceforge.jabm.EventScheduler;
-import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
 /**
  * @author Joeri Schasfoort
  * This class lets the central bank set a fixed interest rate
  */
+@SuppressWarnings("serial")
 public class StaticMonetary extends AbstractStrategy implements
 		MonetaryPolicyStrategy {
 	
