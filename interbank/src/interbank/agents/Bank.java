@@ -131,8 +131,10 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 			taxes=0;
 		}
 		this.addValue(StaticValues.LAG_TAXES, taxes);
-		Item res = this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
-		res.setValue(res.getValue()-taxes);
+		//ANTOINE REMOVED THIS BECAUSE OTHERWISE BANKS PAY TWICE THEIR TAXES: DECREASE OF THEIR RESERVES AND ICREASE IN THEIR LIABILITIES
+		//BEFORE IT WAS OK SINCE THEY PAID INTO AN RESERVE ACCOUNT OF THE GOVT HELD AT THE CB
+		//Item res = this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
+		//res.setValue(res.getValue()-taxes);
 		account.setValue(account.getValue()+taxes);
 	}
 
@@ -1042,7 +1044,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 
 	// additional getters and setters interbank
 
-	//General question…. Why sometimes return this.variable and other times variable??
+	//General questionï¿½. Why sometimes return this.variable and other times variable??
 	public double getTotInterestsInterbank() {
 		return totInterestsInterbank;
 	}

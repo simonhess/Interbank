@@ -256,9 +256,14 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 			for(Agent a:pop.getAgents()){
 				TaxPayer agent=(TaxPayer) a;
 				if(!agent.isDead()){
-					Bank depositHolder = (Bank)agent.getItemStockMatrix(true, StaticValues.SM_DEP).getLiabilityHolder();
-					Item account = this.getItemStockMatrix(true, StaticValues.SM_DEP, depositHolder);
-					agent.payTaxes(account);
+					if(agent instanceof Bank){
+						Item account = this.getItemStockMatrix(true, StaticValues.SM_DEP, agent);
+						agent.payTaxes(account);
+					}else{
+						Bank depositHolder = (Bank)agent.getItemStockMatrix(true, StaticValues.SM_DEP).getLiabilityHolder();
+						Item account = this.getItemStockMatrix(true, StaticValues.SM_DEP, depositHolder);
+						agent.payTaxes(account);
+					}
 				}
 			}
 		}

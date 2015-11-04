@@ -16,7 +16,9 @@ package interbank.agents;
 
 import interbank.StaticValues;
 import interbank.strategies.MacroPrudentialStrategy;
+import interbank.strategies.MonetaryPolicyStrategy;
 import interbank.strategies.QEStrategy;
+import interbank.strategies.ReservesRateStrategy;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,7 +43,6 @@ import jmab.goods.Deposit;
 import jmab.goods.Item;
 import jmab.goods.Loan;
 import jmab.population.MacroPopulation;
-import jmab.strategies.InterestRateStrategy;
 import jmab.strategies.SupplyCreditStrategy;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.SimulationController;
@@ -60,7 +61,7 @@ import net.sourceforge.jabm.event.RoundFinishedEvent;
 @SuppressWarnings("serial")
 public class CentralBank extends AbstractBank implements CreditSupplier, DepositSupplier, BondDemander {
 
-	private static final boolean QEActive = false;
+	private boolean QEActive = false;
 	private double advancesInterestRate;
 	private double reserveInterestRate;
 	private int bondDemand;
@@ -70,7 +71,7 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	protected double totInterestsReserves;
 	// new monetary policy variables
 	private double totalAdvancesSupply;
-	private BondSupplier selectedAssetSupplier;
+	//private BondSupplier selectedAssetSupplier;
 	private int QEAssetDemand;
 	protected double expectedNaturalRate;
 	protected double expectedPotentialGDP;
@@ -259,6 +260,7 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	 * to banks in need of liquidity. 
 	 */
 	private void determineAdvancesSupply() {
+		/*
 		SupplyCreditStrategy strategy=(SupplyCreditStrategy)this.getStrategy(StaticValues.STRATEGY_ADVANCESSUPPLY);
 		// compute the supply of advances according to advances strategy
 		double AdvancesSupply = strategy.computeCreditSupply();
@@ -268,23 +270,24 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 		if (this.getTotalAdvancesSupply()>0){
 			this.setActive(true, StaticValues.MKT_ADVANCES);
 			this.addToMarketPopulation(StaticValues.SM_ADVANCES, false);
-		}	
+		}
+		*/	
 		
 	}
 	/**
 	 * This methods lets the central bank update the interest rate it pays to reserve holders
 	 */
 	private void determineReserveDepositInterestRate() {
-		InterestRateStrategy strategy = (InterestRateStrategy)this.getStrategy(StaticValues.STRATEGY_RESDEPOSITRATE);
-//		this.reserveInterestRate=strategy.computeInterestRate(null, 0, 0);
+		ReservesRateStrategy strategy = (ReservesRateStrategy)this.getStrategy(StaticValues.STRATEGY_RESDEPOSITRATE);
+		this.reserveInterestRate=strategy.computeReservesRate();
 		
 	}
 	/**
 	 * This method lets the central bank update the interest it charges on advances using strategy advances
 	 */
 	private void determineAdvancesInterestRate() {
-		InterestRateStrategy strategy = (InterestRateStrategy)this.getStrategy(StaticValues.STRATEGY_ADVANCES);
-		//	this.advancesInterestRate=strategy.computeInterestRate(null,0,1);
+		MonetaryPolicyStrategy strategy = (MonetaryPolicyStrategy)this.getStrategy(StaticValues.STRATEGY_ADVANCES);
+		this.advancesInterestRate=strategy.computeAdvancesRate();
 		
 	}
 	/**

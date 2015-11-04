@@ -4039,35 +4039,105 @@
 						<util:constant static-field="interbank.StaticValues.STRATEGY_ADVANCESSUPPLY" />
 					</key>
 				</entry>
+				<entry value-ref="QEStrategy">
+					<key>
+						<util:constant static-field="interbank.StaticValues.STRATEGY_QUANTITATIVEEASING" />
+					</key>
+				</entry>
+				<entry value-ref="incomeRatioStrategy">
+					<key>
+						<util:constant static-field="interbank.StaticValues.STRATEGY_INCOMERATIO" />
+					</key>
+				</entry>
+				<entry value-ref="reserveRequirementStrategy">
+					<key>
+						<util:constant static-field="interbank.StaticValues.STRATEGY_RESERVEREQUIREMENTS" />
+					</key>
+				</entry>
+				<entry value-ref="leverageRatioStrategy">
+					<key>
+						<util:constant static-field="interbank.StaticValues.STRATEGY_LEVERAGERATIO" />
+					</key>
+				</entry>
+				<entry value-ref="capitalBufferStrategy">
+					<key>
+						<util:constant static-field="interbank.StaticValues.STRATEGY_CAPITALBUFFER" />
+					</key>
+				</entry>
+				<entry value-ref="liquidityCoverageStrategy">
+					<key>
+						<util:constant static-field="interbank.StaticValues.STRATEGY_LIQUIDITYCOVERAGE " />
+					</key>
+				</entry>
+				<entry value-ref="netStableFundingStrategy">
+					<key>
+						<util:constant static-field="interbank.StaticValues.STRATEGY_NETSTABLEFUNDING" />
+					</key>
+				</entry>
 			</map>
 		</property>
 		<property name="scheduler" ref="simulationController" />
 	</bean>
 
 	<bean id="advancesInterestRateStrategy" scope="prototype"
-		parent="strategy" class="interbank.CopyOfAdaptiveInterestRateAverageThreshold">
-		<property name="distribution" ref="foldedNormal1" />
-		<property name="mktId">
-			<util:constant static-field="interbank.StaticValues.MKT_CREDIT" />
-		</property>
-		<property name="increase" value="false" />
-		<!-- <property name="adaptiveParameter" value="1"/> -->
-		<property name="adaptiveParameter" value="1" />
-		<property name="threshold" value="0.17995897" />
+		parent="strategy" class="interbank.strategies.StaticMonetary">
+		<property name="staticInterestRate" value="0.05" />
 	</bean>
 	
 	<bean id="reservesInterestRateStrategy" scope="prototype"
-		parent="strategy" class="interbank.CopyOfAdaptiveInterestRateAverageThreshold">
-		<property name="distribution" ref="foldedNormal1" />
-		<property name="mktId">
-			<util:constant static-field="interbank.StaticValues.MKT_CREDIT" />
+		parent="strategy" class="interbank.strategies.ReservesStatic">
+		<property name="staticReservesRate" value="0.01" />
+	</bean>
+	
+	<!-- TODO -->
+	<bean id="advancesSupplyStrategy" scope="prototype"
+		parent="strategy" class="interbank.strategies.ReservesStatic">
+		<property name="staticReservesRate" value="0.01" />
+	</bean>
+	
+	<bean id="QEStrategy" scope="prototype"
+		parent="strategy" class="interbank.strategies.QEFromRandom">
+		<property name="bondId">
+			<util:constant static-field="interbank.StaticValues.SM_BONDS" />
 		</property>
-		<property name="increase" value="false" />
-		<!-- <property name="adaptiveParameter" value="1"/> -->
-		<property name="adaptiveParameter" value="1" />
-		<property name="threshold" value="0.17995897" />
+		<property name="assetDemand" value="0" />
+		<property name="bankPopId">
+			<util:constant static-field="interbank.StaticValues.BANKS_ID" />
+		</property>
+		<property name="reserveId">
+			<util:constant static-field="interbank.StaticValues.SM_RESERVES" />
+		</property>
 	</bean>
 
+	<bean id="incomeRatioStrategy" scope="prototype"
+		parent="strategy" class="interbank.strategies.StaticDebtToIncomeRatio">
+	</bean>
+
+	<bean id="reserveRequirementStrategy" scope="prototype"
+		parent="strategy" class="interbank.strategies.StaticReserveRequirements">
+		<property name="staticReserveRequirements" value="0.08" />
+	</bean>
+	
+	<bean id="leverageRatioStrategy" scope="prototype"
+		parent="strategy" class="interbank.strategies.StaticLeverageRatioRatio">
+		<property name="staticCapitalBufferTarget" value="0.1" />
+	</bean>
+
+	<bean id="capitalBufferStrategy" scope="prototype"
+		parent="strategy" class="interbank.strategies.StaticCapitalBufferTarget">
+		<property name="staticCapitalBufferTarget" value="0.1" />
+	</bean>
+	
+	<bean id="liquidityCoverageStrategy" scope="prototype"
+		parent="strategy" class="interbank.strategies.StaticCapitalBufferTarget">
+		<property name="staticCapitalBufferTarget" value="0.1" />
+	</bean>
+
+	<bean id="netStableFundingStrategy" scope="prototype"
+		parent="strategy" class="interbank.strategies.StaticNetFundingRatio">
+		<property name="staticNetFundingRatio" value="0.1" />
+	</bean>
+	
 	<bean id="foldedNormal1" class="jmab.distribution.FoldedNormalDistribution">
 		<property name="mean" value="0.0" />
 		<property name="stdev" value="0.0094" />

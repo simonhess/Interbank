@@ -3,31 +3,31 @@
  */
 package interbank.strategies;
 
-import java.util.List;
-
 import interbank.StaticValues;
 import interbank.agents.Bank;
 import interbank.agents.CentralBank;
+
+import java.util.List;
+
 import jmab.agents.BondSupplier;
 import jmab.goods.Item;
 import jmab.population.MacroPopulation;
-import net.sourceforge.jabm.EventScheduler;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.SimulationController;
-import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
-
-import java.util.Random;
 
 /**
  * @author joeri Schasfoort
  * This strategy lets the 
  */
+@SuppressWarnings("serial")
 public class QEFromRandom extends AbstractStrategy implements
 		QEStrategy {
 
 	private int bondId;
 	private int assetDemand;
+	private int bankPopId;
+	private int reserveId;
 	
 	
 	/* 
@@ -57,7 +57,7 @@ public class QEFromRandom extends AbstractStrategy implements
 		// determine the total amount of spending available
 		int assetDemand = centralBank.getQEAssetDemand();
 		// get the broader population of banks
-		Population banks = ((MacroPopulation)((SimulationController)this.scheduler).getPopulation()).getPopulation(StaticValues.BANKS_ID);
+		Population banks = ((MacroPopulation)((SimulationController)this.scheduler).getPopulation()).getPopulation(bankPopId);
 		// loop over the banks list and start buying bonds from these banks 1 at a time till demand is empty or there are no bonds left to buy
 		while (assetDemand > 0) {
 			// pick a random bank
@@ -68,12 +68,12 @@ public class QEFromRandom extends AbstractStrategy implements
 				// get a random bond
 				Item buyableBond = bonds.get((int) (Math.random() * bonds.size()));
 				// transaction increase bonds and decrease bonds seller bank
-				centralBank.addItemStockMatrix(buyableBond, true, StaticValues.SM_BONDS);
-				seller.removeItemStockMatrix(buyableBond, true, StaticValues.SM_BONDS);
+				centralBank.addItemStockMatrix(buyableBond, true, bondId);
+				seller.removeItemStockMatrix(buyableBond, true, bondId);
 				// set bond asset holder central bank
 				buyableBond.setAssetHolder(centralBank);
 				// increase the selling bank reserves at the central bank
-				Item sellerRes= (Item) seller.getItemStockMatrix(true, StaticValues.SM_RESERVES);
+				Item sellerRes= (Item) seller.getItemStockMatrix(true, reserveId);
 				sellerRes.setValue(sellerRes.getValue()+ buyableBond.getValue());
 			}
 		}
@@ -95,6 +95,62 @@ public class QEFromRandom extends AbstractStrategy implements
 	public void populateFromBytes(byte[] content, MacroPopulation pop) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @return the bondId
+	 */
+	public int getBondId() {
+		return bondId;
+	}
+
+	/**
+	 * @param bondId the bondId to set
+	 */
+	public void setBondId(int bondId) {
+		this.bondId = bondId;
+	}
+
+	/**
+	 * @return the assetDemand
+	 */
+	public int getAssetDemand() {
+		return assetDemand;
+	}
+
+	/**
+	 * @param assetDemand the assetDemand to set
+	 */
+	public void setAssetDemand(int assetDemand) {
+		this.assetDemand = assetDemand;
+	}
+
+	/**
+	 * @return the bankPopId
+	 */
+	public int getBankPopId() {
+		return bankPopId;
+	}
+
+	/**
+	 * @param bankPopId the bankPopId to set
+	 */
+	public void setBankPopId(int bankPopId) {
+		this.bankPopId = bankPopId;
+	}
+
+	/**
+	 * @return the reserveId
+	 */
+	public int getReserveId() {
+		return reserveId;
+	}
+
+	/**
+	 * @param reserveId the reserveId to set
+	 */
+	public void setReserveId(int reserveId) {
+		this.reserveId = reserveId;
 	}
 
 
