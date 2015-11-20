@@ -15,13 +15,14 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
 public class StaticDebtToIncomeRatio extends AbstractStrategy implements
 		MacroPrudentialStrategy {
 
+	private double DebtToIncomeRatioTarget;
+	
 	/* (non-Javadoc)
 	 * @see interbank.strategies.MacroPrudentialStrategy#computePolicyTarget()
 	 */
 	@Override
 	public double computePolicyTarget() {
-		// TODO Auto-generated method stub
-		return 0;
+		return DebtToIncomeRatioTarget;
 	}
 	
 	/**
@@ -64,6 +65,14 @@ public class StaticDebtToIncomeRatio extends AbstractStrategy implements
 	public void populateFromBytes(byte[] content, MacroPopulation pop) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public double getDebtToIncomeRatioTarget() {
+		return DebtToIncomeRatioTarget;
+	}
+
+	public void setDebtToIncomeRatioTarget(double debtToIncomeRatioTarget) {
+		DebtToIncomeRatioTarget = debtToIncomeRatioTarget;
 	}
 
 
