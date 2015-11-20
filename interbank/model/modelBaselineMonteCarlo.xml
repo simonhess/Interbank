@@ -33,9 +33,9 @@
 				<ref bean="laborMarket" />
 				<ref bean="depositMarket" />
 				<ref bean="bondMarket" />
-				<ref bean="interbankMarket" />
 				<ref bean="reservesMarketBonds" />
-				<ref bean="reservesMarketBasel" />
+				<ref bean="interbankMarket" />
+				<!--<ref bean="reservesMarketBasel" />-->
 			</list>
 		</property>
 		<property name="events">
@@ -819,7 +819,7 @@
 			<util:constant static-field="interbank.StaticValues.TIC_INTERBANKDEMANDSUPPLY" />
 		</property>
 	</bean>
-	<bean id="interbankMarketTic" class="jmab.events.MacroTicEvent">
+	<bean id="interbankMarketTic" class="jmab.events.MarketTicEvent">
 		<property name="tic">
 			<util:constant static-field="interbank.StaticValues.TIC_INTERBANKMARKET" />
 		</property>
@@ -3375,6 +3375,11 @@
 						<util:constant static-field="interbank.StaticValues.STRATEGY_ILLIQUIDITY" />
 					</key>
 				</entry>
+				<entry value-ref="banksBorrowingStrategy">
+					<key>
+						<util:constant static-field="interbank.StaticValues.STRATEGY_BORROWING" />
+					</key>
+				</entry>
 			</map>
 		</property>
 		<property name="scheduler" ref="simulationController" />
@@ -3384,6 +3389,10 @@
 		of banks <bean id="banksAgentSpecificLoanInterestStrategy" scope="prototype" 
 		parent="strategy" class="interbank.strategies.FirmInterestRateStrategy"> 
 		<property name="riskPremium" value="1"></property> </bean> -->
+
+	<bean id="banksBorrowingStrategy" scope="prototype" parent="strategy"
+		class="jmab.strategies.CheapestLender">
+	</bean>
 
 	<bean id="banksBankSpecificLoanInterestStrategy" scope="prototype"
 		parent="strategy" class="interbank.CopyOfAdaptiveInterestRateAverageThreshold">
@@ -3411,7 +3420,7 @@
 	<!-- BLR RESERVE REQUIREMENT -->
 	<bean id="banksAdvancesStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.BaselIIIReserveRequirementsBLR">
-		<property name="liquidityRatio" value="0.08"></property>
+		<property name="liquidityRatio" value="0.258026342"></property>
 		<property name="reserveIds">
 			<list>
 				<util:constant static-field="interbank.StaticValues.SM_CASH" />
@@ -3557,7 +3566,7 @@
 	<bean id="banksInterbankSupplyStrategy" scope="prototype" parent="strategy"
 		class="interbank.strategies.InterbankSupplyCreditBaselIII">
 		<property name="targetedCapitalAdequacyRatio" value="0.06"></property>
-		<property name="interbankLoanWeight" value="0"></property>
+		<property name="interbankLoanWeight" value="0.2"></property>
 		<property name="capitalIds">
 			<list>
 			</list>
@@ -3851,7 +3860,7 @@
 			<util:constant static-field="interbank.StaticValues.GOVERNMENT_ID" />
 		</property>
 		<!-- From Government -->
-		<property name="bondMaturity" value="1" />
+		<property name="bondMaturity" value="4" />
 		<property name="bondInterestRate" value="0.0025" />
 		<property name="bondPrice" value="1.0" />
 		<property name="fixedLaborDemand" value="1360" />

@@ -131,10 +131,6 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 			taxes=0;
 		}
 		this.addValue(StaticValues.LAG_TAXES, taxes);
-		//ANTOINE REMOVED THIS BECAUSE OTHERWISE BANKS PAY TWICE THEIR TAXES: DECREASE OF THEIR RESERVES AND ICREASE IN THEIR LIABILITIES
-		//BEFORE IT WAS OK SINCE THEY PAID INTO AN RESERVE ACCOUNT OF THE GOVT HELD AT THE CB
-		//Item res = this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
-		//res.setValue(res.getValue()-taxes);
 		account.setValue(account.getValue()+taxes);
 	}
 
@@ -155,9 +151,15 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 	 */
 	@Override
 	public double getLoanSupply(int loansId, MacroAgent creditDemander, double required) {
-		SpecificCreditSupplyStrategy strategy=(SpecificCreditSupplyStrategy) this.getStrategy(StaticValues.STRATEGY_SPECIFICCREDITSUPPLY);
-		double specificLoanSupply=strategy.computeSpecificSupply(creditDemander, required);
-		return specificLoanSupply;
+		switch(loansId){
+		case StaticValues.SM_LOAN:
+			SpecificCreditSupplyStrategy strategy=(SpecificCreditSupplyStrategy) this.getStrategy(StaticValues.STRATEGY_SPECIFICCREDITSUPPLY);
+			double specificLoanSupply=strategy.computeSpecificSupply(creditDemander, required);
+			return specificLoanSupply;
+		case StaticValues.SM_INTERBANK:
+			return this.interbankSupply;
+		}
+		return 0;
 	}
 
 	/* (non-Javadoc)
@@ -329,7 +331,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 		this.interbankDemand=strategy.computeCreditDemand(0);//see BaselIIReserveRequirements strategy
 		if(this.interbankDemand>0){ // but where to define demander/supplier!? 
 			this.setActive(true, StaticValues.MKT_INTERBANK);
-			this.addToMarketPopulation(StaticValues.SM_INTERBANK, true);
+			this.addToMarketPopulation(StaticValues.MKT_INTERBANK, true);
 		}
 	}
 	// New interbank supply function
@@ -344,7 +346,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 		this.addValue(StaticValues.LAG_TOTINTERBANKSUPPLY, InterbankSupply);
 		if (this.getInterbankSupply()>0){
 			this.setActive(true, StaticValues.MKT_INTERBANK);
-			this.addToMarketPopulation(StaticValues.SM_INTERBANK, false);
+			this.addToMarketPopulation(StaticValues.MKT_INTERBANK, false);
 		}	
 	}
 	// getter and setter for determineInterbankSupply
@@ -653,8 +655,10 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 		switch(idLoanSM){
 		case StaticValues.SM_ADVANCES:
 			this.advancesDemand=d;
+			break;
 		case StaticValues.SM_INTERBANK:
 			this.interbankDemand=d;
+			break;
 		}
 	}
 
@@ -663,7 +667,13 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 	 */
 	@Override
 	public double getTotalLoansSupply(int loansId) {
-		return this.totalLoanSupply;
+		switch(loansId){
+		case StaticValues.SM_LOAN:
+			return this.totalLoanSupply;
+		case StaticValues.SM_INTERBANK:
+			return this.interbankSupply;
+		}
+		return 0;
 	}
 
 	/* (non-Javadoc)
@@ -671,7 +681,14 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 	 */
 	@Override
 	public void setTotalLoansSupply(int loansId, double d) {
-		this.totalLoanSupply=d;
+		switch(loansId){
+		case StaticValues.SM_LOAN:
+			this.totalLoanSupply=d;
+			break;
+		case StaticValues.SM_INTERBANK:
+			this.interbankSupply=d;
+			break;
+		}
 	}
 
 	/* (non-Javadoc)
