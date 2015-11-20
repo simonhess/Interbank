@@ -57,7 +57,7 @@ public class Interbankcreditmechanism extends AbstractCreditMechanism implements
 			creditSupplier.setTotalLoansSupply(this.idLoansSM,(creditSupplier.getTotalLoansSupply(this.idLoansSM)-amount));
 			if (creditSupplier.getTotalLoansSupply(this.idLoansSM)==0){
 				creditSupplier.setActive(false, idMarket);
-			} //TODO
+			} 
 		}
 	}
 	
