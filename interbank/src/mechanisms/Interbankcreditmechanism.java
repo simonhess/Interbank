@@ -3,12 +3,16 @@
  */
 package mechanisms;
 
+import interbank.StaticValues;
+
 import java.util.List;
 
 import jmab.agents.CreditDemander;
 import jmab.agents.CreditSupplier;
+import jmab.agents.LiabilitySupplier;
 import jmab.agents.MacroAgent;
 import jmab.goods.Deposit;
+import jmab.goods.Item;
 import jmab.goods.Loan;
 import jmab.mechanisms.AbstractCreditMechanism;
 import jmab.mechanisms.Mechanism;
@@ -47,8 +51,10 @@ public class Interbankcreditmechanism extends AbstractCreditMechanism implements
 			// does this add an interbank loan as well? 
 			creditSupplier.addItemStockMatrix(loan, true, this.idLoansSM);
 			creditDemander.addItemStockMatrix(loan, false, this.idLoansSM);
-			// TODO instead transfer reserves
-			Reserve reserve = 
+			// let the central bank do a transfer of reserves use transfer function
+			Item supplierReserves=creditSupplier.getItemStockMatrix(true, StaticValues.SM_RESERVES);
+			Item DemanderReserves = creditDemander.getItemStockMatrix(true, StaticValues.SM_RESERVES);
+			((LiabilitySupplier) supplierReserves.getLiabilityHolder()).transfer(supplierReserves, DemanderReserves, amount);
 			// remove players from the market if their needs are satisfied
 			creditDemander.setLoanRequirement(this.idLoansSM,required-amount);
 			if(Math.min(required, amount)==required){
