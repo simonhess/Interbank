@@ -3223,6 +3223,8 @@
 		<property name="advancesInterestRate" value="0.005" />
 		<property name="bondInterestRate" value="0.0025" />
 		<property name="depositInterestRate" value="0.0025" />
+		<property name="targetedLiquidityRatio" value="0.258026342"></property>
+		<property name="targetedCapitalAdequacyRatio" value="0.06"></property>
 	</bean>
 
 	<bean id="expDeposits" class="jmab.expectations.SimpleAdaptiveExpectation"
@@ -3395,7 +3397,7 @@
 	</bean>
 
 	<bean id="banksBankSpecificLoanInterestStrategy" scope="prototype"
-		parent="strategy" class="interbank.CopyOfAdaptiveInterestRateAverageThreshold">
+		parent="strategy" class="	">
 		<property name="distribution" ref="foldedNormal1" />
 		<property name="mktId">
 			<util:constant static-field="interbank.StaticValues.MKT_CREDIT" />
@@ -3403,7 +3405,6 @@
 		<property name="increase" value="false" />
 		<!-- <property name="adaptiveParameter" value="1"/> -->
 		<property name="adaptiveParameter" value="1" />
-		<property name="threshold" value="0.17995897" />
 	</bean>
 
 	<!-- CAR RESERVE REQUIREMENT <bean id="banksAdvancesStrategy" scope="prototype" 
@@ -3420,7 +3421,6 @@
 	<!-- BLR RESERVE REQUIREMENT -->
 	<bean id="banksAdvancesStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.BaselIIIReserveRequirementsBLR">
-		<property name="liquidityRatio" value="0.258026342"></property>
 		<property name="reserveIds">
 			<list>
 				<util:constant static-field="interbank.StaticValues.SM_CASH" />
@@ -3446,7 +3446,6 @@
 
 	<bean id="banksBondStrategy" scope="prototype" parent="strategy"
 		class="interbank.strategies.BondDemandStrategyReserves">
-		<property name="liquidityRatio" value="0.258026342" />
 	</bean>
 
 	<bean id="banksDepInterestStrategy" scope="prototype" parent="strategy"
@@ -3458,7 +3457,6 @@
 		<property name="increase" value="false" />
 		<!-- <property name="adaptiveParameter" value="1"/> -->
 		<property name="adaptiveParameter" value="1" />
-		<property name="threshold" value="0.258026342" />
 	</bean>
 
 	<!-- Old credit supply with CAR <bean id="banksTotalCreditSupplyStrategy" 
@@ -3565,7 +3563,6 @@
 
 	<bean id="banksInterbankSupplyStrategy" scope="prototype" parent="strategy"
 		class="interbank.strategies.InterbankSupplyCreditBaselIII">
-		<property name="targetedCapitalAdequacyRatio" value="0.06"></property>
 		<property name="interbankLoanWeight" value="0.2"></property>
 		<property name="capitalIds">
 			<list>

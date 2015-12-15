@@ -35,7 +35,6 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
 public class CopyOfAdaptiveInterestRateAverageThreshold extends AbstractStrategy implements
 		InterestRateStrategy {
 
-	private double threshold; //to be set through the configuration file.
 	private double adaptiveParameter;
 	private AbstractDelegatedDistribution distribution; 
 	private boolean increase;
@@ -48,6 +47,7 @@ public class CopyOfAdaptiveInterestRateAverageThreshold extends AbstractStrategy
 	@Override
 	public double computeInterestRate(MacroAgent creditDemander, double amount,
 			int length) {
+		double threshold=0;
 		SimulationController controller = (SimulationController)this.getScheduler();
 		MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
 		Population banks = macroPop.getPopulation(StaticValues.BANKS_ID);
@@ -101,21 +101,6 @@ public class CopyOfAdaptiveInterestRateAverageThreshold extends AbstractStrategy
 				iR=avInterest+(adaptiveParameter*avInterest*distribution.nextDouble());
 		}
 		return Math.min(Math.max(iR, lender.getInterestRateLowerBound(mktId)),lender.getInterestRateUpperBound(mktId));
-	}
-
-
-	/**
-	 * @return the threshold
-	 */
-	public double getThreshold() {
-		return threshold;
-	}
-
-	/**
-	 * @param threshold the threshold to set
-	 */
-	public void setThreshold(double threshold) {
-		this.threshold = threshold;
 	}
 
 	/**
@@ -183,8 +168,7 @@ public class CopyOfAdaptiveInterestRateAverageThreshold extends AbstractStrategy
 	 */
 	@Override
 	public byte[] getBytes() {
-		ByteBuffer buf = ByteBuffer.allocate(29);
-		buf.putDouble(threshold);
+		ByteBuffer buf = ByteBuffer.allocate(21);
 		buf.putDouble(adaptiveParameter);
 		buf.putDouble(this.avInterest);
 		buf.putInt(mktId);
@@ -205,7 +189,6 @@ public class CopyOfAdaptiveInterestRateAverageThreshold extends AbstractStrategy
 	@Override
 	public void populateFromBytes(byte[] content, MacroPopulation pop) {
 		ByteBuffer buf = ByteBuffer.wrap(content);
-		this.threshold = buf.getDouble();
 		this.adaptiveParameter = buf.getDouble();
 		this.avInterest = buf.getDouble();
 		this.mktId = buf.getInt();

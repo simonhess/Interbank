@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 import jmab.agents.AbstractBank;
+import jmab.agents.BaselIIIAgent;
 import jmab.agents.BondDemander;
 import jmab.agents.BondSupplier;
 import jmab.agents.CreditDemander;
@@ -61,7 +62,7 @@ import net.sourceforge.jabm.event.RoundFinishedEvent;
  */
 @SuppressWarnings("serial")
 public class Bank extends AbstractBank implements CreditSupplier, CreditDemander,
-DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, DepositDemander {
+DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, DepositDemander, BaselIIIAgent {
 
 	private double reserveInterestRate;
 	private double advancesInterestRate;
@@ -94,8 +95,10 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 	private double interbankDemand;
 	private double interbankSupply;
 	protected double debtBurden;
+	private double targetedLiquidityRatio;
 	//	private boolean interbankBuyer; // to facilitate who is supplier demander?
 	//	private boolean interbankSeller; // to facilitate who is supplier demander?
+	private double targetedCapitalAdequacyRatio;
 
 	/* (non-Javadoc)
 	 * @see jmab.agents.MacroAgent#onRoundFinished(net.sourceforge.jabm.event.RoundFinishedEvent)
@@ -1311,6 +1314,23 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 
 	public void setDebtBurden(double debtBurden) {
 		this.debtBurden = debtBurden;
+	}
+
+	@Override
+	public double getTargetedLiquidityRatio() {
+		return this.targetedLiquidityRatio;
+	}
+	
+	public void setTargetedLiquidityRatio(double targetedLiquidityRatio) {
+		this.targetedLiquidityRatio = targetedLiquidityRatio;
+	}
+	
+	public double getTargetedCapitalAdequacyRatio() {
+		return this.targetedCapitalAdequacyRatio;
+	}
+	
+	public void setTargetedCapitalAdequacyRatio(double targetedCapitalAdequacyRatio) {
+		this.targetedCapitalAdequacyRatio = targetedCapitalAdequacyRatio;
 	}
 
 }

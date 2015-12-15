@@ -97,6 +97,7 @@
 <bean id="cAvPriceComputer" class="jmab.report.AveragePriceComputer">
 	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID" /></property>
 	<property name="goodId"><util:constant static-field="interbank.StaticValues.SM_CONSGOOD" /></property>
+	<property name="salesId"><util:constant static-field="interbank.StaticValues.LAG_REALSALES" /></property>
 </bean>
 
 <bean id="cAvPriceEventReport" class="jmab.report.MacroSimEventReport">
@@ -147,6 +148,7 @@
 <bean id="kAvPriceComputer" class="jmab.report.AveragePriceComputer">
 	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID" /></property>
 	<property name="goodId"><util:constant static-field="interbank.StaticValues.SM_CAPGOOD" /></property>
+    <property name="salesId"><util:constant static-field="interbank.StaticValues.LAG_REALSALES" /></property>
 </bean>
 
 <bean id="kAvPriceEventReport" class="jmab.report.MacroSimEventReport">
