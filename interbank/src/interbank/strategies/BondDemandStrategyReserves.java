@@ -17,7 +17,6 @@ package interbank.strategies;
 import interbank.StaticValues;
 import interbank.agents.Bank;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 import jmab.agents.BondSupplier;
@@ -36,22 +35,6 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
  */
 @SuppressWarnings("serial")
 public class BondDemandStrategyReserves extends AbstractStrategy implements BondDemandStrategy{
-	
-	private double liquidityRatio; 
-
-	/**
-	 * @return the liquidityRatio
-	 */
-	public double getLiquidityRatio() {
-		return liquidityRatio;
-	}
-
-	/**
-	 * @param liquidityRatio the liquidityRatio to set
-	 */
-	public void setLiquidityRatio(double liquidityRatio) {
-		this.liquidityRatio = liquidityRatio;
-	}
 
 	/* (non-Javadoc)
 	 * @see jmab.strategies.BondDemandStrategy#BondDemand(double)
@@ -59,6 +42,7 @@ public class BondDemandStrategyReserves extends AbstractStrategy implements Bond
 	@Override
 	public int bondDemand(BondSupplier supplier) {
 		Bank bank = (Bank) getAgent();
+		double liquidityRatio=bank.getTargetedLiquidityRatio();
 		SimulationController controller = (SimulationController)bank.getScheduler();
 		MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
 		Population banks = macroPop.getPopulation(bank.getPopulationId());
@@ -92,9 +76,7 @@ public class BondDemandStrategyReserves extends AbstractStrategy implements Bond
 	 */
 	@Override
 	public byte[] getBytes() {
-		ByteBuffer buf = ByteBuffer.allocate(8);
-		buf.putDouble(this.liquidityRatio);
-		return buf.array();
+		return new byte[0];
 	}
 
 
@@ -106,8 +88,6 @@ public class BondDemandStrategyReserves extends AbstractStrategy implements Bond
 	 */
 	@Override
 	public void populateFromBytes(byte[] content, MacroPopulation pop) {
-		ByteBuffer buf = ByteBuffer.wrap(content);
-		this.liquidityRatio = buf.getDouble();
 	}
 
 }

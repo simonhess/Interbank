@@ -1,8 +1,9 @@
 package interbank.strategies;
 
+import interbank.agents.Bank;
+
 import java.util.List;
 
-import jmab.agents.CreditSupplier;
 import jmab.goods.Item;
 import jmab.population.MacroPopulation;
 import jmab.strategies.SupplyCreditStrategy;
@@ -13,7 +14,6 @@ public class InterbankSupplyCreditBaselIII extends AbstractStrategy implements
 SupplyCreditStrategy {
 
 
-	private double targetedCapitalAdequacyRatio;
 	private int[] capitalIds;//in the simplest case cash, reserves to which we must add the net wealth
 	private int[] assetsIds; 
 	private double[] capitalsWeights;
@@ -26,7 +26,8 @@ SupplyCreditStrategy {
 	 */
 	@Override
 	public double computeCreditSupply() {
-		CreditSupplier supplier=(CreditSupplier) this.getAgent();
+		Bank supplier=(Bank) this.getAgent();
+		double targetedCapitalAdequacyRatio = supplier.getTargetedCapitalAdequacyRatio(); 
 		double capitalsValue=supplier.getNetWealth();
 		// calculate the capital value to calculate the capital adequacy ratio later
 		for(int i=0;i<capitalIds.length;i++){
@@ -88,12 +89,6 @@ SupplyCreditStrategy {
 	@Override
 	public void populateFromBytes(byte[] content, MacroPopulation pop) {
 		//TODO
-	}
-	public double getTargetedCapitalAdequacyRatio() {
-		return targetedCapitalAdequacyRatio;
-	}
-	public void setTargetedCapitalAdequacyRatio(double targetedCapitalAdequacyRatio) {
-		this.targetedCapitalAdequacyRatio = targetedCapitalAdequacyRatio;
 	}
 	public int[] getCapitalIds() {
 		return capitalIds;

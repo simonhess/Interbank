@@ -371,7 +371,7 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 		setNominalGDP(nominalGDP);
 		// set expected natural rate depending on growth rate of output
 		// 
-		// TODO
+		// TODO 
 		//  add expected natural rate calculation here or in strategy? 
 		// set expected potential output
 		// TODO add expected potential output calculation here or do it in strategy?
