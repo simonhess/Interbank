@@ -8,37 +8,25 @@ import net.sourceforge.jabm.EventScheduler;
 import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
-	
-
 /**
- * @author Joeri Schasfoort set time varying counter cyclical reserve requirements
- * based on a credit to GDP ratio. If this ratio gets higher the reserve requirements 
- * are increased up to a maxiumum of 2.5% on the base level
+ * @author Joeri Schasfoort
+ * This strategy lets the central bank set the advances rate at a fixed mark-up 
+ * of the reserve bank rate. This is modelled after the Bank of England.
  */
-public class TimeVaryingReserveRequirements extends AbstractStrategy implements
-		MacroPrudentialStrategy {
+public class MonetaryMarkUpBankRate extends AbstractStrategy implements
+		MonetaryPolicyStrategy {
 
-	/* (non-Javadoc)
-	 * @see interbank.strategies.MacroPrudentialStrategy#computePolicyTarget()
-	 */
-	@Override
-	public double computePolicyTarget() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
 	/**
 	 * 
 	 */
-	public TimeVaryingReserveRequirements() {
+	public MonetaryMarkUpBankRate() {
 		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @param agent
 	 */
-	public TimeVaryingReserveRequirements(Agent agent) {
+	public MonetaryMarkUpBankRate(Agent agent) {
 		super(agent);
 		// TODO Auto-generated constructor stub
 	}
@@ -47,7 +35,7 @@ public class TimeVaryingReserveRequirements extends AbstractStrategy implements
 	 * @param scheduler
 	 * @param agent
 	 */
-	public TimeVaryingReserveRequirements(EventScheduler scheduler, Agent agent) {
+	public MonetaryMarkUpBankRate(EventScheduler scheduler, Agent agent) {
 		super(scheduler, agent);
 		// TODO Auto-generated constructor stub
 	}
@@ -70,6 +58,13 @@ public class TimeVaryingReserveRequirements extends AbstractStrategy implements
 
 	}
 
-
+	/* (non-Javadoc)
+	 * @see interbank.strategies.MonetaryPolicyStrategy#computeAdvancesRate()
+	 */
+	@Override
+	public double computeAdvancesRate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

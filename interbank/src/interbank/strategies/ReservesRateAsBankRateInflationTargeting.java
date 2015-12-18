@@ -8,37 +8,26 @@ import net.sourceforge.jabm.EventScheduler;
 import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
-	
-
 /**
- * @author Joeri Schasfoort set time varying counter cyclical reserve requirements
- * based on a credit to GDP ratio. If this ratio gets higher the reserve requirements 
- * are increased up to a maxiumum of 2.5% on the base level
+ * @author Joeri Schasfoort
+ * This strategy lets the central bank set the reserve rate as its main monetary policy tool
+ * This is modelled after the Bank of England. The CB increases the interest rate by a small amount
+ * if inflation is above target and decreases it if it is below target. 
  */
-public class TimeVaryingReserveRequirements extends AbstractStrategy implements
-		MacroPrudentialStrategy {
+public class ReservesRateAsBankRateInflationTargeting extends AbstractStrategy
+		implements ReservesRateStrategy {
 
-	/* (non-Javadoc)
-	 * @see interbank.strategies.MacroPrudentialStrategy#computePolicyTarget()
-	 */
-	@Override
-	public double computePolicyTarget() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
 	/**
 	 * 
 	 */
-	public TimeVaryingReserveRequirements() {
+	public ReservesRateAsBankRateInflationTargeting() {
 		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @param agent
 	 */
-	public TimeVaryingReserveRequirements(Agent agent) {
+	public ReservesRateAsBankRateInflationTargeting(Agent agent) {
 		super(agent);
 		// TODO Auto-generated constructor stub
 	}
@@ -47,7 +36,8 @@ public class TimeVaryingReserveRequirements extends AbstractStrategy implements
 	 * @param scheduler
 	 * @param agent
 	 */
-	public TimeVaryingReserveRequirements(EventScheduler scheduler, Agent agent) {
+	public ReservesRateAsBankRateInflationTargeting(EventScheduler scheduler,
+			Agent agent) {
 		super(scheduler, agent);
 		// TODO Auto-generated constructor stub
 	}
@@ -70,6 +60,13 @@ public class TimeVaryingReserveRequirements extends AbstractStrategy implements
 
 	}
 
-
+	/* (non-Javadoc)
+	 * @see interbank.strategies.ReservesRateStrategy#computeReservesRate()
+	 */
+	@Override
+	public double computeReservesRate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

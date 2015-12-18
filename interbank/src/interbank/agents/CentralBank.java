@@ -198,41 +198,41 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 			// as well as the supply of reserves and QE (moneteray)
 			// , and finally several macroprudential policy tools
 			this.calculateMacroVariables();
-			this.determineAdvancesInterestRate();
 			this.determineReserveDepositInterestRate();
+			this.determineAdvancesInterestRate();
 			this.determineAdvancesSupply();
-			this.quantitativeEasing();
+			//this.quantitativeEasing();
 			this.determineMicroMacroprudentialPolicy();
 	}
-	
 	
 	// Monetary and macroprudential policy methods
 	
 	/**
 	 * This method lets the central bank set its macroprudential 
 	 * policy tools according to some policy strategy
-	 * 1. Liquidity ratio's : Net stable funding ratio & Liquidity coverage ratio
-	 * 2. Capital ratio's : capital buffer ratio & leverage ratio
-	 * 3. ReserveRequirements
-	 * 4. Debt to Income ratio's 
+	 * 1. Capital requirements
+	 * 2. Liquidity requirements / reserve requirements
 	 */
 	private void determineMicroMacroprudentialPolicy() {
+		// 1 cast and set the capital ratio
+				MacroPrudentialStrategy reserveRequirements = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_RESERVEREQUIREMENTS);
+				reserveRequirements.computePolicyTarget();
+		// 2 cast and set the reserve requirements
+				MacroPrudentialStrategy capitalBufferRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_CAPITALBUFFER);
+				capitalBufferRatio.computePolicyTarget();
 		// cast and set the net stable funding ratio and liquidity coverage ratio
-		MacroPrudentialStrategy netStableFundingRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_NETSTABLEFUNDING);
-		MacroPrudentialStrategy liquidityCoverageRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_LIQUIDITYCOVERAGE);
-		netStableFundingRatio.computePolicyTarget();
-		liquidityCoverageRatio.computePolicyTarget();
+		//MacroPrudentialStrategy netStableFundingRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_NETSTABLEFUNDING);
+		//MacroPrudentialStrategy liquidityCoverageRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_LIQUIDITYCOVERAGE);
+		//netStableFundingRatio.computePolicyTarget();
+		//liquidityCoverageRatio.computePolicyTarget();
 		// cast and set the capital buffer ratio and leverage ratio
-		MacroPrudentialStrategy capitalBufferRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_CAPITALBUFFER);
-		MacroPrudentialStrategy leverageRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_LEVERAGERATIO);
-		capitalBufferRatio.computePolicyTarget();
-		leverageRatio.computePolicyTarget();
-		// cast and set the reserve requirements
-		MacroPrudentialStrategy reserveRequirements = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_RESERVEREQUIREMENTS);
-		reserveRequirements.computePolicyTarget();
+		//MacroPrudentialStrategy capitalBufferRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_CAPITALBUFFER);
+		//MacroPrudentialStrategy leverageRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_LEVERAGERATIO);
+		//capitalBufferRatio.computePolicyTarget();
+		//leverageRatio.computePolicyTarget();
 		// cast and set debt to income ratio's 
-		MacroPrudentialStrategy incomeRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_INCOMERATIO);
-		incomeRatio.computePolicyTarget();
+		//MacroPrudentialStrategy incomeRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_INCOMERATIO);
+		//incomeRatio.computePolicyTarget();
 	}
 	/**
 	 * This methods lets the central bank increase the amount of reserves in circulation
