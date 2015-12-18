@@ -77,6 +77,11 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	protected double expectedPotentialGDP;
 	protected double nominalGDP;
 	protected double inflation;
+	// Added new variables to support prudential and monetary policy
+	protected double CAR;
+	protected double liquidityRatio;
+	protected double targetCreditToGDP;
+	protected double monetaryMarkUp;
 	// variables used to calculate GDP & inflation
 	private int governmentPopulationId; // the id of the government
 	private LinkedHashMap<Integer,Integer> goodPassedValueMap;
@@ -106,6 +111,14 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	 */
 	public double getReserveInterestRate() {
 		return reserveInterestRate;
+	}
+
+	public double getMonetaryMarkUp() {
+		return monetaryMarkUp;
+	}
+
+	public void setMonetaryMarkUp(double monetaryMarkUp) {
+		this.monetaryMarkUp = monetaryMarkUp;
 	}
 
 	/**
@@ -552,6 +565,30 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 
 	public void setInflation(double inflation) {
 		this.inflation = inflation;
+	}
+	
+	public double getCAR() {
+		return CAR;
+	}
+
+	public void setCAR(double cAR) {
+		CAR = cAR;
+	}
+
+	public double getLiquidityRatio() {
+		return liquidityRatio;
+	}
+
+	public void setLiquidityRatio(double liquidityRatio) {
+		this.liquidityRatio = liquidityRatio;
+	}
+
+	public double getTargetCreditToGDP() {
+		return targetCreditToGDP;
+	}
+
+	public void setTargetCreditToGDP(double targetCreditToGDP) {
+		this.targetCreditToGDP = targetCreditToGDP;
 	}
 
 	/**
