@@ -3,6 +3,7 @@
  */
 package interbank.strategies;
 
+import interbank.agents.CentralBank;
 import jmab.agents.AbstractFirm;
 import jmab.goods.AbstractGood;
 import jmab.population.MacroPopulation;
@@ -32,11 +33,24 @@ public class ReservesRateAsBankRateInflationTargeting extends AbstractStrategy
 	public double computeReservesRate() {
 		// 1. calculate inflation
 		double inflation = calculateInflation(null); //TODO what argument to add to incorporate the macro simulation?
-		// get the inflation target
-		
+		// cast the central bank as the asking agent
+		CentralBank agent= (CentralBank) this.getAgent();
+		// get the inflation target, current interest rate, monetary policy markup, and threshold
+		double targetInflation = agent.getTargetInflation();
+		double currentBankRate = agent.getReserveInterestRate();
+		double monetaryThreshold = agent.getMonetaryThreshold();
+		double monetaryPolicyMarkUp = agent.getMonetaryPolicyMarkUp();
 		// then adjust the reserves rate depending on how far it is above or below target
-		
-		return 0;
+		double inflationOfTarget = inflation - targetInflation;
+		double newBankRate;
+		if (inflationOfTarget > monetaryThreshold) {
+			newBankRate = currentBankRate + monetaryPolicyMarkUp;
+		}
+		if (inflationOfTarget < monetaryThreshold) {
+			newBankRate = currentBankRate - monetaryPolicyMarkUp;
+		}
+		else {newBankRate = currentBankRate;}
+		return newBankRate;
 	}
 	
 	/*

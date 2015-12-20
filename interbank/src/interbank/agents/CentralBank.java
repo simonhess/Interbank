@@ -77,11 +77,17 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	protected double expectedPotentialGDP;
 	protected double nominalGDP;
 	protected double inflation;
-	// Added new variables to support prudential and monetary policy
+	// Added new variables to support prudential policy
 	protected double CAR;
 	protected double liquidityRatio;
 	protected double targetCreditToGDP;
+	protected double prudentialThreshold;
+	protected double prudentialMarkUp;
+	// Added new variables to support monetary policy
 	protected double monetaryMarkUp;
+	protected double monetaryPolicyMarkUp;
+	protected double monetaryThreshold;
+	protected double targetInflation;
 	// variables used to calculate GDP & inflation
 	private int governmentPopulationId; // the id of the government
 	private LinkedHashMap<Integer,Integer> goodPassedValueMap;
@@ -99,11 +105,51 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 		return advancesInterestRate;
 	}
 
+	public double getMonetaryPolicyMarkUp() {
+		return monetaryPolicyMarkUp;
+	}
+
+	public void setMonetaryPolicyMarkUp(double monetaryPolicyMarkUp) {
+		this.monetaryPolicyMarkUp = monetaryPolicyMarkUp;
+	}
+
+	public double getMonetaryThreshold() {
+		return monetaryThreshold;
+	}
+
+	public void setMonetaryThreshold(double monetaryThreshold) {
+		this.monetaryThreshold = monetaryThreshold;
+	}
+
+	public double getTargetInflation() {
+		return targetInflation;
+	}
+
+	public void setTargetInflation(double targetInflation) {
+		this.targetInflation = targetInflation;
+	}
+
 	/**
 	 * @param advancesInterestRate the advancesInterestRate to set
 	 */
 	public void setAdvancesInterestRate(double advancesInterestRate) {
 		this.advancesInterestRate = advancesInterestRate;
+	}
+
+	public double getPrudentialThreshold() {
+		return prudentialThreshold;
+	}
+
+	public void setPrudentialThreshold(double prudentialThreshold) {
+		this.prudentialThreshold = prudentialThreshold;
+	}
+
+	public double getPrudentialMarkUp() {
+		return prudentialMarkUp;
+	}
+
+	public void setPrudentialMarkUp(double prudentialMarkUp) {
+		this.prudentialMarkUp = prudentialMarkUp;
 	}
 
 	/**

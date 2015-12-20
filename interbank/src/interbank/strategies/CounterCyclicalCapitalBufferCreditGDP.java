@@ -7,10 +7,13 @@ import interbank.agents.CentralBank;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import jmab.agents.LaborDemander;
 import jmab.agents.LaborSupplier;
 import jmab.agents.MacroAgent;
+import jmab.agents.SimpleAbstractAgent;
 import jmab.goods.AbstractGood;
 import jmab.goods.Item;
 import jmab.population.MacroPopulation;
@@ -44,14 +47,51 @@ public class CounterCyclicalCapitalBufferCreditGDP extends AbstractStrategy impl
 	public double computePolicyTarget() {
 		// First calculate the credit to GDP ratio
 		double nominalGDP = calculateNominalGDP(null); // TODO argument? 
-		double totalCredit = calculateTotalCredit;
+		double totalCredit = calculateTotalCredit(null); // TODO how to I reference this function?
 		double creditToGDP=totalCredit/nominalGDP;
 		// Then ask for the target credit to GDP ratio
 		CentralBank agent= (CentralBank) this.getAgent();
 		double targetCreditToGDP = agent.getTargetCreditToGDP();
+		// ask for the current capital requirements, threshold, and policy markup
+		double currentCAR = agent.getCAR();
+		double prudentialThreshold = agent.getPrudentialThreshold();
+		double prudentialMarkUp = agent.getPrudentialMarkUp();
 		// then adjust the CAR depending on how far it is above or below target
-		
-		return 0;
+		double CreditOfTarget = creditToGDP - targetCreditToGDP;
+		double newCAR;
+		if (CreditOfTarget > prudentialThreshold) {
+			newCAR = currentCAR + prudentialMarkUp;
+		}
+		if (CreditOfTarget < prudentialThreshold) {
+			newCAR = currentCAR - prudentialMarkUp;
+		}
+		else {newCAR = currentCAR;}
+		return newCAR;
+	}
+	
+	/*
+	 * Helper function defined to calculate total credit
+	 */
+	public Map<Long, Double> computeVariables(MacroSimulation sim) {
+		// first select the banks
+		MacroPopulation macroPop = (MacroPopulation) sim.getPopulation();
+		Population pop = macroPop.getPopulation(banksPopulationId);
+		// get a map that includes all credit? 
+		TreeMap<Long,Double> result=new TreeMap<Long,Double>();
+		List<String> bsNames = ((SimpleAbstractAgent)pop.getAgentList().get(0)).getStocksNames();
+		double[][] aggBs = new double[2][bsNames.size()];
+		for (Agent a:pop.getAgents()){
+			MacroAgent agent=(MacroAgent) a;
+			double[][] bs = agent.getNumericBalanceSheet();
+			for (int i = 0 ; i<bsNames.size() ; i++){
+				aggBs[0][i]+=bs[0][i];
+				aggBs[1][i]+=bs[1][i];
+			}
+		}
+		for (int i = 0 ; i<bsNames.size() ; i++){
+			result.put((long) i, aggBs[0][i]-aggBs[1][i]);
+		}
+		return result;
 	}
 	
 	/*

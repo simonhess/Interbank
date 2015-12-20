@@ -3,6 +3,7 @@
  */
 package interbank.strategies;
 
+import interbank.StaticValues;
 import interbank.agents.CentralBank;
 
 import java.util.LinkedHashMap;
@@ -39,21 +40,35 @@ public class TimeVaryingReserveRequirements extends AbstractStrategy implements
 	private int banksPopulationId; // the id of the banks
 	
 	/* 
-	 * Main method used to calculate the capital buffer
+	 * Main method used to calculate the required reserves
 	 */
 	@Override
 	public double computePolicyTarget() {
 		// First calculate the credit to GDP ratio
 		double nominalGDP = calculateNominalGDP(null); // TODO argument? 
-		double totalCredit = calculateTotalCredit;
+		double totalCredit = calculateTotalCredit(null);
 		double creditToGDP=totalCredit/nominalGDP;
 		// Then ask for the target credit to GDP ratio
 		CentralBank agent= (CentralBank) this.getAgent();
 		double targetCreditToGDP = agent.getTargetCreditToGDP();
+		// ask for the current reserve requirements, threshold, and policy markup
+		double currentReserveRequirements = agent.getLiquidityRatio();
+		double prudentialThreshold = agent.getPrudentialThreshold();
+		double prudentialMarkUp = agent.getPrudentialMarkUp();
 		// then adjust the LR depending on how far it is above or below target
-		
-		return 0;
+		double CreditOfTarget = creditToGDP - targetCreditToGDP;
+		double newReserveRequirements;
+		if (CreditOfTarget > prudentialThreshold) {
+			newReserveRequirements = currentReserveRequirements + prudentialMarkUp;
+		}
+		if (CreditOfTarget < prudentialThreshold) {
+			newReserveRequirements = currentReserveRequirements - prudentialMarkUp;
+		}
+		else {newReserveRequirements = currentReserveRequirements;}
+		return newReserveRequirements;
 	}
+	
+	// TODO create helper function to calculate total credit
 	
 	/*
 	 * Helper function defined to calculate nominal GDP 
