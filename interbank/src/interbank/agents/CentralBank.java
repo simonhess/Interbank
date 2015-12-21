@@ -275,10 +275,10 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	private void determineMicroMacroprudentialPolicy() {
 		// 1 cast and set the capital ratio
 				MacroPrudentialStrategy reserveRequirements = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_RESERVEREQUIREMENTS);
-				reserveRequirements.computePolicyTarget();
+				this.liquidityRatio = reserveRequirements.computePolicyTarget();
 		// 2 cast and set the reserve requirements
 				MacroPrudentialStrategy capitalBufferRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_CAPITALBUFFER);
-				capitalBufferRatio.computePolicyTarget();
+				this.CAR = capitalBufferRatio.computePolicyTarget();
 		// cast and set the net stable funding ratio and liquidity coverage ratio
 		//MacroPrudentialStrategy netStableFundingRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_NETSTABLEFUNDING);
 		//MacroPrudentialStrategy liquidityCoverageRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_LIQUIDITYCOVERAGE);

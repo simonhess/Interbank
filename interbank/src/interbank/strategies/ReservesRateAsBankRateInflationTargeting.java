@@ -25,17 +25,17 @@ public class ReservesRateAsBankRateInflationTargeting extends AbstractStrategy
 	private int priceIndexProducerId;//This is the population id of agents that produce the goods entering in the CPI
 	private int realSaleId;//This is the id of the lagged value of real sales
 	private int priceGoodId;//This is the stock matrix if of the good entering in the CPI
+	private int lagInflation;
 	
 	/* 
 	 * Main method used to compute the central bank ReservesRate()
 	 */
 	@Override
 	public double computeReservesRate() {
-		// 1. calculate inflation
-		double inflation = calculateInflation(null); //TODO what argument to add to incorporate the macro simulation?
 		// cast the central bank as the asking agent
 		CentralBank agent= (CentralBank) this.getAgent();
-		// get the inflation target, current interest rate, monetary policy markup, and threshold
+		// get the inflation, inflation target, current interest rate, monetary policy markup, and threshold
+		double inflation = agent.getAggregateValue(lagInflation, 1);
 		double targetInflation = agent.getTargetInflation();
 		double currentBankRate = agent.getReserveInterestRate();
 		double monetaryThreshold = agent.getMonetaryThreshold();
@@ -51,24 +51,6 @@ public class ReservesRateAsBankRateInflationTargeting extends AbstractStrategy
 		}
 		else {newBankRate = currentBankRate;}
 		return newBankRate;
-	}
-	
-	/*
-	 * Helper function used to calculate inflation
-	 */
-	public double calculateInflation (MacroSimulation sim) {
-		MacroPopulation macroPop = (MacroPopulation) sim.getPopulation();
-		Population pop = macroPop.getPopulation(priceIndexProducerId);
-		double totalSales=0;
-		double averagePrice=0;
-		for (Agent a:pop.getAgents()){
-			AbstractFirm firm= (AbstractFirm) a;
-			totalSales+=firm.getPassedValue(realSaleId, 0);
-			AbstractGood good = (AbstractGood)firm.getItemStockMatrix(true, priceGoodId);
-			averagePrice+=good.getPrice()*firm.getPassedValue(realSaleId,0);
-		}
-		double inflation = averagePrice/totalSales;
-		return inflation;
 	}
 	
 	/* (non-Javadoc)

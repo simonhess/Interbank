@@ -15,6 +15,7 @@
 package interbank.agents;
 
 import interbank.StaticValues;
+import interbank.report.TotalCreditComputer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,6 +39,7 @@ import jmab.goods.Deposit;
 import jmab.goods.Item;
 import jmab.population.MacroPopulation;
 import jmab.report.AveragePriceComputer;
+import jmab.report.NominalGDPComputer;
 import jmab.report.RealGDPComputer;
 import jmab.report.UnemploymentRateComputer;
 import jmab.simulations.MacroSimulation;
@@ -66,8 +68,9 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 	protected int bondMaturity;
 	protected double bondInterestRate;
 	protected UnemploymentRateComputer uComputer; 
-	protected RealGDPComputer RgdpComputer;  // Joeri: added a real GDP computer to the government
-	protected AveragePriceComputer AvpComputer; // Joeri: added average price comp
+	protected TotalCreditComputer aggregateCreditComputer;
+	protected NominalGDPComputer nominalGdpComputer;  
+	protected AveragePriceComputer avpComputer; 
 	protected double wageBill;
 	protected double totInterestsBonds;
 	protected double interestsReceived;
@@ -158,9 +161,11 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 	protected void updateAggregateVariables() {
 		this.setAggregateValue(StaticValues.LAG_AGGUNEMPLOYMENT, 
 				uComputer.computeVariable((MacroSimulation)((SimulationController)this.scheduler).getSimulation()));
-		// TODO add aggregate value set LAG_AGGCREDIT
-		// TODO add aggregate value set LAG_NOMINALGDP
-		// TODO add aggregate value set LAG_INFLATION
+		this.setAggregateValue(StaticValues.LAG_AGGCREDIT, aggregateCreditComputer.computeVariable((MacroSimulation)((SimulationController)this.scheduler).getSimulation()));
+		this.setAggregateValue(StaticValues.LAG_NOMINALGDP, 
+				nominalGdpComputer.computeVariable((MacroSimulation)((SimulationController)this.scheduler).getSimulation()));
+		this.setAggregateValue(StaticValues.LAG_INFLATION, 
+				avpComputer.computeVariable((MacroSimulation)((SimulationController)this.scheduler).getSimulation()));
 		this.cleanSM();
 	}
 

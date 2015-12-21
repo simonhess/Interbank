@@ -53,7 +53,6 @@ public class CounterCyclicalCapitalBufferCreditGDP extends AbstractStrategy impl
 		double totalCredit = agent.getAggregateValue(lagTotalCredit, 1);
 		double creditToGDP=totalCredit/nominalGDP;
 		// Then ask for the target credit to GDP ratio
-		
 		double targetCreditToGDP = agent.getTargetCreditToGDP();
 		// ask for the current capital requirements, threshold, and policy markup
 		double currentCAR = agent.getCAR();
@@ -70,74 +69,6 @@ public class CounterCyclicalCapitalBufferCreditGDP extends AbstractStrategy impl
 		}
 		else {newCAR = currentCAR;}
 		return newCAR;
-	}
-	
-	/*
-	 * Helper function defined to calculate total credit
-	 */
-	public Map<Long, Double> computeVariables(MacroSimulation sim) {
-		// first select the banks
-		MacroPopulation macroPop = (MacroPopulation) sim.getPopulation();
-		Population pop = macroPop.getPopulation(banksPopulationId);
-		// get a map that includes all credit? 
-		TreeMap<Long,Double> result=new TreeMap<Long,Double>();
-		List<String> bsNames = ((SimpleAbstractAgent)pop.getAgentList().get(0)).getStocksNames();
-		double[][] aggBs = new double[2][bsNames.size()];
-		for (Agent a:pop.getAgents()){
-			MacroAgent agent=(MacroAgent) a;
-			double[][] bs = agent.getNumericBalanceSheet();
-			for (int i = 0 ; i<bsNames.size() ; i++){
-				aggBs[0][i]+=bs[0][i];
-				aggBs[1][i]+=bs[1][i];
-			}
-		}
-		for (int i = 0 ; i<bsNames.size() ; i++){
-			result.put((long) i, aggBs[0][i]-aggBs[1][i]);
-		}
-		return result;
-	}
-	
-	/*
-	 * Helper function defined to calculate nominal GDP 
-	 */
-	public double calculateNominalGDP(MacroSimulation sim) {
-		MacroPopulation macroPop = (MacroPopulation) sim.getPopulation();
-		Population pop = macroPop.getPopulation(priceIndexProducerId);
-		double gdpGoodsComponent=0;
-			double pastInventories=0;
-			double publicServantsWages=0;
-			double nominalGDP=0;
-			for(int popId:gdpPopulationIds){
-				pop = macroPop.getPopulation(popId);
-				//Population pop = macroPop.getPopulation(i); GET RID OF THIS?
-				for(Agent j:pop.getAgents()){
-					MacroAgent agent=(MacroAgent) j;
-					for(int k=0; k<gdpGoodsIds.length;k++){
-						List<Item> items= agent.getItemsStockMatrix(true, gdpGoodsIds[k]);
-						for(Item item:items){
-							if(item.getAge()<gdpGoodsAges[k]){
-								gdpGoodsComponent+=item.getValue();
-							}
-							AbstractGood good = (AbstractGood)item;
-							if(good.getProducer().getAgentId()==agent.getAgentId()){
-								int passedValueId = goodPassedValueMap.get(good.getSMId());
-								pastInventories+=agent.getPassedValue(passedValueId, 1);
-							}
-						}
-					}					
-				}
-				gdpGoodsComponent-=pastInventories;
-				if(governmentPopulationId!=-1){
-					LaborDemander govt = (LaborDemander)macroPop.getPopulation(governmentPopulationId).getAgentList().get(0);
-					for(MacroAgent agent:govt.getEmployees()){
-						LaborSupplier publicServant = (LaborSupplier)agent;
-						publicServantsWages+=publicServant.getWage();
-					}
-					nominalGDP = gdpGoodsComponent+publicServantsWages;
-				}else
-					nominalGDP = gdpGoodsComponent;
-			}
-			return nominalGDP;
 	}
 	
 	/**
