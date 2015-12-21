@@ -29,6 +29,7 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
  * based on a credit to GDP ratio. If this ratio gets higher the capital buffer 
  * is increased up to a maxiumum of 2.5% on the base level, in line with Basel III 
  */
+@SuppressWarnings("serial")
 public class CounterCyclicalCapitalBufferCreditGDP extends AbstractStrategy implements
 		MacroPrudentialStrategy {
 
@@ -39,18 +40,20 @@ public class CounterCyclicalCapitalBufferCreditGDP extends AbstractStrategy impl
 	private LinkedHashMap<Integer,Integer> goodPassedValueMap;
 	private int governmentPopulationId; // the id of the government
 	private int banksPopulationId; // the id of the banks
-	
+	private int lagNominalGDP;
+	private int lagTotalCredit;
 	/* 
 	 * Main method used to calculate the capital buffer
 	 */
 	@Override
 	public double computePolicyTarget() {
+		CentralBank agent= (CentralBank) this.getAgent();
 		// First calculate the credit to GDP ratio
-		double nominalGDP = calculateNominalGDP(null); // TODO argument? 
-		double totalCredit = calculateTotalCredit(null); // TODO how to I reference this function?
+		double nominalGDP = agent.getAggregateValue(lagNominalGDP, 1);  
+		double totalCredit = agent.getAggregateValue(lagTotalCredit, 1);
 		double creditToGDP=totalCredit/nominalGDP;
 		// Then ask for the target credit to GDP ratio
-		CentralBank agent= (CentralBank) this.getAgent();
+		
 		double targetCreditToGDP = agent.getTargetCreditToGDP();
 		// ask for the current capital requirements, threshold, and policy markup
 		double currentCAR = agent.getCAR();
@@ -177,6 +180,133 @@ public class CounterCyclicalCapitalBufferCreditGDP extends AbstractStrategy impl
 	public void populateFromBytes(byte[] content, MacroPopulation pop) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @return the priceIndexProducerId
+	 */
+	public int getPriceIndexProducerId() {
+		return priceIndexProducerId;
+	}
+
+	/**
+	 * @param priceIndexProducerId the priceIndexProducerId to set
+	 */
+	public void setPriceIndexProducerId(int priceIndexProducerId) {
+		this.priceIndexProducerId = priceIndexProducerId;
+	}
+
+	/**
+	 * @return the gdpPopulationIds
+	 */
+	public int[] getGdpPopulationIds() {
+		return gdpPopulationIds;
+	}
+
+	/**
+	 * @param gdpPopulationIds the gdpPopulationIds to set
+	 */
+	public void setGdpPopulationIds(int[] gdpPopulationIds) {
+		this.gdpPopulationIds = gdpPopulationIds;
+	}
+
+	/**
+	 * @return the gdpGoodsIds
+	 */
+	public int[] getGdpGoodsIds() {
+		return gdpGoodsIds;
+	}
+
+	/**
+	 * @param gdpGoodsIds the gdpGoodsIds to set
+	 */
+	public void setGdpGoodsIds(int[] gdpGoodsIds) {
+		this.gdpGoodsIds = gdpGoodsIds;
+	}
+
+	/**
+	 * @return the gdpGoodsAges
+	 */
+	public int[] getGdpGoodsAges() {
+		return gdpGoodsAges;
+	}
+
+	/**
+	 * @param gdpGoodsAges the gdpGoodsAges to set
+	 */
+	public void setGdpGoodsAges(int[] gdpGoodsAges) {
+		this.gdpGoodsAges = gdpGoodsAges;
+	}
+
+	/**
+	 * @return the goodPassedValueMap
+	 */
+	public LinkedHashMap<Integer, Integer> getGoodPassedValueMap() {
+		return goodPassedValueMap;
+	}
+
+	/**
+	 * @param goodPassedValueMap the goodPassedValueMap to set
+	 */
+	public void setGoodPassedValueMap(
+			LinkedHashMap<Integer, Integer> goodPassedValueMap) {
+		this.goodPassedValueMap = goodPassedValueMap;
+	}
+
+	/**
+	 * @return the governmentPopulationId
+	 */
+	public int getGovernmentPopulationId() {
+		return governmentPopulationId;
+	}
+
+	/**
+	 * @param governmentPopulationId the governmentPopulationId to set
+	 */
+	public void setGovernmentPopulationId(int governmentPopulationId) {
+		this.governmentPopulationId = governmentPopulationId;
+	}
+
+	/**
+	 * @return the banksPopulationId
+	 */
+	public int getBanksPopulationId() {
+		return banksPopulationId;
+	}
+
+	/**
+	 * @param banksPopulationId the banksPopulationId to set
+	 */
+	public void setBanksPopulationId(int banksPopulationId) {
+		this.banksPopulationId = banksPopulationId;
+	}
+
+	/**
+	 * @return the lagNominalGDP
+	 */
+	public int getLagNominalGDP() {
+		return lagNominalGDP;
+	}
+
+	/**
+	 * @param lagNominalGDP the lagNominalGDP to set
+	 */
+	public void setLagNominalGDP(int lagNominalGDP) {
+		this.lagNominalGDP = lagNominalGDP;
+	}
+
+	/**
+	 * @return the lagTotalCredit
+	 */
+	public int getLagTotalCredit() {
+		return lagTotalCredit;
+	}
+
+	/**
+	 * @param lagTotalCredit the lagTotalCredit to set
+	 */
+	public void setLagTotalCredit(int lagTotalCredit) {
+		this.lagTotalCredit = lagTotalCredit;
 	}
 
 
