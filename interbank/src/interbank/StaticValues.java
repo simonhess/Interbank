@@ -217,6 +217,9 @@ public interface StaticValues {
 	public static int LAG_TOTINTERBANKSUPPLY = 23;
 	public static int LAG_INTERBANKINTEREST = 24;
 	public static int LAG_TOTADVANCESSUPPLY = 25;
+	public static int LAG_AGGCREDIT = 26;
+	public static int LAG_NOMINALGDP = 27;
+	public static int LAG_INFLATION = 28;
 	
 	public static int SM_CASH=0;
 	public static int SM_DEP=1;
