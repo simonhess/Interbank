@@ -159,13 +159,14 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 	 * 
 	 */
 	protected void updateAggregateVariables() {
+		MacroSimulation sim = (MacroSimulation)((SimulationController)this.scheduler).getSimulation();
 		this.setAggregateValue(StaticValues.LAG_AGGUNEMPLOYMENT, 
-				uComputer.computeVariable((MacroSimulation)((SimulationController)this.scheduler).getSimulation()));
-		this.setAggregateValue(StaticValues.LAG_AGGCREDIT, aggregateCreditComputer.computeVariable((MacroSimulation)((SimulationController)this.scheduler).getSimulation()));
+				uComputer.computeVariable(sim));
+		this.setAggregateValue(StaticValues.LAG_AGGCREDIT, aggregateCreditComputer.computeVariable(sim));
 		this.setAggregateValue(StaticValues.LAG_NOMINALGDP, 
-				nominalGdpComputer.computeVariable((MacroSimulation)((SimulationController)this.scheduler).getSimulation()));
+				nominalGdpComputer.computeVariable(sim));
 		this.setAggregateValue(StaticValues.LAG_INFLATION, 
-				avpComputer.computeVariable((MacroSimulation)((SimulationController)this.scheduler).getSimulation()));
+				avpComputer.computeVariable(sim));
 		this.cleanSM();
 	}
 
