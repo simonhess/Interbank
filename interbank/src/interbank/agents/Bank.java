@@ -99,6 +99,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 	//	private boolean interbankBuyer; // to facilitate who is supplier demander?
 	//	private boolean interbankSeller; // to facilitate who is supplier demander?
 	private double targetedCapitalAdequacyRatio;
+	private double riskAversionMarkUp;
 
 	/* (non-Javadoc)
 	 * @see jmab.agents.MacroAgent#onRoundFinished(net.sourceforge.jabm.event.RoundFinishedEvent)
@@ -807,6 +808,14 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 	 */
 	public void setReserveInterestRate(double reserveInterestRate) {
 		this.reserveInterestRate = reserveInterestRate;
+	}
+
+	public double getRiskAversionMarkUp() {
+		return riskAversionMarkUp;
+	}
+
+	public void setRiskAversionMarkUp(double riskAversionMarkUp) {
+		this.riskAversionMarkUp = riskAversionMarkUp;
 	}
 
 	/**
