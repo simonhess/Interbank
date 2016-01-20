@@ -280,26 +280,17 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 				MacroPrudentialStrategy capitalBufferRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_CAPITALBUFFER);
 				this.CAR = capitalBufferRatio.computePolicyTarget();
 		// 3 force banks to comply with the capital and liquidity ratio
-				// for banks in list
-				
-				// get target CAR + LR 
-				
-				// if banks target is below required target. Set banks target at legal minimum level
-				if (targetCAR < this.CAR) {bank.setTargetedCapitalAdequacyRatio(this.CAR)}
-				if (targetLR < this.liquidityRatio) {bank.setTargetedLiquidityRatio(this.liquidityRatio)}
-		// cast and set the net stable funding ratio and liquidity coverage ratio
-		//MacroPrudentialStrategy netStableFundingRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_NETSTABLEFUNDING);
-		//MacroPrudentialStrategy liquidityCoverageRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_LIQUIDITYCOVERAGE);
-		//netStableFundingRatio.computePolicyTarget();
-		//liquidityCoverageRatio.computePolicyTarget();
-		// cast and set the capital buffer ratio and leverage ratio
-		//MacroPrudentialStrategy capitalBufferRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_CAPITALBUFFER);
-		//MacroPrudentialStrategy leverageRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_LEVERAGERATIO);
-		//capitalBufferRatio.computePolicyTarget();
-		//leverageRatio.computePolicyTarget();
-		// cast and set debt to income ratio's 
-		//MacroPrudentialStrategy incomeRatio = (MacroPrudentialStrategy)this.getStrategy(StaticValues.STRATEGY_INCOMERATIO);
-		//incomeRatio.computePolicyTarget();
+				SimulationController controller = (SimulationController)this.getScheduler();
+				MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
+				Population banks = macroPop.getPopulation(banksID);
+				for(Agent b:banks.getAgents()){
+					// Check if their targeted CAR is above the required level, if not put it at that level
+					double targetCAR = b.getTargetedCapitalAdequacyRatio();
+					if (targetCAR < this.CAR) {b.setTargetedCapitalAdequacyRatio(this.CAR)}
+					// check if their liquidity ratio is above the required level, if not put it at that level
+					double targetLR = b.getTargetedLiquidityRatio();
+					if (targetLR < this.liquidityRatio) {b.setTargetedLiquidityRatio(this.liquidityRatio)}
+				}
 	}
 	/**
 	 * This methods lets the central bank increase the amount of reserves in circulation

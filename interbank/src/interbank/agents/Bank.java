@@ -52,6 +52,8 @@ import jmab.strategies.SelectLenderStrategy;
 import jmab.strategies.SpecificCreditSupplyStrategy;
 import jmab.strategies.SupplyCreditStrategy;
 import jmab.strategies.TaxPayerStrategy;
+import net.sourceforge.jabm.Population;
+import net.sourceforge.jabm.SimulationController;
 import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.event.AgentArrivalEvent;
 import net.sourceforge.jabm.event.RoundFinishedEvent;
@@ -184,6 +186,8 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 		case StaticValues.TIC_COMPUTEEXPECTATIONS:
 			setBailoutCost(0);
 			setDebtBurden(0);
+			// TODO set the interest rates here?
+			this.updateCentralBankInterestRates();
 			setCurrentNonPerformingLoans(StaticValues.SM_LOAN,0); // we delete non performing loans from previous period
 			this.defaulted=false;
 			computeExpectations();
@@ -253,6 +257,19 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 			break;
 		}
 
+	}
+
+	/**
+	 * Method used to update the advances and reserves interest rates
+	 */
+	private void updateCentralBankInterestRates() {
+		// get CB from controller?
+		SimulationController controller = (SimulationController)this.getScheduler();
+		MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
+		pop = macroPop.getPopulation(popId);
+		CentralBank CB= (CentralBank) .getAgent();
+		this.setReserveInterestRate(CB.getReserveInterestRate());
+		this.setAdvancesInterestRate(CB.getAdvancesInterestRate());
 	}
 
 	// (5) New interbank interest + principal interbank payment function
