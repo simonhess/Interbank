@@ -282,14 +282,17 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 		// 3 force banks to comply with the capital and liquidity ratio
 				SimulationController controller = (SimulationController)this.getScheduler();
 				MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
-				Population banks = macroPop.getPopulation(banksID);
-				for(Agent b:banks.getAgents()){
+				Population banks = macroPop.getPopulation(StaticValues.BANKS_ID);
+				for(Agent bTemp:banks.getAgents()){
+					Bank b = (Bank) bTemp;
 					// Check if their targeted CAR is above the required level, if not put it at that level
 					double targetCAR = b.getTargetedCapitalAdequacyRatio();
-					if (targetCAR < this.CAR) {b.setTargetedCapitalAdequacyRatio(this.CAR)}
+					if (targetCAR < this.CAR)
+						b.setTargetedCapitalAdequacyRatio(this.CAR);
 					// check if their liquidity ratio is above the required level, if not put it at that level
 					double targetLR = b.getTargetedLiquidityRatio();
-					if (targetLR < this.liquidityRatio) {b.setTargetedLiquidityRatio(this.liquidityRatio)}
+					if (targetLR < this.liquidityRatio)
+						b.setTargetedLiquidityRatio(this.liquidityRatio);
 				}
 	}
 	/**

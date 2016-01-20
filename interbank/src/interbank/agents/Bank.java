@@ -266,8 +266,8 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 		// get CB from controller?
 		SimulationController controller = (SimulationController)this.getScheduler();
 		MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
-		pop = macroPop.getPopulation(popId);
-		CentralBank CB= (CentralBank) .getAgent();
+		Population pop = macroPop.getPopulation(StaticValues.CB_ID);
+		CentralBank CB= (CentralBank)pop.getAgentList().get(0);
 		this.setReserveInterestRate(CB.getReserveInterestRate());
 		this.setAdvancesInterestRate(CB.getAdvancesInterestRate());
 	}
