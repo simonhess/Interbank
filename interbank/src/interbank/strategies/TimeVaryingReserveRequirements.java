@@ -3,22 +3,8 @@
  */
 package interbank.strategies;
 
-import interbank.StaticValues;
 import interbank.agents.CentralBank;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import jmab.agents.LaborDemander;
-import jmab.agents.LaborSupplier;
-import jmab.agents.MacroAgent;
-import jmab.goods.AbstractGood;
-import jmab.goods.Item;
 import jmab.population.MacroPopulation;
-import jmab.simulations.MacroSimulation;
-import net.sourceforge.jabm.EventScheduler;
-import net.sourceforge.jabm.Population;
-import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
 	
@@ -31,13 +17,6 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
 public class TimeVaryingReserveRequirements extends AbstractStrategy implements
 		MacroPrudentialStrategy {
 
-	private int priceIndexProducerId;//This is the population id of agents that produce the goods entering in the CPI
-	private int[] gdpPopulationIds;//These are all the populations ids of agents that have either bought or produced goods entering in GDP
-	private int[] gdpGoodsIds;//These are all the stock matrix ids of goods that enter in GDP
-	private int[] gdpGoodsAges;//These are all age limit of goods that enter in GDP
-	private LinkedHashMap<Integer,Integer> goodPassedValueMap;
-	private int governmentPopulationId; // the id of the government
-	private int banksPopulationId; // the id of the banks
 	private int lagNominalGDP;
 	private int lagTotalCredit;
 	
@@ -71,30 +50,6 @@ public class TimeVaryingReserveRequirements extends AbstractStrategy implements
 		return newReserveRequirements;
 	}
 	
-	/**
-	 * 
-	 */
-	public TimeVaryingReserveRequirements() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param agent
-	 */
-	public TimeVaryingReserveRequirements(Agent agent) {
-		super(agent);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param scheduler
-	 * @param agent
-	 */
-	public TimeVaryingReserveRequirements(EventScheduler scheduler, Agent agent) {
-		super(scheduler, agent);
-		// TODO Auto-generated constructor stub
-	}
-
 	/* (non-Javadoc)
 	 * @see jmab.strategies.SingleStrategy#getBytes()
 	 */
@@ -111,6 +66,34 @@ public class TimeVaryingReserveRequirements extends AbstractStrategy implements
 	public void populateFromBytes(byte[] content, MacroPopulation pop) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @return the lagNominalGDP
+	 */
+	public int getLagNominalGDP() {
+		return lagNominalGDP;
+	}
+
+	/**
+	 * @param lagNominalGDP the lagNominalGDP to set
+	 */
+	public void setLagNominalGDP(int lagNominalGDP) {
+		this.lagNominalGDP = lagNominalGDP;
+	}
+
+	/**
+	 * @return the lagTotalCredit
+	 */
+	public int getLagTotalCredit() {
+		return lagTotalCredit;
+	}
+
+	/**
+	 * @param lagTotalCredit the lagTotalCredit to set
+	 */
+	public void setLagTotalCredit(int lagTotalCredit) {
+		this.lagTotalCredit = lagTotalCredit;
 	}
 
 

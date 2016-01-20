@@ -4,13 +4,7 @@
 package interbank.strategies;
 
 import interbank.agents.CentralBank;
-import jmab.agents.AbstractFirm;
-import jmab.goods.AbstractGood;
 import jmab.population.MacroPopulation;
-import jmab.simulations.MacroSimulation;
-import net.sourceforge.jabm.EventScheduler;
-import net.sourceforge.jabm.Population;
-import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
 /**
@@ -22,9 +16,20 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
 public class ReservesRateAsBankRateInflationTargeting extends AbstractStrategy
 		implements ReservesRateStrategy {
 
-	private int priceIndexProducerId;//This is the population id of agents that produce the goods entering in the CPI
-	private int realSaleId;//This is the id of the lagged value of real sales
-	private int priceGoodId;//This is the stock matrix if of the good entering in the CPI
+	/**
+	 * @return the lagInflation
+	 */
+	public int getLagInflation() {
+		return lagInflation;
+	}
+
+	/**
+	 * @param lagInflation the lagInflation to set
+	 */
+	public void setLagInflation(int lagInflation) {
+		this.lagInflation = lagInflation;
+	}
+
 	private int lagInflation;
 	
 	/* 

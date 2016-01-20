@@ -4121,13 +4121,14 @@
 	</bean>
 
 	<bean id="advancesInterestRateStrategy" scope="prototype"
-		parent="strategy" class="interbank.strategies.StaticMonetary">
-		<property name="staticInterestRate" value="0.05" />
+		parent="strategy" class="interbank.strategies.MonetaryMarkUpBankRate">
 	</bean>
 	
 	<bean id="reservesInterestRateStrategy" scope="prototype"
-		parent="strategy" class="interbank.strategies.ReservesStatic">
-		<property name="staticReservesRate" value="0.01" />
+		parent="strategy" class="interbank.strategies.ReservesRateAsBankRateInflationTargeting">
+		<property name="lagInflation">
+			<util:constant static-field="interbank.StaticValues.LAG_INFLATION" />
+		</property>
 	</bean>
 	
 	<!-- TODO -->
@@ -4155,8 +4156,13 @@
 	</bean>
 
 	<bean id="reserveRequirementStrategy" scope="prototype"
-		parent="strategy" class="interbank.strategies.StaticReserveRequirements">
-		<property name="staticReserveRequirements" value="0.08" />
+		parent="strategy" class="interbank.strategies.TimeVaryingReserveRequirements">
+		<property name="lagNominalGDP">
+			<util:constant static-field="interbank.StaticValues.LAG_NOMINALGDP" />
+		</property>
+		<property name="lagTotalCredit">
+			<util:constant static-field="interbank.StaticValues.LAG_AGGCREDIT" />
+		</property>
 	</bean>
 	
 	<bean id="leverageRatioStrategy" scope="prototype"
@@ -4165,13 +4171,18 @@
 	</bean>
 
 	<bean id="capitalBufferStrategy" scope="prototype"
-		parent="strategy" class="interbank.strategies.StaticCapitalBufferTarget">
-		<property name="staticCapitalBufferTarget" value="0.1" />
+		parent="strategy" class="interbank.strategies.CounterCyclicalCapitalBufferCreditGDP">
+		<property name="lagNominalGDP">
+			<util:constant static-field="interbank.StaticValues.LAG_NOMINALGDP" />
+		</property>
+		<property name="lagTotalCredit">
+			<util:constant static-field="interbank.StaticValues.LAG_AGGCREDIT" />
+		</property>
 	</bean>
 	
 	<bean id="liquidityCoverageStrategy" scope="prototype"
-		parent="strategy" class="interbank.strategies.StaticCapitalBufferTarget">
-		<property name="staticCapitalBufferTarget" value="0.1" />
+		parent="strategy" class="interbank.strategies.StaticReserveRequirements">
+		<property name="staticReserveRequirements" value="0.08" />
 	</bean>
 
 	<bean id="netStableFundingStrategy" scope="prototype"

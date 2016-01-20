@@ -106,6 +106,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 	private RandomEngine prng;
 	private double uniformDistr;
 	private double gr;
+	private double nomGDP;
 
 	/* (non-Javadoc)
 	 * @see jmab.init.MacroAgentInitialiser#initialise(jmab.population.MacroPopulation)
@@ -523,6 +524,9 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 		}
 		//TODO: Add Aggregate values, we could use the macrosimulation
 		govt.setAggregateValue(StaticValues.LAG_AGGUNEMPLOYMENT, 0.08*(1+distr.nextDouble()));//TODO
+		govt.setAggregateValue(StaticValues.LAG_INFLATION, 0.03*(1+distr.nextDouble()));//TODO
+		govt.setAggregateValue(StaticValues.LAG_AGGCREDIT, csLoans+ksLoans);//TODO
+		govt.setAggregateValue(StaticValues.LAG_NOMINALGDP, nomGDP);//TODO
 	}
 
 	/**
@@ -999,28 +1003,28 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 	/**
 	 * @return the kOCF
 	 */
-	public double getksOCF() {
+	public double getKsOCF() {
 		return ksOCF;
 	}
 
 	/**
 	 * @param ksOCF the kOCF to set
 	 */
-	public void setksOCF(double ksOCF) {
+	public void setKsOCF(double ksOCF) {
 		this.ksOCF = ksOCF;
 	}
 
 	/**
 	 * @return the cOCF
 	 */
-	public double getcsOCF() {
+	public double getCsOCF() {
 		return csOCF;
 	}
 
 	/**
 	 * @param csOCF the cOCF to set
 	 */
-	public void setcsOCF(double csOCF) {
+	public void setCsOCF(double csOCF) {
 		this.csOCF = csOCF;
 	}
 
@@ -1079,9 +1083,19 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 	public void setCsLoans0(double csLoans0) {
 		this.csLoans0 = csLoans0;
 	}
-	
-	
-	
 
+	/**
+	 * @return the nomGDP
+	 */
+	public double getNomGDP() {
+		return nomGDP;
+	}
+
+	/**
+	 * @param nomGDP the nomGDP to set
+	 */
+	public void setNomGDP(double nomGDP) {
+		this.nomGDP = nomGDP;
+	}
 	
 }
