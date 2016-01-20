@@ -661,4 +661,55 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 	public void setLaborActive(boolean active) {
 		this.setActive(active, StaticValues.MKT_LABOR);		
 	}
+
+	/**
+	 * @return the aggregateCreditComputer
+	 */
+	public TotalCreditComputer getAggregateCreditComputer() {
+		return aggregateCreditComputer;
+	}
+
+	/**
+	 * @param aggregateCreditComputer the aggregateCreditComputer to set
+	 */
+	public void setAggregateCreditComputer(
+			TotalCreditComputer aggregateCreditComputer) {
+		this.aggregateCreditComputer = aggregateCreditComputer;
+	}
+
+	/**
+	 * @return the nominalGdpComputer
+	 */
+	public NominalGDPComputer getNominalGdpComputer() {
+		return nominalGdpComputer;
+	}
+
+	/**
+	 * @param nominalGdpComputer the nominalGdpComputer to set
+	 */
+	public void setNominalGdpComputer(NominalGDPComputer nominalGdpComputer) {
+		this.nominalGdpComputer = nominalGdpComputer;
+	}
+
+	/**
+	 * @return the avpComputer
+	 */
+	public AveragePriceComputer getAvpComputer() {
+		return avpComputer;
+	}
+
+	/**
+	 * @param avpComputer the avpComputer to set
+	 */
+	public void setAvpComputer(AveragePriceComputer avpComputer) {
+		this.avpComputer = avpComputer;
+	}
+
+	/**
+	 * @param interestsReceived the interestsReceived to set
+	 */
+	public void setInterestsReceived(double interestsReceived) {
+		this.interestsReceived = interestsReceived;
+	}
+	
 }

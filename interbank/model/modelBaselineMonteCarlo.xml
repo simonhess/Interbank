@@ -23,6 +23,21 @@
 						<util:constant static-field="interbank.StaticValues.LAG_NONPERFORMINGLOANS" />
 					</key>
 				</entry>
+				<entry value-ref="pastAggCredit">
+					<key>
+						<util:constant static-field="interbank.StaticValues.LAG_AGGCREDIT" />
+					</key>
+				</entry>
+				<entry value-ref="pastNomGDP">
+					<key>
+						<util:constant static-field="interbank.StaticValues.LAG_NOMINALGDP" />
+					</key>
+				</entry>
+				<entry value-ref="pastInflation">
+					<key>
+						<util:constant static-field="interbank.StaticValues.LAG_INFLATION" />
+					</key>
+				</entry>
 			</map>
 		</property>
 		<property name="markets">
@@ -199,6 +214,18 @@
 	</bean>
 
 	<bean id="pastUnemployment" class="jmab.expectations.TreeMapPassedValues"
+		scope="simulation">
+		<property name="nbLags" value="4"></property>
+	</bean>
+	<bean id="pastAggCredit" class="jmab.expectations.TreeMapPassedValues"
+		scope="simulation">
+		<property name="nbLags" value="4"></property>
+	</bean>
+	<bean id="pastNomGDP" class="jmab.expectations.TreeMapPassedValues"
+		scope="simulation">
+		<property name="nbLags" value="4"></property>
+	</bean>
+	<bean id="pastInflation" class="jmab.expectations.TreeMapPassedValues"
 		scope="simulation">
 		<property name="nbLags" value="4"></property>
 	</bean>
@@ -3397,7 +3424,7 @@
 	</bean>
 
 	<bean id="banksBankSpecificLoanInterestStrategy" scope="prototype"
-		parent="strategy" class="	">
+		parent="strategy" class="interbank.CopyOfAdaptiveInterestRateAverageThreshold">
 		<property name="distribution" ref="foldedNormal1" />
 		<property name="mktId">
 			<util:constant static-field="interbank.StaticValues.MKT_CREDIT" />
@@ -3864,6 +3891,9 @@
 		<property name="turnoverLabor" ref="turnoverVal" />
 		<property name="unemploymentBenefit" value="0.4" />
 		<property name="uComputer" ref="unemploymentComputer" />
+		<property name="aggregateCreditComputer" ref="totalCreditComputer"/>
+		<property name="nominalGdpComputer" ref="nominalGDPComputer"/>
+		<property name="avpComputer" ref="cAvPriceComputer"/>
 		<property name="taxedPopulations">
 			<list>
 				<util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID" />
@@ -3872,6 +3902,11 @@
 				<util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID" />
 			</list>
 		</property>
+	</bean>
+
+	<bean id="totalCreditComputer" class="interbank.report.TotalCreditComputer">
+		<property name="banksId"><util:constant static-field="interbank.StaticValues.BANKS_ID" /></property>
+		<property name="loansId"><util:constant static-field="interbank.StaticValues.SM_LOAN" /></property>
 	</bean>
 
 	<bean id="governmentMacroStrategy" scope="prototype"
