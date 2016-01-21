@@ -5,8 +5,6 @@ package interbank.strategies;
 
 import interbank.agents.CentralBank;
 import jmab.population.MacroPopulation;
-import net.sourceforge.jabm.EventScheduler;
-import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
 /**
@@ -27,8 +25,7 @@ public class MonetaryMarkUpBankRate extends AbstractStrategy implements
 		double bankRate = agent.getReserveInterestRate();
 		double markUp = agent.getMonetaryMarkUp();
 		// apply mark-up to deposit rate
-		double AdvancesRate = bankRate + markUp;
-		return 0;
+		return bankRate + markUp;
 	}
 
 	
