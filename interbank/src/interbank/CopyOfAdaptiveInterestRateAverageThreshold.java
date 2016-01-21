@@ -56,7 +56,7 @@ public class CopyOfAdaptiveInterestRateAverageThreshold extends AbstractStrategy
 			double inter=0;
 			for (Agent b:banks.getAgents()){
 				Bank bank = (Bank) b;
-				tot+=bank.getLiquidityRatio();
+				tot+=bank.getTargetedLiquidityRatio();
 				inter+=bank.getPassedValue(StaticValues.LAG_DEPOSITINTEREST, 1);
 				}
 			threshold=tot/banks.getSize();
