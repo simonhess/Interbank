@@ -51,6 +51,7 @@ import cern.jet.random.engine.RandomEngine;
  */
 public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser implements MacroAgentInitialiser{
 
+	
 	//Stocks
 	//Households
 	private double hhsDep;
@@ -107,6 +108,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 	private double uniformDistr;
 	private double gr;
 	private double nomGDP;
+	private double infl;
 
 	/* (non-Javadoc)
 	 * @see jmab.init.MacroAgentInitialiser#initialise(jmab.population.MacroPopulation)
@@ -524,10 +526,30 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 		}
 		//TODO: Add Aggregate values, we could use the macrosimulation
 		govt.setAggregateValue(StaticValues.LAG_AGGUNEMPLOYMENT, 0.08*(1+distr.nextDouble()));//TODO
-		govt.setAggregateValue(StaticValues.LAG_INFLATION, 0.03*(1+distr.nextDouble()));//TODO
+		govt.setAggregateValue(StaticValues.LAG_INFLATION, infl*(1+distr.nextDouble()));//TODO
 		govt.setAggregateValue(StaticValues.LAG_AGGCREDIT, csLoans+ksLoans);//TODO
 		govt.setAggregateValue(StaticValues.LAG_NOMINALGDP, nomGDP);//TODO
 	}
+
+	
+	
+	/**
+	 * @return the infl
+	 */
+	public double getInfl() {
+		return infl;
+	}
+
+
+
+	/**
+	 * @param infl the infl to set
+	 */
+	public void setInfl(double infl) {
+		this.infl = infl;
+	}
+
+
 
 	/**
 	 * @return the hhsDep

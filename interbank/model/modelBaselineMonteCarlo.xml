@@ -2194,6 +2194,8 @@
 		<property name="ksOCF" value="189.2146501" />
 		<property name="csOCF" value="2340.255574" />
 		<property name="gr" value="0.0075" />
+		<property name="nomGDP" value="45146.4" />
+		<property name="infl" value="0.0075" />
 	</bean>
 
 
