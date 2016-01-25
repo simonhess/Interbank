@@ -1,7 +1,7 @@
 /**
  * 
  */
-package mechanisms;
+package interbank.mechanisms;
 
 import interbank.StaticValues;
 
@@ -11,7 +11,6 @@ import jmab.agents.CreditDemander;
 import jmab.agents.CreditSupplier;
 import jmab.agents.LiabilitySupplier;
 import jmab.agents.MacroAgent;
-import jmab.goods.Deposit;
 import jmab.goods.Item;
 import jmab.goods.Loan;
 import jmab.mechanisms.AbstractCreditMechanism;

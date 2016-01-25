@@ -3986,6 +3986,8 @@
 				<util:constant static-field="interbank.StaticValues.TIC_COMPUTEEXPECTATIONS" />
 				<util:constant static-field="interbank.StaticValues.TIC_UPDATEEXPECTATIONS" />
 				<util:constant static-field="interbank.StaticValues.TIC_CBBONDSPURCHASES" />
+				<util:constant static-field="interbank.StaticValues.TIC_RESINTERESTS" />
+				<util:constant static-field="interbank.StaticValues.TIC_CBPOLICY" />
 			</list>
 		</property>
 		<property name="expectations">
