@@ -4013,10 +4013,10 @@
 			<util:constant static-field="interbank.StaticValues.SM_CASH" />
 		</property>
 		<!-- From CentralBank class -->
-		<property name="advancesInterestRate" value="0.025" />
+		<property name="advancesInterestRate" value="0.005" />
 		<property name="reserveInterestRate" value="0.001" />
 		<property name="nominalGDP" value="45146.4" />
-		<property name="inflation" value="0.00075" />
+		<property name="inflation" value="0.0075" />
 		<property name="CAR" value="0.179959" />
 		<property name="liquidityRatio" value="0.258026" />
 		<property name="targetCreditToGDP" value="1.5" />
@@ -4024,8 +4024,8 @@
 		<property name="prudentialMarkUp" value="0.0025" />
 		<property name="monetaryMarkUp" value="0.025" />
 		<property name="monetaryPolicyMarkUp" value="0.0025" />
-		<property name="monetaryThreshold" value="0.01" />
-		<property name="targetInflation" value="0.02" />
+		<property name="monetaryThreshold" value="0.0025" />
+		<property name="targetInflation" value="0.0075" />
 	</bean>
 
 	<bean id="expNaturalRate" class="jmab.expectations.SimpleAdaptiveExpectation"
