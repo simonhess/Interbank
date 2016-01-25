@@ -241,7 +241,7 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 			this.determineCBBondsPurchases();
 		else if (event.getTic()==StaticValues.TIC_RESINTERESTS)
 			this.payReservesInterests();
-		else if (event.getTic()==StaticValues.TIC_CBPOLICY)
+		else if (event.getTic()==StaticValues.TIC_CBPOLICY){
 			// added new methods where the central bank determines its policies
 			// by determining both the rates on advances & reserves (monetary)
 			// as well as the supply of reserves and QE (moneteray)
@@ -251,6 +251,7 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 			this.determineAdvancesSupply();
 			//this.quantitativeEasing();
 			this.determineMicroMacroprudentialPolicy();
+		}
 	}
 	
 	// Monetary and macroprudential policy methods
