@@ -588,7 +588,7 @@
 		<property name="prng" ref="prng" />
 	</bean>
 
-	<bean id="interbankMktTransactionMechanism" class="jmab.mechanisms.ConstrainedCreditMechanism"
+	<bean id="interbankMktTransactionMechanism" class="interbank.mechanisms.Interbankcreditmechanism"
 		scope="simulation">
 		<property name="idDepositsSM">
 			<util:constant static-field="interbank.StaticValues.SM_RESERVES" />
@@ -4022,7 +4022,7 @@
 		<property name="targetCreditToGDP" value="1.5" />
 		<property name="prudentialThreshold" value="0.1" />
 		<property name="prudentialMarkUp" value="0.0025" />
-		<property name="monetaryMarkUp" value="0.025" />
+		<property name="monetaryMarkUp" value="0.0025" />
 		<property name="monetaryPolicyMarkUp" value="0.0025" />
 		<property name="monetaryThreshold" value="0.0025" />
 		<property name="targetInflation" value="0.0075" />
