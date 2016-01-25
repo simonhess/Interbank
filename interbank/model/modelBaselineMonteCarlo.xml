@@ -4159,10 +4159,10 @@
 
 	<bean id="reserveRequirementStrategy" scope="prototype"
 		parent="strategy" class="interbank.strategies.TimeVaryingReserveRequirements">
-		<property name="lagNominalGDP">
+		<property name="lagNominalGDP" value="45146.4">
 			<util:constant static-field="interbank.StaticValues.LAG_NOMINALGDP" />
 		</property>
-		<property name="lagTotalCredit">
+		<property name="lagTotalCredit" value="120330.5">
 			<util:constant static-field="interbank.StaticValues.LAG_AGGCREDIT" />
 		</property>
 	</bean>
@@ -4174,10 +4174,10 @@
 
 	<bean id="capitalBufferStrategy" scope="prototype"
 		parent="strategy" class="interbank.strategies.CounterCyclicalCapitalBufferCreditGDP">
-		<property name="lagNominalGDP">
+		<property name="lagNominalGDP" value="45146.4">
 			<util:constant static-field="interbank.StaticValues.LAG_NOMINALGDP" />
 		</property>
-		<property name="lagTotalCredit">
+		<property name="lagTotalCredit" value="120330.5">
 			<util:constant static-field="interbank.StaticValues.LAG_AGGCREDIT" />
 		</property>
 	</bean>
