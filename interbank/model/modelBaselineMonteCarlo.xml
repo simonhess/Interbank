@@ -866,6 +866,12 @@
 			<util:constant static-field="interbank.StaticValues.TIC_CBBONDSPURCHASES" />
 		</property>
 	</bean>
+	<!-- New CBPolicy TIC (Joeri) -->
+	<bean id="cbBondsPolicyTic" class="jmab.events.MacroTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_CBPOLICY" />
+		</property>
+	</bean>
 	<bean id="bondMarket2Tic" class="jmab.events.MarketTicEvent">
 		<property name="tic">
 			<util:constant static-field="interbank.StaticValues.TIC_BONDMARKET2" />
@@ -3591,26 +3597,7 @@
 	</bean>
 
 	<bean id="banksInterbankSupplyStrategy" scope="prototype" parent="strategy"
-		class="interbank.strategies.InterbankSupplyCreditBaselIII">
-		<property name="interbankLoanWeight" value="0.2"></property>
-		<property name="capitalIds">
-			<list>
-			</list>
-		</property>
-		<property name="assetsIds">
-			<list>
-				<util:constant static-field="interbank.StaticValues.SM_LOAN" />
-			</list>
-		</property>
-		<property name="capitalsWeights">
-			<list>
-			</list>
-		</property>
-		<property name="assetsWeights">
-			<list>
-				<value>1</value>
-			</list>
-		</property>
+		class="interbank.strategies.InterbankSupplyDemandLR">
 	</bean>
 
 	<!-- <bean id="banksBankruptcyStrategy" scope="prototype" parent="strategy" 

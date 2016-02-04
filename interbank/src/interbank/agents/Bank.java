@@ -252,8 +252,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 			break;
 		case StaticValues.TIC_INTERBANKDEMANDSUPPLY:
 			determineInterbankAsk();
-			determineInterbankSupply();
-			determineInterbankDemandBasel();
+			determineInterbankSupplyOrDemand();
 			break;
 		}
 
@@ -338,38 +337,33 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 			strategy.bankrupt(); 
 		}
 	}
-
-
-	//New interbank demand function
+	
 	/**
-	 * Determines the interbank loans to be requested at the interbank market 
-	 * in order to meet Basel requirements. 
-	 * This strategy is similar to the advances demand function 
-	 * but plays out before the bank approaches the central bank
+	 * Function to determine how many reserves the bank either demands or supplies
+	 * on the interbank market based on the supply or demand strategy
 	 */
-	private void determineInterbankDemandBasel() {
-		FinanceStrategy strategy = (FinanceStrategy)this.getStrategy(StaticValues.STRATEGY_ADVANCES);
-		this.interbankDemand=strategy.computeCreditDemand(0);//see BaselIIReserveRequirements strategy
-		if(this.interbankDemand>0){ // but where to define demander/supplier!? 
+	private void determineInterbankSupplyOrDemand() {
+		// compute creditsupplyOrDemand
+		SupplyCreditStrategy strategy=(SupplyCreditStrategy)this.getStrategy(StaticValues.STRATEGY_INTERBANKSUPPLY);
+		double interbankSupplyDemand = strategy.computeCreditSupply();
+		// if number is positive set this as interbank supply
+		if (interbankSupplyDemand>0) {
+			setInterbankSupply(interbankSupplyDemand);
+			this.addValue(StaticValues.LAG_TOTINTERBANKSUPPLY, interbankSupplyDemand);
+			if (this.getInterbankSupply()>0){
+				this.setActive(true, StaticValues.MKT_INTERBANK);
+				this.addToMarketPopulation(StaticValues.MKT_INTERBANK, false);
+			}	
+		}
+		// if number is negative set this as interbank demand
+		if (interbankSupplyDemand<0) {
+			this.interbankDemand=interbankSupplyDemand;
 			this.setActive(true, StaticValues.MKT_INTERBANK);
 			this.addToMarketPopulation(StaticValues.MKT_INTERBANK, true);
 		}
 	}
-	// New interbank supply function
-	/**
-	 * Determines the total credit the bank supplies on the interbank market 
-	 * using the interbank supply strategy
-	 */
-	private void determineInterbankSupply() {
-		SupplyCreditStrategy strategy=(SupplyCreditStrategy)this.getStrategy(StaticValues.STRATEGY_INTERBANKSUPPLY);
-		double InterbankSupply = strategy.computeCreditSupply();
-		setInterbankSupply(InterbankSupply);
-		this.addValue(StaticValues.LAG_TOTINTERBANKSUPPLY, InterbankSupply);
-		if (this.getInterbankSupply()>0){
-			this.setActive(true, StaticValues.MKT_INTERBANK);
-			this.addToMarketPopulation(StaticValues.MKT_INTERBANK, false);
-		}	
-	}
+		
+	
 	// getter and setter for determineInterbankSupply
 	public double getInterbankSupply() {
 		return this.interbankSupply;

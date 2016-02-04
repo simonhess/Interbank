@@ -36,7 +36,7 @@ public class CounterCyclicalCapitalBufferCreditGDP extends AbstractStrategy impl
 		double prudentialThreshold = agent.getPrudentialThreshold();
 		double prudentialMarkUp = agent.getPrudentialMarkUp();
 		// then adjust the CAR depending on how far it is above or below target
-		double CreditOfTarget = creditToGDP - targetCreditToGDP;
+		double CreditOfTarget = (creditToGDP - targetCreditToGDP)/creditToGDP;
 		double newCAR;
 		if (CreditOfTarget > prudentialThreshold) {
 			newCAR = currentCAR + prudentialMarkUp;

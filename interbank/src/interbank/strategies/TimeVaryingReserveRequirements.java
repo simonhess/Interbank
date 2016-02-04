@@ -37,8 +37,8 @@ public class TimeVaryingReserveRequirements extends AbstractStrategy implements
 		double currentReserveRequirements = agent.getLiquidityRatio();
 		double prudentialThreshold = agent.getPrudentialThreshold();
 		double prudentialMarkUp = agent.getPrudentialMarkUp();
-		// then adjust the LR depending on how far it is above or below target
-		double CreditOfTarget = creditToGDP - targetCreditToGDP;
+		// then adjust the LR depending on how far (relatively) it is above or below target
+		double CreditOfTarget = (creditToGDP - targetCreditToGDP)/creditToGDP;
 		double newReserveRequirements;
 		if (CreditOfTarget > prudentialThreshold) {
 			newReserveRequirements = currentReserveRequirements + prudentialMarkUp;
