@@ -19,8 +19,8 @@ import interbank.agents.Bank;
 import java.nio.ByteBuffer;
 
 import jmab.expectations.Expectation;
-import jmab.goods.Item;
 import jmab.population.MacroPopulation;
+import jmab.stockmatrix.Item;
 import jmab.strategies.BankruptcyStrategy;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 

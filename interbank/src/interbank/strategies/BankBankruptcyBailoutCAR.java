@@ -21,9 +21,9 @@ import java.nio.ByteBuffer;
 import java.util.List;
 
 import jmab.expectations.Expectation;
-import jmab.goods.Item;
-import jmab.goods.Loan;
 import jmab.population.MacroPopulation;
+import jmab.stockmatrix.Item;
+import jmab.stockmatrix.Loan;
 import jmab.strategies.BankruptcyStrategy;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.SimulationController;

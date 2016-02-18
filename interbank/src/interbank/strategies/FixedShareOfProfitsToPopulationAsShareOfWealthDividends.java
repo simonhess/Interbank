@@ -21,8 +21,8 @@ import java.nio.ByteBuffer;
 
 import jmab.agents.AbstractFirm;
 import jmab.agents.MacroAgent;
-import jmab.goods.Deposit;
 import jmab.population.MacroPopulation;
+import jmab.stockmatrix.Deposit;
 import jmab.strategies.DividendsStrategy;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.SimulationController;

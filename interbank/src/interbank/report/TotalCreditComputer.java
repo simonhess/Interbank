@@ -17,10 +17,10 @@ package interbank.report;
 import java.util.List;
 
 import jmab.agents.MacroAgent;
-import jmab.goods.Item;
 import jmab.population.MacroPopulation;
-import jmab.report.VariableComputer;
+import jmab.report.MacroVariableComputer;
 import jmab.simulations.MacroSimulation;
+import jmab.stockmatrix.Item;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.agent.Agent;
 
@@ -32,7 +32,7 @@ import net.sourceforge.jabm.agent.Agent;
  * number is separated by a hyphen "-". Each cell of the row is given by the concatenation of the following information (separated by 
  * "-"): 1. agent type, 2 list of all the issuers' id of the assets belonging to assetsId.
  */
-public class TotalCreditComputer  implements VariableComputer {
+public class TotalCreditComputer  implements MacroVariableComputer {
 
 	private int banksId;
 	private int loansId;

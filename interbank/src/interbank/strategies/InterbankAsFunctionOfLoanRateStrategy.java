@@ -3,10 +3,10 @@ package interbank.strategies;
 import java.util.List;
 
 import jmab.agents.MacroAgent;
-import jmab.goods.Deposit;
-import jmab.goods.Item;
-import jmab.goods.Loan;
 import jmab.population.MacroPopulation;
+import jmab.stockmatrix.Deposit;
+import jmab.stockmatrix.Item;
+import jmab.stockmatrix.Loan;
 import jmab.strategies.InterestRateStrategy;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 

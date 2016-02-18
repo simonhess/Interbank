@@ -16,7 +16,7 @@ package interbank.report;
 
 import jmab.agents.CreditDemander;
 import jmab.population.MacroPopulation;
-import jmab.report.VariableComputer;
+import jmab.report.MacroVariableComputer;
 import jmab.simulations.MacroSimulation;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.agent.Agent;
@@ -25,7 +25,7 @@ import net.sourceforge.jabm.agent.Agent;
  * @author Alessandro Caiani and Antoine Godin
  *
  */
-public class ConstrainedCreditComputer implements VariableComputer {
+public class ConstrainedCreditComputer implements MacroVariableComputer {
 	private int populationId;
 	private int idLoanSM;
 	/* (non-Javadoc)

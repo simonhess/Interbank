@@ -10,8 +10,8 @@ import interbank.agents.CentralBank;
 import java.util.List;
 
 import jmab.agents.BondSupplier;
-import jmab.goods.Item;
 import jmab.population.MacroPopulation;
+import jmab.stockmatrix.Item;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.SimulationController;
 import net.sourceforge.jabm.strategy.AbstractStrategy;

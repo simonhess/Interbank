@@ -11,11 +11,11 @@ import jmab.agents.CreditDemander;
 import jmab.agents.CreditSupplier;
 import jmab.agents.LiabilitySupplier;
 import jmab.agents.MacroAgent;
-import jmab.goods.Item;
-import jmab.goods.Loan;
 import jmab.mechanisms.AbstractCreditMechanism;
 import jmab.mechanisms.Mechanism;
 import jmab.simulations.MarketSimulation;
+import jmab.stockmatrix.Item;
+import jmab.stockmatrix.Loan;
 
 /**
  * @author Joeri Schasfoort

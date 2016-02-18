@@ -4,8 +4,8 @@ import interbank.agents.Bank;
 
 import java.util.List;
 
-import jmab.goods.Item;
 import jmab.population.MacroPopulation;
+import jmab.stockmatrix.Item;
 import jmab.strategies.SupplyCreditStrategy;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 

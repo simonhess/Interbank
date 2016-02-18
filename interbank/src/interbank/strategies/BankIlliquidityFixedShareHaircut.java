@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import jmab.goods.Item;
 import jmab.population.MacroPopulation;
+import jmab.stockmatrix.Item;
 import net.sourceforge.jabm.EventScheduler;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.SimulationController;
