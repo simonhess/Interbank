@@ -139,18 +139,16 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 				}
 				// pay banks in its own deposits first in then in reserves
 				else if(holder instanceof Bank){
-					Item deposit = getItemStockMatrix(true, StaticValues.SM_DEP, holder);
-					double repaymentBonds = 0; 
+					double paymentDue=bond.getValue()*bond.getInterestRate();
 					if(bond.getAge()==bond.getMaturity()) {
-						repaymentBonds = bond.getValue();
+						paymentDue += bond.getValue();
 						// set bond quantity at 0 knowing that it will be repaid. 
 						bond.setQuantity(0);
-					}
-					interestsBonds+=bond.getValue()*bond.getInterestRate();
-					double paymentDue = repaymentBonds + interestsBonds; 
-					double value = deposit.getValue();
+					} 
 					// try to pay using deposits
 					if (paymentDue > 0) {
+						Item deposit = getItemStockMatrix(true, StaticValues.SM_DEP, holder);
+						double value = deposit.getValue();
 						if (value <= paymentDue) {
 							// pay as much as possible using the deposit account at the bondholding bank
 							deposit.setValue(deposit.getValue()- value);
@@ -163,7 +161,8 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 					// if payments on bonds are not fully made using deposits, use reserves
 					}if (paymentDue > 0) {
 						Item hDep = holder.getItemStockMatrix(true, StaticValues.SM_RESERVES);
-						((LiabilitySupplier) hDep.getLiabilityHolder()).transfer(reserves, hDep, paymentDue);
+						hDep.setValue(hDep.getValue()+paymentDue);
+						reserves.setValue(reserves.getValue()-paymentDue);
 						paymentDue = 0;
 					}
 				}

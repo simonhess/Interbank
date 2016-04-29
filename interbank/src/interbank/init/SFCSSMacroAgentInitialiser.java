@@ -432,7 +432,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 		int bondMat = govt.getBondMaturity();
 		double bBond=this.bsBonds/bSize;
 		int bondPrice = (int)govt.getBondPrice();
-		int nbBondsPerPeriod = (int) bBond/(bondMat*bondPrice);
+		int nbBondsPerPeriod = (int) Math.floor(bBond/(bondMat*bondPrice));
 		double bProfit = this.bsProfits/bSize;
 		double bAdv = this.bsAdv/bSize;
 		for(int i = 0; i<bSize; i++){
