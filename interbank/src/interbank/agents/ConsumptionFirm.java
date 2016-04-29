@@ -14,17 +14,15 @@
  */
 package interbank.agents;
 
-import interbank.StaticValues;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
 
+import interbank.StaticValues;
 import jmab.agents.AbstractFirm;
 import jmab.agents.CreditDemander;
 import jmab.agents.DepositDemander;
@@ -62,6 +60,7 @@ import jmab.strategies.SelectSellerStrategy;
 import jmab.strategies.SelectWorkerStrategy;
 import jmab.strategies.TaxPayerStrategy;
 import net.sourceforge.jabm.agent.Agent;
+import net.sourceforge.jabm.agent.AgentList;
 import net.sourceforge.jabm.event.AgentArrivalEvent;
 import net.sourceforge.jabm.event.RoundFinishedEvent;
 
@@ -215,8 +214,6 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 			if(sim.isFirstStep()){				
 				this.selectedCapitalGoodSuppliers=event.getObjects();
 			}else if(sim.isSecondStep()){
-				InvestmentStrategy strategy1=(InvestmentStrategy) this.getStrategy(StaticValues.STRATEGY_INVESTMENT);
-				this.desiredCapacityGrowth=strategy1.computeDesiredGrowth();
 				int nbSellers = this.selectedCapitalGoodSuppliers.size()+1;//There are nbSellers+1 options for the firm to invest
 				for(int i=0; i<nbSellers&&this.desiredRealCapitalDemand>0&&this.selectedCapitalGoodSuppliers.size()>0;i++){
 					SelectSellerStrategy buyingStrategy = (SelectSellerStrategy) this.getStrategy(StaticValues.STRATEGY_BUYING);
@@ -307,9 +304,12 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 	protected void computeLaborDemand() {
 		
 		int currentWorkers = this.employees.size();
-		Collections.shuffle(employees);
+		AgentList emplPop = new AgentList();
+		for(MacroAgent ag : this.employees)
+			emplPop.add(ag);
+		emplPop.shuffle(prng);
 		for(int i=0;i<this.turnoverLabor*currentWorkers;i++){
-			fireAgent(employees.get(i));
+			fireAgent((MacroAgent)emplPop.get(i));
 		}
 		cleanEmployeeList();
 		currentWorkers = this.employees.size();
@@ -319,10 +319,13 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 			this.laborDemand=nbWorkers-currentWorkers;
 		}else{
 			this.laborDemand=0;
-			Collections.shuffle(this.employees);
 			this.setActive(false, StaticValues.MKT_LABOR);
+			emplPop = new AgentList();
+			for(MacroAgent ag : this.employees)
+				emplPop.add(ag);
+			emplPop.shuffle(prng);
 			for(int i=0;i<currentWorkers-nbWorkers;i++){
-				fireAgent(employees.get(i));
+				fireAgent((MacroAgent)emplPop.get(i));
 			}
 		}
 		if (laborDemand>0){
@@ -420,6 +423,8 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 	 * 
 	 */
 	protected void computeDesiredInvestment(MacroAgent selectedCapitalGoodSupplier) {
+		InvestmentStrategy strategy1=(InvestmentStrategy) this.getStrategy(StaticValues.STRATEGY_INVESTMENT);
+		this.desiredCapacityGrowth=strategy1.computeDesiredGrowth();
 		RealCapitalDemandStrategy strategy2 = (RealCapitalDemandStrategy) this.getStrategy(StaticValues.STRATEGY_CAPITALDEMAND);
 		this.desiredRealCapitalDemand=strategy2.computeRealCapitalDemand(selectedCapitalGoodSupplier);
 		if(desiredRealCapitalDemand>0){
@@ -480,7 +485,8 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 			}
 			ConsumptionGood inventories = (ConsumptionGood)this.getItemStockMatrix(true, this.getProductionStockId());
 			inventories.setQuantity(inventories.getQuantity()+outputQty);
-			inventories.setUnitCost((amortisationCosts+this.getWageBill())/outputQty);
+			if(outputQty>0)
+				inventories.setUnitCost((amortisationCosts+this.getWageBill())/outputQty);
 		}
 		else{
 			List<Item> currentCapitalStock = this.getItemsStockMatrix(true, StaticValues.SM_CAPGOOD);

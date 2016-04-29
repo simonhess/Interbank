@@ -14,14 +14,13 @@
  */
 package interbank.agents;
 
-import interbank.StaticValues;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import interbank.StaticValues;
 import jmab.agents.AbstractHousehold;
 import jmab.agents.DepositDemander;
 import jmab.agents.GoodDemander;
@@ -54,8 +53,8 @@ import net.sourceforge.jabm.event.RoundFinishedEvent;
  */
 @SuppressWarnings("serial")
 public class Households extends AbstractHousehold implements GoodDemander, LaborSupplier,
-		DepositDemander, IncomeTaxPayer, WageSetterWithTargets {
-	
+DepositDemander, IncomeTaxPayer, WageSetterWithTargets {
+
 	private double demand;
 	private double cashAmount;
 	private double depositAmount;
@@ -63,7 +62,7 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 	protected double shareDeposits;
 	protected double interestsReceived;
 	protected double dividendsReceived;
-	
+
 
 	/* (non-Javadoc)
 	 * @see jmab.agents.MacroAgent#onRoundFinished(net.sourceforge.jabm.event.RoundFinishedEvent)
@@ -83,7 +82,7 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 
 	}
 
-	
+
 	/**
 	 * @return the shareDeposits
 	 */
@@ -127,8 +126,8 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 	public double getCashAmount() {
 		return this.cashAmount;
 	}
-	
-	
+
+
 
 	/**
 	 * @return the dividendsReceived
@@ -173,7 +172,7 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 			break;
 		}
 	}
-	
+
 
 	/* (non-Javadoc)
 	 * @see jmab.agents.SimpleAbstractAgent#onTicArrived(int)
@@ -198,7 +197,7 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 			break;
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -224,7 +223,7 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 			qty+=c.getQuantity();
 		}
 		if (qty!=0){
-		price[0]=price[0]/qty;}
+			price[0]=price[0]/qty;}
 		else{
 			price[0]=this.getExpectation(StaticValues.EXPECTATIONS_CONSPRICE).getExpectation();
 		}
@@ -351,12 +350,12 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 	 */
 	@Override
 	public double getNetIncome() {
-			TaxPayerStrategy strategy = (TaxPayerStrategy)this.getStrategy(StaticValues.STRATEGY_TAXES);
-			double taxes=strategy.computeTaxes();
-			if(this.isEmployed()){
+		TaxPayerStrategy strategy = (TaxPayerStrategy)this.getStrategy(StaticValues.STRATEGY_TAXES);
+		double taxes=strategy.computeTaxes();
+		if(this.isEmployed()){
 			return this.getGrossIncome()-taxes;
-			}
-			else{
+		}
+		else{
 			MacroPopulation macroPop = (MacroPopulation) ((SimulationController)this.scheduler).getPopulation();
 			Population households= (Population) macroPop.getPopulation(StaticValues.HOUSEHOLDS_ID);
 			double averageWage=0;
@@ -371,7 +370,7 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 			averageWage=averageWage/employed;
 			GovernmentAntiCyclical gov = (GovernmentAntiCyclical)macroPop.getPopulation(StaticValues.GOVERNMENT_ID).getAgentList().get(0);
 			return gov.getUnemploymentBenefit()*averageWage+this.getGrossIncome()-taxes;
-			}
+		}
 		//return this.getPassedValue(StaticValues.LAG_INCOME, 1);	
 	}
 
@@ -401,7 +400,7 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 		if(this.employer==null){
 			double averageUnemployment = 1;
 			for(int i=1; i<this.employmentWageLag;i++){
-				averageUnemployment+=this.getPassedValue(StaticValues.LAG_EMPLOYED, i);
+				averageUnemployment+=(1-this.getPassedValue(StaticValues.LAG_EMPLOYED, i));
 			}
 			return averageUnemployment/employmentWageLag;
 		}
@@ -433,7 +432,7 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 		else
 			return this.getAggregateValue(StaticValues.LAG_AGGUNEMPLOYMENT, 1);
 	}
-	
+
 	/**
 	 * @return the employer
 	 */
@@ -454,18 +453,18 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 	@Override
 	public void interestPaid(double interests) {
 		this.interestsReceived=interests;
-		
+
 	}
-	
+
 	public double getInterestReceived(){
 		return this.interestsReceived;
 	}
-	
+
 	@Override
 	public double getGrossIncome(){
 		return super.getGrossIncome()+this.interestsReceived+this.dividendsReceived;
 	}
-	
+
 	/**
 	 * Populates the agent characteristics using the byte array content. The structure is as follows:
 	 * [sizeMacroAgentStructure][MacroAgentStructure][demand][cashAmount][depositAmount][shareDeposits][interestReceived][dividendsReceived]
@@ -509,7 +508,7 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 			this.populateStrategies(stratBytes, pop);
 		}
 	}
-	
+
 	/**
 	 * Generates the byte array containing all relevant informations regarding the household agent. The structure is as follows:
 	 * [sizeMacroAgentStructure][MacroAgentStructure][demand][cashAmount][depositAmount][shareDeposits][interestReceived][dividendsReceived]
@@ -589,10 +588,10 @@ public class Households extends AbstractHousehold implements GoodDemander, Labor
 					break;
 				}
 				this.addItemStockMatrix(it, true, stockId);
-				
+
 			}
 		}	
-		
+
 	}
 
 	@Override

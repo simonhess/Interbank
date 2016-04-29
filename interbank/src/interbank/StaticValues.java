@@ -34,6 +34,7 @@ public interface StaticValues {
 	public static int TIC_LABORSUPPLY=11;
 	public static int TIC_LABORDEMAND=12;
 	public static int TIC_GOVERNMENTLABOR=13;
+	public static int TIC_CBPOLICY=1311;
 	public static int TIC_LABORMARKET=14;
 	public static int TIC_PRODUCTION=15;
 	public static int TIC_RDOUTCOME=16;
@@ -159,9 +160,6 @@ public interface StaticValues {
 	public static int TIC_AVNETINCOMEREPORT=135;
 	public static int TIC_CAGGCONSCREDITREPORT=136;
 	public static int TIC_KAGGCONSCREDITREPORT=137;
-	public static int TIC_POPULATIONHANDLER=1000;
-	public static int TIC_UPDATEEXPECTATIONS=1001;
-	public static int TIC_SERIALIZATION=1002;
 	// New Interbank TICs:
 	public static int TIC_INTERBANKDEMANDSUPPLY=138;
 	public static int TIC_INTERBANKMARKET=140;
@@ -179,8 +177,21 @@ public interface StaticValues {
 	public static int TIC_MICROTOTINTERBANKCREDITOBTAINEDREPORT=151;
 	public static int TIC_MICROAVINTERBANKRATEREPORT=152;
 	public static int TIC_MICROTOTCONSTRAINEDINTERBANKCREDITREPORT=153;
-	public static int TIC_CBPOLICY=154;
+	public static int TIC_MICROINTERBANKRATEREPORT=154;
+	public static int TIC_MICROINTERBANKDEMANDREPORT=155;
+	public static int TIC_MICROINTERBANKSUPPLYREPORT=156;
+	public static int TIC_MICROTARGETEDCRREPORT=157;
+	public static int TIC_MICROTARGETEDLRREPORT=158;
+	public static int TIC_MICROCBBANKRATEREPORT=159;
+	public static int TIC_MICROCBADVRATEREPORT=160;
+	public static int TIC_MICROCBCRREPORT=161;
+	public static int TIC_MICROCBLRREPORT=162;
+	public static int TIC_MICROGOVBONDRATEREPORT=163;
+	public static int TIC_MICROHHEMPLOYERREPORT=164;
 
+	public static int TIC_POPULATIONHANDLER=1000;
+	public static int TIC_UPDATEEXPECTATIONS=1001;
+	public static int TIC_SERIALIZATION=1002;
 
 	
 	public static int EXPECTATIONS_NOMINALSALES=0;
@@ -402,6 +413,17 @@ public interface StaticValues {
 	public static int MICROTOTINTERBANKSUPPLY_ID=108;
 	public static int MICROTOTINTERBANKCREDITOBTAINED_ID=109;
 	public static int MICROTOTCONSTRAINEDINTERBANKCREDIT_ID=110;
+	public static int MICROINTERBANKRATEREPORT_ID=111;
+	public static int MICROINTERBANKDEMANDREPORT_ID=112;
+	public static int MICROINTERBANKSUPPLYREPORT_ID=113;
+	public static int MICROTARGETEDCRREPORT_ID=114;
+	public static int MICROTARGETEDLRREPORT_ID=115;
+	public static int MICROCBBANKRATEREPORT_ID=116;
+	public static int MICROCBADVRATEREPORT_ID=117;
+	public static int MICROCBCRREPORT_ID=118;
+	public static int MICROCBLRREPORT_ID=119;
+	public static int MICROGOVBONDRATEREPORT_ID=120;
+	public static int MICROHHEMPLOYERREPORT_ID=121;
 
 
 

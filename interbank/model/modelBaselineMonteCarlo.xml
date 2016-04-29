@@ -69,6 +69,7 @@
 				<ref bean="laborSupplyTic" />
 				<ref bean="laborDemandTic" />
 				<ref bean="governmentLaborTic" />
+				<ref bean="cbBondsPolicyTic" />
 				<ref bean="laborMarketTic" />
 				<ref bean="productionTic" />
 				<ref bean="rdOutcomeTic" />
@@ -182,7 +183,18 @@
 				<ref bean="microTotalInterBankCreditObtainedReportTic" />
 				<ref bean="microAverageInterBankAskRateReportTic" />
 				<ref bean="microTotalInterBankConstrainedCreditReportTic" />
-				<ref bean="microTotalInterBankDebtServiceReportTic" />
+				<ref bean="microInterbankRateEventReportTic" />
+				<ref bean="microInterbankDemandEventReportTic" />
+				<ref bean="microInterbankSupplyEventReportTic" />
+				<ref bean="microBanksTargtedCREventReportTic" />
+				<ref bean="microBanksTargtedLREventReportTic" />
+				<ref bean="microCBBankRateEventReportTic" />
+				<ref bean="microCBAdvancesRateEventReportTic" />
+				<ref bean="microCBCREventReportTic" />
+				<ref bean="microCBLREventReportTic" />
+				<ref bean="microGovBondRateEventReportTic" />
+				<ref bean="microHHEmployerEventReportTic" />
+				
 				<!-- End of New interbank reporter TICs -->
 				<ref bean="BSNetworkReportTic" />
 				<ref bean="populationHandlerTic" />
@@ -2159,6 +2171,128 @@
 		<property name="variableName" value="BSNET"></property>
 		<property name="computer" ref="BSNetworkComputer"></property>
 	</bean>
+	
+	<bean id="microInterbankRateEventReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROINTERBANKRATEREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROINTERBANKRATEREPORT_ID" />
+		</property>
+		<property name="variableName" value="Banks Interbank Interbank Rate"></property>
+		<property name="computer" ref="microInterbankRateComputer"></property>
+	</bean>
+
+	<bean id="microInterbankDemandEventReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROINTERBANKDEMANDREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROINTERBANKDEMANDREPORT_ID" />
+		</property>
+		<property name="variableName" value="Banks Interbank Demand"></property>
+		<property name="computer" ref="microInterbankDemandComputer"></property>
+	</bean>
+
+	<bean id="microInterbankSupplyEventReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROINTERBANKSUPPLYREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROINTERBANKSUPPLYREPORT_ID" />
+		</property>
+		<property name="variableName" value="Banks Interbank Supply"></property>
+		<property name="computer" ref="microInterbankSupplyComputer"></property>
+	</bean>
+	
+	<bean id="microBanksTargtedCREventReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROTARGETEDCRREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROTARGETEDCRREPORT_ID" />
+		</property>
+		<property name="variableName" value="Banks Targeted CR"></property>
+		<property name="computer" ref="microBanksTargtedCRComputer"></property>
+	</bean>
+	
+	<bean id="microBanksTargtedLREventReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROTARGETEDLRREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROTARGETEDLRREPORT_ID" />
+		</property>
+		<property name="variableName" value="Banks Targeted LR"></property>
+		<property name="computer" ref="microBanksTargtedLRComputer"></property>
+	</bean>
+	
+	<bean id="microCBBankRateEventReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROCBBANKRATEREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROCBBANKRATEREPORT_ID" />
+		</property>
+		<property name="variableName" value="Central Bank Bank rate"></property>
+		<property name="computer" ref="microCBBankRateComputer"></property>
+	</bean>
+	
+	<bean id="microCBAdvancesRateEventReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROCBADVRATEREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROCBADVRATEREPORT_ID" />
+		</property>
+		<property name="variableName" value="Central Bank Advance rate"></property>
+		<property name="computer" ref="microCBAdvancesRateComputer"></property>
+	</bean>
+
+	<bean id="microCBCREventReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROCBCRREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROCBCRREPORT_ID" />
+		</property>
+		<property name="variableName" value="Central Bank Required CR"></property>
+		<property name="computer" ref="microCBCRComputer"></property>
+	</bean>	
+
+	<bean id="microCBLREventReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROCBLRREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROCBLRREPORT_ID" />
+		</property>
+		<property name="variableName" value="Central Bank Required LR"></property>
+		<property name="computer" ref="microCBLRComputer"></property>
+	</bean>	
+	
+	<bean id="microGovBondRateEventReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROGOVBONDRATEREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROGOVBONDRATEREPORT_ID" />
+		</property>
+		<property name="variableName" value="Government Bond Rate"></property>
+		<property name="computer" ref="microGovBondRateComputer"></property>
+	</bean>
+
+	<bean id="microHHEmployerEventReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROHHEMPLOYERREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROHHEMPLOYERREPORT_ID" />
+		</property>
+		<property name="variableName" value="Households Employer"></property>
+		<property name="computer" ref="microHHEmployerComputer"></property>
+	</bean>
+
 
 	<!-- The basic initialiser of agents -->
 	<bean id="sfcAgentsInitialiser" class="interbank.init.SFCSSMacroAgentInitialiser">
@@ -2202,6 +2336,7 @@
 		<property name="gr" value="0.0075" />
 		<property name="nomGDP" value="45146.4" />
 		<property name="infl" value="0.0075" />
+		<property name="gEmpl" value="1360" />
 	</bean>
 
 
@@ -2661,10 +2796,8 @@
 		</property>
 	</bean>
 
-	<bean id="prng" class="cern.jet.random.engine.MersenneTwister64">
-		<constructor-arg>
-			<bean class="java.util.Date" />
-		</constructor-arg>
+	<bean id="prng" class="net.sourceforge.jabm.prng.MersenneTwister">
+		<property name="seed" value="1"/>
 	</bean>
 
 	<bean id="capitalRDOutcomeStrategy" scope="prototype" parent="strategy"
@@ -2906,6 +3039,7 @@
 		<property name="loanLength" value="20" />
 		<property name="loanAmortizationType" value="0" />
 		<property name="turnoverLabor" ref="turnoverVal" />
+		<property name="prng" ref="prng" />
 		<property name="shareOfExpIncomeAsDeposit" value="1" />
 		<property name="minWageDiscount" value="1" />
 
@@ -3572,6 +3706,7 @@
 		<property name="depositExpectationId">
 			<util:constant static-field="interbank.StaticValues.EXPECTATIONS_DEPOSITS" />
 		</property>
+		<property name="prng" ref="prng"/>
 	</bean>
 
 	<bean id="banksInterbankRateStrategy" scope="prototype" parent="strategy"
@@ -3877,6 +4012,7 @@
 		<property name="bondInterestRate" value="0.0025" />
 		<property name="bondPrice" value="1.0" />
 		<property name="fixedLaborDemand" value="1360" />
+		<property name="prng" ref="prng" />
 		<property name="turnoverLabor" ref="turnoverVal" />
 		<property name="unemploymentBenefit" value="0.4" />
 		<property name="uComputer" ref="unemploymentComputer" />

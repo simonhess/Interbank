@@ -14,15 +14,13 @@
  */
 package interbank.agents;
 
-import interbank.StaticValues;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import interbank.StaticValues;
 import jmab.agents.AbstractFirm;
 import jmab.agents.CreditDemander;
 import jmab.agents.DepositDemander;
@@ -57,6 +55,7 @@ import jmab.strategies.SelectWorkerStrategy;
 import jmab.strategies.TaxPayerStrategy;
 import jmab.strategies.UpdateInventoriesProductivityStrategy;
 import net.sourceforge.jabm.agent.Agent;
+import net.sourceforge.jabm.agent.AgentList;
 import net.sourceforge.jabm.event.AgentArrivalEvent;
 import net.sourceforge.jabm.event.RoundFinishedEvent;
 
@@ -411,7 +410,8 @@ public class CapitalFirm extends AbstractFirm implements GoodSupplier,
 			}
 			CapitalGood inventories = (CapitalGood)this.getItemStockMatrix(true, this.getProductionStockId());
 			inventories.setQuantity(inventories.getQuantity()+outputQty);
-			inventories.setUnitCost(this.getWageBill()/outputQty);
+			if(outputQty>0)
+				inventories.setUnitCost(this.getWageBill()/outputQty);
 		}
 		this.addValue(StaticValues.LAG_PRODUCTION, outputQty);
 	}
@@ -423,9 +423,12 @@ public class CapitalFirm extends AbstractFirm implements GoodSupplier,
 	protected void computeLaborDemand() {
 		
 		int currentWorkers = this.employees.size();
-		Collections.shuffle(employees);
+		AgentList emplPop = new AgentList();
+		for(MacroAgent ag : this.employees)
+			emplPop.add(ag);
+		emplPop.shuffle(prng);
 		for(int i=0;i<this.turnoverLabor*currentWorkers;i++){
-			fireAgent(employees.get(i));
+			fireAgent((MacroAgent)emplPop.get(i));
 		}
 		cleanEmployeeList();
 		currentWorkers = this.employees.size();
@@ -438,9 +441,12 @@ public class CapitalFirm extends AbstractFirm implements GoodSupplier,
 		}else{
 			this.setActive(false, StaticValues.MKT_LABOR);
 			this.laborDemand=0;
-			Collections.shuffle(this.employees);
+			emplPop = new AgentList();
+			for(MacroAgent ag : this.employees)
+				emplPop.add(ag);
+			emplPop.shuffle(prng);
 			for(int i=0;i<currentWorkers-nbWorkers;i++){
-				fireAgent(employees.get(i));
+				fireAgent((MacroAgent)emplPop.get(i));
 			}
 		}
 		if(this.laborDemand>0)
@@ -535,7 +541,7 @@ public class CapitalFirm extends AbstractFirm implements GoodSupplier,
 	 * @return the number of wrokers needed to produce desired output
 	 */
 	protected int getRequiredWorkers() {
-		return (int) Math.round(this.desiredOutput/this.laborProductivity) ;
+		return (int) Math.ceil(this.desiredOutput/this.laborProductivity) ;
 	}
 
 	/**

@@ -14,7 +14,6 @@
  */
 package interbank.report;
 
-import interbank.StaticValues;
 import interbank.agents.Bank;
 
 import java.util.Map;
@@ -31,11 +30,11 @@ import net.sourceforge.jabm.agent.Agent;
  * @author Alessandro Caiani and Antoine Godin
  *
  */
-public class MicroBankSpecificInterest extends AbstractMicroComputer implements
+public class MicroBankTargetedLRComputer extends AbstractMicroComputer implements
 		MicroMultipleVariablesComputer {
 
 	private int banksId;
-	private int mktId;
+	
 	
 	
 
@@ -46,6 +45,9 @@ public class MicroBankSpecificInterest extends AbstractMicroComputer implements
 		return banksId;
 	}
 
+
+
+
 	/**
 	 * @param banksId the banksId to set
 	 */
@@ -53,13 +55,8 @@ public class MicroBankSpecificInterest extends AbstractMicroComputer implements
 		this.banksId = banksId;
 	}
 
-	public int getMktId() {
-		return mktId;
-	}
 
-	public void setMktId(int mktId) {
-		this.mktId = mktId;
-	}
+
 
 	/* (non-Javadoc)
 	 * @see jmab.report.MicroMultipleVariablesComputer#computeVariables(jmab.simulations.MacroSimulation)
@@ -72,7 +69,7 @@ public class MicroBankSpecificInterest extends AbstractMicroComputer implements
 		for (Agent i:pop.getAgents()){
 			Bank bank= (Bank) i;
 			if (!bank.isDead()){
-				result.put(bank.getAgentId(), (bank.getInterestRate(mktId)));
+				result.put(bank.getAgentId(), bank.getTargetedLiquidityRatio());
 			}
 			else{
 				result.put(bank.getAgentId(), Double.NaN);

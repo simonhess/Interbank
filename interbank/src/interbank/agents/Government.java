@@ -14,16 +14,15 @@
  */
 package interbank.agents;
 
-import interbank.StaticValues;
-import interbank.report.TotalCreditComputer;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import cern.jet.random.engine.RandomEngine;
+import interbank.StaticValues;
+import interbank.report.TotalCreditComputer;
 import jmab.agents.BondDemander;
 import jmab.agents.BondSupplier;
 import jmab.agents.DepositDemander;
@@ -37,7 +36,6 @@ import jmab.events.MacroTicEvent;
 import jmab.population.MacroPopulation;
 import jmab.report.AveragePriceComputer;
 import jmab.report.NominalGDPComputer;
-import jmab.report.RealGDPComputer;
 import jmab.report.UnemploymentRateComputer;
 import jmab.simulations.MacroSimulation;
 import jmab.stockmatrix.Bond;
@@ -48,6 +46,7 @@ import jmab.strategies.SelectWorkerStrategy;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.SimulationController;
 import net.sourceforge.jabm.agent.Agent;
+import net.sourceforge.jabm.agent.AgentList;
 import net.sourceforge.jabm.event.AgentArrivalEvent;
 import net.sourceforge.jabm.event.RoundFinishedEvent;
 
@@ -74,6 +73,7 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 	protected double wageBill;
 	protected double totInterestsBonds;
 	protected double interestsReceived;
+	protected RandomEngine prng;
 	
 	
 	/**
@@ -291,9 +291,12 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 		}else{
 			this.setActive(false, StaticValues.MKT_LABOR);
 			this.laborDemand=0;
-			Collections.shuffle(this.employees);
+			AgentList emplPop = new AgentList();
+			for(MacroAgent ag : this.employees)
+				emplPop.add(ag);
+			emplPop.shuffle(prng);
 			for(int i=0;i<currentWorkers-nbWorkers;i++){
-				fireAgent(employees.get(i));
+				fireAgent((MacroAgent)emplPop.get(i));
 			}
 		}
 		cleanEmployeeList();
@@ -306,10 +309,14 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 	}
 
 	protected void payWages(Item payingItem, int idMarket) {
-		Collections.shuffle(this.employees);
 		double wages=0;
-		for(int i=0;i<employees.size();i++){
-			LaborSupplier employee = (LaborSupplier) employees.get(i);
+		int currentWorkers = this.employees.size();
+		AgentList emplPop = new AgentList();
+		for(MacroAgent ag : this.employees)
+			emplPop.add(ag);
+		emplPop.shuffle(prng);
+		for(int i=0;i<currentWorkers;i++){
+			LaborSupplier employee = (LaborSupplier) emplPop.get(i);
 			double wage = employee.getWage();
 			Item payableStock = employee.getPayableStock(idMarket);
 			LiabilitySupplier payingSupplier = (LiabilitySupplier) payingItem.getLiabilityHolder();
@@ -711,5 +718,14 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 	public void setInterestsReceived(double interestsReceived) {
 		this.interestsReceived = interestsReceived;
 	}
+
+	public RandomEngine getPrng() {
+		return prng;
+	}
+
+	public void setPrng(RandomEngine prng) {
+		this.prng = prng;
+	}
+	
 	
 }

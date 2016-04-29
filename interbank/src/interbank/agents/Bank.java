@@ -350,13 +350,11 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 		if (interbankSupplyDemand>0) {
 			setInterbankSupply(interbankSupplyDemand);
 			this.addValue(StaticValues.LAG_TOTINTERBANKSUPPLY, interbankSupplyDemand);
-			if (this.getInterbankSupply()>0){
-				this.setActive(true, StaticValues.MKT_INTERBANK);
-				this.addToMarketPopulation(StaticValues.MKT_INTERBANK, false);
-			}	
+			this.setActive(true, StaticValues.MKT_INTERBANK);
+			this.addToMarketPopulation(StaticValues.MKT_INTERBANK, false);
 		}
 		// if number is negative set this as interbank demand
-		if (interbankSupplyDemand<0) {
+		else if (interbankSupplyDemand<0) {
 			this.interbankDemand=interbankSupplyDemand;
 			this.setActive(true, StaticValues.MKT_INTERBANK);
 			this.addToMarketPopulation(StaticValues.MKT_INTERBANK, true);

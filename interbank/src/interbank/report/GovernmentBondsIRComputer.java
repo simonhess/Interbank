@@ -14,12 +14,10 @@
  */
 package interbank.report;
 
-import interbank.StaticValues;
-import interbank.agents.Bank;
-
 import java.util.Map;
 import java.util.TreeMap;
 
+import interbank.agents.GovernmentAntiCyclical;
 import jmab.population.MacroPopulation;
 import jmab.report.AbstractMicroComputer;
 import jmab.report.MicroMultipleVariablesComputer;
@@ -31,55 +29,31 @@ import net.sourceforge.jabm.agent.Agent;
  * @author Alessandro Caiani and Antoine Godin
  *
  */
-public class MicroBankSpecificInterest extends AbstractMicroComputer implements
-		MicroMultipleVariablesComputer {
+public class GovernmentBondsIRComputer extends AbstractMicroComputer implements MicroMultipleVariablesComputer {
 
-	private int banksId;
-	private int mktId;
+	private int govId;
 	
-	
-
-	/**
-	 * @return the banksId
-	 */
-	public int getBanksId() {
-		return banksId;
-	}
-
-	/**
-	 * @param banksId the banksId to set
-	 */
-	public void setBanksId(int banksId) {
-		this.banksId = banksId;
-	}
-
-	public int getMktId() {
-		return mktId;
-	}
-
-	public void setMktId(int mktId) {
-		this.mktId = mktId;
-	}
-
 	/* (non-Javadoc)
 	 * @see jmab.report.MicroMultipleVariablesComputer#computeVariables(jmab.simulations.MacroSimulation)
 	 */
 	@Override
 	public Map<Long, Double> computeVariables(MacroSimulation sim) {
 		MacroPopulation macroPop = (MacroPopulation) sim.getPopulation();
-		Population pop = macroPop.getPopulation(banksId);
+		Population pop = macroPop.getPopulation(govId);
 		TreeMap<Long,Double> result=new TreeMap<Long,Double>();
 		for (Agent i:pop.getAgents()){
-			Bank bank= (Bank) i;
-			if (!bank.isDead()){
-				result.put(bank.getAgentId(), (bank.getInterestRate(mktId)));
-			}
-			else{
-				result.put(bank.getAgentId(), Double.NaN);
-			}
+			GovernmentAntiCyclical gov=(GovernmentAntiCyclical)i;
+			result.put(gov.getAgentId(), gov.getBondInterestRate());
 		}
 		return result;
 	}
 
+	public int getGovId() {
+		return govId;
+	}
 
+	public void setGovId(int govId) {
+		this.govId = govId;
+	}
+	
 }

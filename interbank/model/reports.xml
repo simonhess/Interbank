@@ -5004,6 +5004,582 @@
 	<property name="reportVariables" ref="microTotalInterBankDebtServiceReportVariables"/>
 </bean>
 
+<!-- ANTOINE ADD 28 APRIL 2016 -->
+<!--Interbank Ask Rates -->
+
+<bean id="microInterbankRateComputer" class="jmab.report.MicroBankSpecificInterest">
+	<property name="banksId">
+	        <util:constant static-field="interbank.StaticValues.BANKS_ID"/>
+	</property>
+	<property name="mktId">
+	        <util:constant static-field="interbank.StaticValues.MKT_INTERBANK"/>
+	</property>
+</bean>
+
+<bean id="microInterbankRateEventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROINTERBANKRATEREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microInterbankRateTimeSeries"/>
+</bean>
+
+<bean id="microInterbankRateCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROINTERBANKRATEREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microInterbankRateCSVReportVariables"/>
+</bean>
+
+<bean id="microInterbankRateCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microInterbankRateReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="microInterbankRate" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microInterbankRateReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Interbank ask rate per bank"/>
+	<property name="numberOfSeries" value="10"/>
+</bean>
+
+<bean id="microInterbankRateTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microInterbankRateTimeSeries"/>
+	<property name="chartTitle" value="Interbank Ask Rate"/>
+	<property name="rangeAxisLabel" value="Banks"/>
+</bean>
+
+<bean id="microInterbankRateTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microInterbankRateReportVariables"/>
+</bean>
+
+<!--Interbank Demand -->
+
+<bean id="microInterbankDemandComputer" class="interbank.report.MicroBankInterbankDemandComputer">
+	<property name="banksId">
+	        <util:constant static-field="interbank.StaticValues.BANKS_ID"/>
+	</property>
+</bean>
+
+<bean id="microInterbankDemandEventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROINTERBANKDEMANDREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microInterbankDemandTimeSeries"/>
+</bean>
+
+<bean id="microInterbankDemandCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROINTERBANKDEMANDREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microInterbankDemandCSVReportVariables"/>
+</bean>
+
+<bean id="microInterbankDemandCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microInterbankDemandReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="microInterbankDemand" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microInterbankDemandReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Interbank Demand per bank"/>
+	<property name="numberOfSeries" value="10"/>
+</bean>
+
+<bean id="microInterbankDemandTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microInterbankDemandTimeSeries"/>
+	<property name="chartTitle" value="Interbank Demand"/>
+	<property name="rangeAxisLabel" value="Banks"/>
+</bean>
+
+<bean id="microInterbankDemandTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microInterbankDemandReportVariables"/>
+</bean>
+
+<!--Interbank Supply -->
+
+<bean id="microInterbankSupplyComputer" class="interbank.report.MicroBankInterbankSupplyComputer">
+	<property name="banksId">
+	        <util:constant static-field="interbank.StaticValues.BANKS_ID"/>
+	</property>
+</bean>
+
+<bean id="microInterbankSupplyEventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROINTERBANKSUPPLYREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microInterbankSupplyTimeSeries"/>
+</bean>
+
+<bean id="microInterbankSupplyCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROINTERBANKSUPPLYREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microInterbankSupplyCSVReportVariables"/>
+</bean>
+
+<bean id="microInterbankSupplyCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microInterbankSupplyReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="microInterbankSupply" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microInterbankSupplyReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Interbank Supply per bank"/>
+	<property name="numberOfSeries" value="10"/>
+</bean>
+
+<bean id="microInterbankSupplyTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microInterbankSupplyTimeSeries"/>
+	<property name="chartTitle" value="Interbank Supply"/>
+	<property name="rangeAxisLabel" value="Banks"/>
+</bean>
+
+<bean id="microInterbankSupplyTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microInterbankSupplyReportVariables"/>
+</bean>
+
+<!--Targeted CR -->
+
+<bean id="microBanksTargtedCRComputer" class="interbank.report.MicroBankTargetedCRComputer">
+	<property name="banksId">
+	        <util:constant static-field="interbank.StaticValues.BANKS_ID"/>
+	</property>
+</bean>
+
+<bean id="microBanksTargtedCREventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROTARGETEDCRREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microBanksTargtedCRTimeSeries"/>
+</bean>
+
+<bean id="microBanksTargtedCRCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROTARGETEDCRREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microBanksTargtedCRCSVReportVariables"/>
+</bean>
+
+<bean id="microBanksTargtedCRCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microBanksTargtedCRReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="microBanksTargtedCR" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microBanksTargtedCRReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Targeted Capital Ratio per bank"/>
+	<property name="numberOfSeries" value="10"/>
+</bean>
+
+<bean id="microBanksTargtedCRTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microBanksTargtedCRTimeSeries"/>
+	<property name="chartTitle" value="Targeted Capital Ratio"/>
+	<property name="rangeAxisLabel" value="Banks"/>
+</bean>
+
+<bean id="microBanksTargtedCRTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microBanksTargtedCRReportVariables"/>
+</bean>
+
+<!--Targeted LR -->
+
+<bean id="microBanksTargtedLRComputer" class="interbank.report.MicroBankTargetedLRComputer">
+	<property name="banksId">
+	        <util:constant static-field="interbank.StaticValues.BANKS_ID"/>
+	</property>
+</bean>
+
+<bean id="microBanksTargtedLREventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROTARGETEDLRREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microBanksTargtedLRTimeSeries"/>
+</bean>
+
+<bean id="microBanksTargtedLRCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROTARGETEDLRREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microBanksTargtedLRCSVReportVariables"/>
+</bean>
+
+<bean id="microBanksTargtedLRCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microBanksTargtedLRReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="microBanksTargtedLR" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microBanksTargtedLRReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Targeted Liquidity Ratio per bank"/>
+	<property name="numberOfSeries" value="10"/>
+</bean>
+
+<bean id="microBanksTargtedLRTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microBanksTargtedLRTimeSeries"/>
+	<property name="chartTitle" value="Targeted Liquidity Ratio"/>
+	<property name="rangeAxisLabel" value="Banks"/>
+</bean>
+
+<bean id="microBanksTargtedLRTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microBanksTargtedLRReportVariables"/>
+</bean>
+
+<!--Central Bank Bank Rate -->
+
+<bean id="microCBBankRateComputer" class="interbank.report.CBBankRateComputer">
+	<property name="cbId">
+	        <util:constant static-field="interbank.StaticValues.CB_ID"/>
+	</property>
+</bean>
+
+<bean id="microCBBankRateEventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROCBBANKRATEREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microCBBankRateTimeSeries"/>
+</bean>
+
+<bean id="microCBBankRateCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROCBBANKRATEREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microCBBankRateCSVReportVariables"/>
+</bean>
+
+<bean id="microCBBankRateCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microCBBankRateReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="microCBBankRate" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microCBBankRateReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Central Bank Bank rate"/>
+	<property name="numberOfSeries" value="1"/>
+</bean>
+
+<bean id="microCBBankRateTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microCBBankRateTimeSeries"/>
+	<property name="chartTitle" value="Bank rate"/>
+	<property name="rangeAxisLabel" value="Central Bank"/>
+</bean>
+
+<bean id="microCBBankRateTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microCBBankRateReportVariables"/>
+</bean>
+
+<!--Central Bank Advances Rate -->
+
+<bean id="microCBAdvancesRateComputer" class="interbank.report.CBAdvanceRateComputer">
+	<property name="cbId">
+	        <util:constant static-field="interbank.StaticValues.CB_ID"/>
+	</property>
+</bean>
+
+<bean id="microCBAdvancesRateEventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROCBADVRATEREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microCBAdvancesRateTimeSeries"/>
+</bean>
+
+<bean id="microCBAdvancesRateCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROCBADVRATEREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microCBAdvancesRateCSVReportVariables"/>
+</bean>
+
+<bean id="microCBAdvancesRateCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microCBAdvancesRateReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="microCBAdvancesRate" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microCBAdvancesRateReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Central Bank Advance rate"/>
+	<property name="numberOfSeries" value="1"/>
+</bean>
+
+<bean id="microCBAdvancesRateTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microCBAdvancesRateTimeSeries"/>
+	<property name="chartTitle" value="Advance rate"/>
+	<property name="rangeAxisLabel" value="Central Bank"/>
+</bean>
+
+<bean id="microCBAdvancesRateTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microCBAdvancesRateReportVariables"/>
+</bean>
+
+<!--Central Bank Required CR -->
+
+<bean id="microCBCRComputer" class="interbank.report.CBCARComputer">
+	<property name="cbId">
+	        <util:constant static-field="interbank.StaticValues.CB_ID"/>
+	</property>
+</bean>
+
+<bean id="microCBCREventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROCBCRREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microCBCRTimeSeries"/>
+</bean>
+
+<bean id="microCBCRCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROCBCRREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microCBCRCSVReportVariables"/>
+</bean>
+
+<bean id="microCBCRCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microCBCRReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="microCBCR" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microCBCRReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Central Bank Required CAR"/>
+	<property name="numberOfSeries" value="1"/>
+</bean>
+
+<bean id="microCBCRTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microCBCRTimeSeries"/>
+	<property name="chartTitle" value="Required CAR"/>
+	<property name="rangeAxisLabel" value="Central Bank"/>
+</bean>
+
+<bean id="microCBCRTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microCBCRReportVariables"/>
+</bean>
+
+<!--Central Bank Required LR -->
+
+<bean id="microCBLRComputer" class="interbank.report.CBLRComputer">
+	<property name="cbId">
+	        <util:constant static-field="interbank.StaticValues.CB_ID"/>
+	</property>
+</bean>
+
+<bean id="microCBLREventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROCBLRREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microCBLRTimeSeries"/>
+</bean>
+
+<bean id="microCBLRCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROCBLRREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microCBLRCSVReportVariables"/>
+</bean>
+
+<bean id="microCBLRCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microCBLRReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="microCBLR" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microCBLRReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Central Bank Required LR"/>
+	<property name="numberOfSeries" value="1"/>
+</bean>
+
+<bean id="microCBLRTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microCBLRTimeSeries"/>
+	<property name="chartTitle" value="Required LR"/>
+	<property name="rangeAxisLabel" value="Central Bank"/>
+</bean>
+
+<bean id="microCBLRTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microCBLRReportVariables"/>
+</bean>
+
+<!--Government Bond Rate -->
+
+<bean id="microGovBondRateComputer" class="interbank.report.GovernmentBondsIRComputer">
+	<property name="govId">
+	        <util:constant static-field="interbank.StaticValues.GOVERNMENT_ID"/>
+	</property>
+</bean>
+
+<bean id="microGovBondRateEventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROGOVBONDRATEREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microGovBondRateTimeSeries"/>
+</bean>
+
+<bean id="microGovBondRateCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROGOVBONDRATEREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microGovBondRateCSVReportVariables"/>
+</bean>
+
+<bean id="microGovBondRateCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microGovBondRateReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="microGovBondRate" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microGovBondRateReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Government Bond Rate"/>
+	<property name="numberOfSeries" value="1"/>
+</bean>
+
+<bean id="microGovBondRateTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microGovBondRateTimeSeries"/>
+	<property name="chartTitle" value="Bond Rate"/>
+	<property name="rangeAxisLabel" value="Government"/>
+</bean>
+
+<bean id="microGovBondRateTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microGovBondRateReportVariables"/>
+</bean>
+
+<!--Households Employers -->
+
+<bean id="microHHEmployerComputer" class="jmab.report.MicroEmployerComputer">
+	<property name="populationId">
+	        <util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID"/>
+	</property>
+</bean>
+
+<bean id="microHHEmployerEventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROHHEMPLOYERREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microHHEmployerTimeSeries"/>
+</bean>
+
+<bean id="microHHEmployerCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROHHEMPLOYERREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microHHEmployerCSVReportVariables"/>
+</bean>
+
+<bean id="microHHEmployerCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microHHEmployerReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="microHHEmployer" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microHHEmployerReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Household Employer"/>
+	<property name="numberOfSeries" value="8000"/>
+</bean>
+
+<bean id="microHHEmployerTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microHHEmployerTimeSeries"/>
+	<property name="chartTitle" value="Employer"/>
+	<property name="rangeAxisLabel" value="Households"/>
+</bean>
+
+<bean id="microHHEmployerTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microHHEmployerReportVariables"/>
+</bean>
+
 <!-- TFM report -->
 
 <bean id="TFMComputer" class="interbank.report.TFMComputer">
