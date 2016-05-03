@@ -5062,10 +5062,14 @@
 
 <!--Interbank Demand -->
 
-<bean id="microInterbankDemandComputer" class="interbank.report.MicroBankInterbankDemandComputer">
-	<property name="banksId">
+<bean id="microInterbankDemandComputer" class="jmab.report.MicroLaggedValueComputer">
+	<property name="populationId">
 	        <util:constant static-field="interbank.StaticValues.BANKS_ID"/>
 	</property>
+	<property name="lagId">
+	        <util:constant static-field="interbank.StaticValues.LAG_TOTINTERBANKDEMAND"/>
+	</property>
+	<property name="lagNb" value="0"/>
 </bean>
 
 <bean id="microInterbankDemandEventReport" class="jmab.report.MicroSimEventReport">
@@ -5114,10 +5118,14 @@
 
 <!--Interbank Supply -->
 
-<bean id="microInterbankSupplyComputer" class="interbank.report.MicroBankInterbankSupplyComputer">
-	<property name="banksId">
+<bean id="microInterbankSupplyComputer" class="jmab.report.MicroLaggedValueComputer">
+	<property name="populationId">
 	        <util:constant static-field="interbank.StaticValues.BANKS_ID"/>
 	</property>
+	<property name="lagId">
+	        <util:constant static-field="interbank.StaticValues.LAG_TOTINTERBANKSUPPLY"/>
+	</property>
+	<property name="lagNb" value="0"/>
 </bean>
 
 <bean id="microInterbankSupplyEventReport" class="jmab.report.MicroSimEventReport">

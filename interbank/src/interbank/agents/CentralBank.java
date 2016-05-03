@@ -14,17 +14,16 @@
  */
 package interbank.agents;
 
-import interbank.StaticValues;
-import interbank.strategies.MacroPrudentialStrategy;
-import interbank.strategies.MonetaryPolicyStrategy;
-import interbank.strategies.QEStrategy;
-import interbank.strategies.ReservesRateStrategy;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import interbank.StaticValues;
+import interbank.strategies.MacroPrudentialStrategy;
+import interbank.strategies.MonetaryPolicyStrategy;
+import interbank.strategies.QEStrategy;
+import interbank.strategies.ReservesRateStrategy;
 import jmab.agents.AbstractBank;
 import jmab.agents.BondDemander;
 import jmab.agents.BondSupplier;
@@ -82,6 +81,10 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	protected double monetaryPolicyMarkUp;
 	protected double monetaryThreshold;
 	protected double targetInflation;
+	protected double maxReserveRequirement;
+	protected double minReserveRequirement;
+	protected double maxCAR;
+	protected double minCAR;
 	
 	/**
 	 * @return the advancesInterestRate
@@ -678,5 +681,39 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 			}
 		}	
 	}
+
+	public double getMaxReserveRequirement() {
+		return maxReserveRequirement;
+	}
+
+	public void setMaxReserveRequirement(double maxReserveRequirement) {
+		this.maxReserveRequirement = maxReserveRequirement;
+	}
+
+	public double getMinReserveRequirement() {
+		return minReserveRequirement;
+	}
+
+	public void setMinReserveRequirement(double minReserveRequirement) {
+		this.minReserveRequirement = minReserveRequirement;
+	}
+
+	public double getMaxCAR() {
+		return maxCAR;
+	}
+
+	public void setMaxCAR(double maxCAR) {
+		this.maxCAR = maxCAR;
+	}
+
+	public double getMinCAR() {
+		return minCAR;
+	}
+
+	public void setMinCAR(double minCAR) {
+		this.minCAR = minCAR;
+	}
+
+
 	
 }

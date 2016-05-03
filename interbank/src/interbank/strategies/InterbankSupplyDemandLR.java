@@ -14,6 +14,7 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
  * @author Joeri Schasfoort
  * This strategy computes the interbank credit supply or demand based on the liquidity ratio
  */
+@SuppressWarnings("serial")
 public class InterbankSupplyDemandLR extends AbstractStrategy implements
 		SupplyCreditStrategy {
 
@@ -30,9 +31,8 @@ public class InterbankSupplyDemandLR extends AbstractStrategy implements
 		double depositsValue=supplier.getDepositAmount();
 		// get the total amount of current reserves the bank has
 		double actualLiquidityRatio = supplier.getLiquidityRatio();
-		double reservesValue = actualLiquidityRatio * depositsValue;
 		// determine supplyDemand which can be either positive = supply or negative = demand
-		double interbankSupplyDemand = reservesValue - (targetedLiquidityRatio - depositsValue);
+		double interbankSupplyDemand = (actualLiquidityRatio - targetedLiquidityRatio) * depositsValue;
 		return interbankSupplyDemand;
 	}
 	

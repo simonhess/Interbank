@@ -24,25 +24,27 @@ public class CounterCyclicalCapitalBufferCreditGDP extends AbstractStrategy impl
 	 */
 	@Override
 	public double computePolicyTarget() {
-		CentralBank agent= (CentralBank) this.getAgent();
+		CentralBank cb= (CentralBank) this.getAgent();
 		// First calculate the credit to GDP ratio
-		double nominalGDP = agent.getAggregateValue(lagNominalGDP, 1);  
-		double totalCredit = agent.getAggregateValue(lagTotalCredit, 1);
+		double nominalGDP = cb.getAggregateValue(lagNominalGDP, 1);  
+		double totalCredit = cb.getAggregateValue(lagTotalCredit, 1);
 		double creditToGDP=totalCredit/nominalGDP;
 		// Then ask for the target credit to GDP ratio
-		double targetCreditToGDP = agent.getTargetCreditToGDP();
+		double targetCreditToGDP = cb.getTargetCreditToGDP();
 		// ask for the current capital requirements, threshold, and policy markup
-		double currentCAR = agent.getCAR();
-		double prudentialThreshold = agent.getPrudentialThreshold();
-		double prudentialMarkUp = agent.getPrudentialMarkUp();
+		double currentCAR = cb.getCAR();
+		double prudentialThreshold = cb.getPrudentialThreshold();
+		double prudentialMarkUp = cb.getPrudentialMarkUp();
+		double maxCAR = cb.getMaxCAR();
+		double minCAR = cb.getMinCAR();
 		// then adjust the CAR depending on how far it is above or below target
-		double CreditOfTarget = (creditToGDP - targetCreditToGDP)/creditToGDP;
+		double CreditOfTarget = (creditToGDP - targetCreditToGDP)/targetCreditToGDP;
 		double newCAR;
 		if (CreditOfTarget > prudentialThreshold) {
-			newCAR = currentCAR + prudentialMarkUp;
+			newCAR = Math.min(currentCAR + prudentialMarkUp,maxCAR);
 		}
-		if (CreditOfTarget < prudentialThreshold) {
-			newCAR = currentCAR - prudentialMarkUp;
+		if (CreditOfTarget < -prudentialThreshold) {
+			newCAR = Math.max(currentCAR - prudentialMarkUp,minCAR);
 		}
 		else {newCAR = currentCAR;}
 		return newCAR;

@@ -14,6 +14,7 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
  * based on a credit to GDP ratio. If this ratio gets higher the reserve requirements 
  * are increased up to a maxiumum of 2.5% on the base level
  */
+@SuppressWarnings("serial")
 public class TimeVaryingReserveRequirements extends AbstractStrategy implements
 		MacroPrudentialStrategy {
 
@@ -26,25 +27,27 @@ public class TimeVaryingReserveRequirements extends AbstractStrategy implements
 	@Override
 	public double computePolicyTarget() {
 		// cast CB agent
-		CentralBank agent= (CentralBank) this.getAgent();
+		CentralBank cb= (CentralBank) this.getAgent();
 		// First calculate the credit to GDP ratio
-		double nominalGDP = agent.getAggregateValue(lagNominalGDP, 1);  
-		double totalCredit = agent.getAggregateValue(lagTotalCredit, 1);
+		double nominalGDP = cb.getAggregateValue(lagNominalGDP, 1);  
+		double totalCredit = cb.getAggregateValue(lagTotalCredit, 1);
 		double creditToGDP=totalCredit/nominalGDP;
 		// Then ask for the target credit to GDP ratio
-		double targetCreditToGDP = agent.getTargetCreditToGDP();
+		double targetCreditToGDP = cb.getTargetCreditToGDP();
 		// ask for the current reserve requirements, threshold, and policy markup
-		double currentReserveRequirements = agent.getLiquidityRatio();
-		double prudentialThreshold = agent.getPrudentialThreshold();
-		double prudentialMarkUp = agent.getPrudentialMarkUp();
+		double currentReserveRequirements = cb.getLiquidityRatio();
+		double prudentialThreshold = cb.getPrudentialThreshold();
+		double prudentialMarkUp = cb.getPrudentialMarkUp();
+		double maxReserveRequirement = cb.getMaxReserveRequirement();
+		double minReserveRequirement = cb.getMinReserveRequirement();
 		// then adjust the LR depending on how far (relatively) it is above or below target
-		double CreditOfTarget = (creditToGDP - targetCreditToGDP)/creditToGDP;
+		double creditOfTarget = (creditToGDP - targetCreditToGDP)/targetCreditToGDP;
 		double newReserveRequirements;
-		if (CreditOfTarget > prudentialThreshold) {
-			newReserveRequirements = currentReserveRequirements + prudentialMarkUp;
+		if (creditOfTarget > prudentialThreshold) {
+			newReserveRequirements = Math.min(currentReserveRequirements + prudentialMarkUp,maxReserveRequirement);
 		}
-		if (CreditOfTarget < prudentialThreshold) {
-			newReserveRequirements = currentReserveRequirements - prudentialMarkUp;
+		else if (creditOfTarget < -prudentialThreshold) {
+			newReserveRequirements = Math.max(currentReserveRequirements - prudentialMarkUp,minReserveRequirement);
 		}
 		else {newReserveRequirements = currentReserveRequirements;}
 		return newReserveRequirements;

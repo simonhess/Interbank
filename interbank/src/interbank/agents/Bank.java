@@ -349,13 +349,18 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 		// if number is positive set this as interbank supply
 		if (interbankSupplyDemand>0) {
 			setInterbankSupply(interbankSupplyDemand);
+			setInterbankDemand(0);
 			this.addValue(StaticValues.LAG_TOTINTERBANKSUPPLY, interbankSupplyDemand);
+			this.addValue(StaticValues.LAG_TOTINTERBANKDEMAND, 0);
 			this.setActive(true, StaticValues.MKT_INTERBANK);
 			this.addToMarketPopulation(StaticValues.MKT_INTERBANK, false);
 		}
 		// if number is negative set this as interbank demand
 		else if (interbankSupplyDemand<0) {
-			this.interbankDemand=interbankSupplyDemand;
+			setInterbankSupply(0);
+			setInterbankDemand(-interbankSupplyDemand);
+			this.addValue(StaticValues.LAG_TOTINTERBANKSUPPLY, 0);
+			this.addValue(StaticValues.LAG_TOTINTERBANKDEMAND, -interbankSupplyDemand);
 			this.setActive(true, StaticValues.MKT_INTERBANK);
 			this.addToMarketPopulation(StaticValues.MKT_INTERBANK, true);
 		}
@@ -1278,14 +1283,20 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 
 	@Override
 	public double getDepositAmount() {
-		// TODO Auto-generated method stub
-		return 0;
+		double amount=0;
+		for(Item item:this.getItemsStockMatrix(false, StaticValues.SM_DEP)){
+			amount+=item.getValue();
+		}
+		return amount;
 	}
 
 	@Override
 	public double getCashAmount() {
-		// TODO Auto-generated method stub
-		return 0;
+		double amount=0;
+		for(Item item:this.getItemsStockMatrix(false, StaticValues.SM_CASH)){
+			amount+=item.getValue();
+		}
+		return amount;
 	}
 
 	@Override
