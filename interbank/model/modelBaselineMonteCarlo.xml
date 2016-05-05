@@ -584,7 +584,7 @@
 			<util:constant static-field="interbank.StaticValues.TIC_INTERBANKMARKET" />
 		</property>
 		<property name="initialiser" ref="interbankMarketInitialiser" />
-		<property name="nbRuns" value="1"></property>
+		<property name="nbRuns" value="10"></property>
 	</bean>
 
 	<bean id="interbankMarketInitialiser" class="jmab.init.RandomMarketInitialiser"
