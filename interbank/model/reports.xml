@@ -5660,6 +5660,7 @@
 			<util:constant static-field="interbank.StaticValues.SM_DEP"/> 
 			-->
 			<util:constant static-field="interbank.StaticValues.SM_LOAN"/>
+			<util:constant static-field="interbank.StaticValues.SM_INTERBANK"/>
 			<!-- 
 			<util:constant static-field="interbank.StaticValues.SM_BONDS"/>
 			<util:constant static-field="interbank.StaticValues.SM_ADVANCES"/>

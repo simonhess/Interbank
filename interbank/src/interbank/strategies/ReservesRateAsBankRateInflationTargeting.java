@@ -45,16 +45,20 @@ public class ReservesRateAsBankRateInflationTargeting extends AbstractStrategy
 		double currentBankRate = agent.getReserveInterestRate();
 		double monetaryThreshold = agent.getMonetaryThreshold();
 		double monetaryPolicyMarkUp = agent.getMonetaryPolicyMarkUp();
+		double maxRate = agent.getMaxBankRate();
+		double minRate = agent.getMinBankRate();
 		// then adjust the reserves rate depending on how far it is above or below target
-		double inflationOfTarget = inflation - targetInflation;
+		double inflationOfTarget = (inflation - targetInflation)/targetInflation;
 		double newBankRate;
 		if (inflationOfTarget > monetaryThreshold) {
-			newBankRate = currentBankRate + monetaryPolicyMarkUp;
+			newBankRate = Math.min(currentBankRate + monetaryPolicyMarkUp,maxRate);
 		}
-		if (inflationOfTarget < monetaryThreshold) {
-			newBankRate = currentBankRate - monetaryPolicyMarkUp;
+		else if (inflationOfTarget < -monetaryThreshold) {
+			newBankRate = Math.max(currentBankRate - monetaryPolicyMarkUp,minRate);
 		}
-		else {newBankRate = currentBankRate;}
+		else {
+			newBankRate = currentBankRate;
+		}
 		return newBankRate;
 	}
 	

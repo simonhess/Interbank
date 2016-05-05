@@ -85,6 +85,8 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	protected double minReserveRequirement;
 	protected double maxCAR;
 	protected double minCAR;
+	protected double maxBankRate;
+	protected double minBankRate;
 	
 	/**
 	 * @return the advancesInterestRate
@@ -115,6 +117,22 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 
 	public void setTargetInflation(double targetInflation) {
 		this.targetInflation = targetInflation;
+	}
+
+	public double getMaxBankRate() {
+		return maxBankRate;
+	}
+
+	public void setMaxBankRate(double maxBankRate) {
+		this.maxBankRate = maxBankRate;
+	}
+
+	public double getMinBankRate() {
+		return minBankRate;
+	}
+
+	public void setMinBankRate(double minBankRate) {
+		this.minBankRate = minBankRate;
 	}
 
 	/**
