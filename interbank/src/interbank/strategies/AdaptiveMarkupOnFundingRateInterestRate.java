@@ -12,14 +12,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  */
-package interbank;
-
-import interbank.agents.Bank;
+package interbank.strategies;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 
+import interbank.StaticValues;
+import interbank.agents.Bank;
 import jmab.agents.MacroAgent;
 import jmab.population.MacroPopulation;
+import jmab.stockmatrix.InterestBearingItem;
+import jmab.stockmatrix.Item;
 import jmab.strategies.InterestRateStrategy;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.SimulationController;
@@ -32,14 +35,14 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
  *
  */
 @SuppressWarnings("serial")
-public class CopyOfAdaptiveInterestRateAverageThreshold extends AbstractStrategy implements
-		InterestRateStrategy {
+public class AdaptiveMarkupOnFundingRateInterestRate extends AbstractStrategy implements
+InterestRateStrategy {
 
 	private double adaptiveParameter;
 	private AbstractDelegatedDistribution distribution; 
-	private boolean increase;
+	private int[] liabilitiesId;
+	private double markup;
 	private int mktId;
-	private double avInterest;
 
 	/* (non-Javadoc)
 	 * @see jmab.strategies.InterestRateStrategy#computeInterestRate(jmab.agents.MacroAgent, double, int)
@@ -48,58 +51,52 @@ public class CopyOfAdaptiveInterestRateAverageThreshold extends AbstractStrategy
 	public double computeInterestRate(MacroAgent creditDemander, double amount,
 			int length) {
 		double threshold=0;
+		double avInterest=0;
 		SimulationController controller = (SimulationController)this.getScheduler();
 		MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
 		Population banks = macroPop.getPopulation(StaticValues.BANKS_ID);
-		if (mktId==StaticValues.MKT_DEPOSIT){
-			double tot=0;
-			double inter=0;
-			for (Agent b:banks.getAgents()){
-				Bank bank = (Bank) b;
-				tot+=bank.getLiquidityRatio();
-				inter+=bank.getPassedValue(StaticValues.LAG_DEPOSITINTEREST, 1);
-				}
-			threshold=tot/banks.getSize();
-			avInterest=inter/banks.getSize();
+		double tot=0;
+		double inter=0;
+		double n=(double) banks.getSize();
+		for (Agent b:banks.getAgents()){
+			Bank bank = (Bank) b;
+			if (bank.getNumericBalanceSheet()[0][StaticValues.SM_LOAN]!=0&&bank.getNetWealth()>0){
+				tot+=bank.getCapitalRatio();
+				inter+=bank.getPassedValue(StaticValues.LAG_LOANINTEREST, 1);
+			}
+			else{
+				n-=1;
+			}
 		}
-		else if (mktId==StaticValues.MKT_CREDIT){
-			double tot=0;
-			double inter=0;
-			double n=(double) banks.getSize();
-			for (Agent b:banks.getAgents()){
-				Bank bank = (Bank) b;
-				if (bank.getNumericBalanceSheet()[0][StaticValues.SM_LOAN]!=0&&bank.getNetWealth()>0){
-					tot+=bank.getCapitalRatio();
-					inter+=bank.getPassedValue(StaticValues.LAG_LOANINTEREST, 1);
-				}
-				else{
-					n-=1;
-				}
-				}
-			threshold=tot/n;
-			avInterest=inter/n;
-		}
+		threshold=tot/n;
+		avInterest=inter/n;
+
 		Bank lender=(Bank) this.getAgent();
-		double referenceVariable=0;
-		if (mktId==StaticValues.MKT_DEPOSIT){
-			referenceVariable=lender.getLiquidityRatio();
+		double interestPay=0;
+		double totValue=0;
+		for(int liabilityId:liabilitiesId){
+			List<Item> liabilities = lender.getItemsStockMatrix(false, liabilityId);
+			for(Item item:liabilities){
+				InterestBearingItem liability = (InterestBearingItem) item;
+				interestPay += liability.getInterestRate()*liability.getValue();
+				totValue +=liability.getValue();
+			}
 		}
-		else if (mktId==StaticValues.MKT_CREDIT){
-			referenceVariable=lender.getCapitalRatio();
-		}
+		double fundingRate = interestPay/totValue;
+		double referenceVariable=lender.getCapitalRatio();
 		//double iR = lender.getInterestRate(mktId);
-		double iR=0;
 		if(referenceVariable>threshold){
-			if(increase)
-				iR=avInterest+(adaptiveParameter*avInterest*distribution.nextDouble());
-			else
-				iR=avInterest-(adaptiveParameter*avInterest*distribution.nextDouble());
+			markup-=markup*adaptiveParameter*distribution.nextDouble();
 		}else{
-			if(increase)
-				iR=avInterest-(adaptiveParameter*avInterest*distribution.nextDouble());
-			else
-				iR=avInterest+(adaptiveParameter*avInterest*distribution.nextDouble());
+			markup+=markup*adaptiveParameter*distribution.nextDouble();
 		}
+		if(fundingRate+markup>avInterest){
+			markup-=markup*adaptiveParameter*distribution.nextDouble();
+		}else{
+			markup+=markup*adaptiveParameter*distribution.nextDouble();
+		}
+		double iR=fundingRate+markup;
+		
 		return Math.min(Math.max(iR, lender.getInterestRateLowerBound(mktId)),lender.getInterestRateUpperBound(mktId));
 	}
 
@@ -130,21 +127,6 @@ public class CopyOfAdaptiveInterestRateAverageThreshold extends AbstractStrategy
 	public void setDistribution(AbstractDelegatedDistribution distribution) {
 		this.distribution = distribution;
 	}
-	
-	/**
-	 * @return the increase
-	 */
-	public boolean isIncrease() {
-		return increase;
-	}
-
-	/**
-	 * @param increase the increase to set
-	 */
-	public void setIncrease(boolean increase) {
-		this.increase = increase;
-	}
-
 
 	/**
 	 * @return the mkId
@@ -160,7 +142,23 @@ public class CopyOfAdaptiveInterestRateAverageThreshold extends AbstractStrategy
 	public void setMktId(int mktId) {
 		this.mktId = mktId;
 	}
-	
+
+	public int[] getLiabilitiesId() {
+		return liabilitiesId;
+	}
+
+	public void setLiabilitiesId(int[] liabilitiesId) {
+		this.liabilitiesId = liabilitiesId;
+	}
+
+	public double getMarkup() {
+		return markup;
+	}
+
+	public void setMarkup(double markup) {
+		this.markup = markup;
+	}
+
 	/**
 	 * Generate the byte array structure of the strategy. The structure is as follow:
 	 * [threshold][adaptiveParameter][avInterest][mktId][increase]
@@ -170,12 +168,7 @@ public class CopyOfAdaptiveInterestRateAverageThreshold extends AbstractStrategy
 	public byte[] getBytes() {
 		ByteBuffer buf = ByteBuffer.allocate(21);
 		buf.putDouble(adaptiveParameter);
-		buf.putDouble(this.avInterest);
 		buf.putInt(mktId);
-		if(increase)
-			buf.put((byte)1);
-		else
-			buf.put((byte)0);
 		return buf.array();
 	}
 
@@ -190,9 +183,7 @@ public class CopyOfAdaptiveInterestRateAverageThreshold extends AbstractStrategy
 	public void populateFromBytes(byte[] content, MacroPopulation pop) {
 		ByteBuffer buf = ByteBuffer.wrap(content);
 		this.adaptiveParameter = buf.getDouble();
-		this.avInterest = buf.getDouble();
 		this.mktId = buf.getInt();
-		this.increase=buf.get()==(byte)1;
 	}
 
 }

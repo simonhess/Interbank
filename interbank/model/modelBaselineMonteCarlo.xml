@@ -3576,14 +3576,21 @@
 	</bean>
 
 	<bean id="banksBankSpecificLoanInterestStrategy" scope="prototype"
-		parent="strategy" class="interbank.CopyOfAdaptiveInterestRateAverageThreshold">
+		parent="strategy" class="interbank.strategies.AdaptiveMarkupOnFundingRateInterestRate">
 		<property name="distribution" ref="foldedNormal1" />
 		<property name="mktId">
 			<util:constant static-field="interbank.StaticValues.MKT_CREDIT" />
 		</property>
-		<property name="increase" value="false" />
 		<!-- <property name="adaptiveParameter" value="1"/> -->
 		<property name="adaptiveParameter" value="1" />
+		<property name="markup" value="0.005" />
+		<property name="liabilitiesId">
+			<list>
+				<util:constant static-field="interbank.StaticValues.SM_DEP" />
+				<util:constant static-field="interbank.StaticValues.SM_ADVANCES" />
+				<util:constant static-field="interbank.StaticValues.SM_INTERBANK" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- CAR RESERVE REQUIREMENT <bean id="banksAdvancesStrategy" scope="prototype" 
@@ -3628,7 +3635,7 @@
 	</bean>
 
 	<bean id="banksDepInterestStrategy" scope="prototype" parent="strategy"
-		class="interbank.CopyOfAdaptiveInterestRateAverageThreshold">
+		class="interbank.strategies.AdaptiveInterestRateAverageThreshold">
 		<property name="distribution" ref="foldedNormal2" />
 		<property name="mktId">
 			<util:constant static-field="interbank.StaticValues.MKT_DEPOSIT" />
