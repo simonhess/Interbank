@@ -3728,6 +3728,9 @@
 		<property name="reserveId">
 			<util:constant static-field="interbank.StaticValues.SM_RESERVES" />
 		</property>
+		<property name="mktId">
+			<util:constant static-field="interbank.StaticValues.MKT_INTERBANK" />
+		</property>
 	</bean>
 
 	<bean id="banksIlliquiditytrategy" scope="prototype" parent="strategy"

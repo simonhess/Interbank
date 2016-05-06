@@ -2,6 +2,7 @@ package interbank.strategies;
 
 import java.util.List;
 
+import interbank.agents.Bank;
 import jmab.agents.MacroAgent;
 import jmab.population.MacroPopulation;
 import jmab.stockmatrix.Deposit;
@@ -20,6 +21,7 @@ public class InterbankAsFunctionOfLoanRateStrategy extends AbstractStrategy impl
 
 	private int loanId;
 	private int reserveId;
+	private int mktId;
 	
 	// 
 	/* (non-Javadoc)
@@ -31,7 +33,7 @@ public class InterbankAsFunctionOfLoanRateStrategy extends AbstractStrategy impl
 		// take current loan rate, take current reservedepositRate. Divide the difference by 20
 		// and add to reservedepositRate
 		// cast your agent as creditsupplier
-		MacroAgent bank = (MacroAgent)this.agent;
+		Bank bank = (Bank)this.agent;
 		List<Item> loans = bank.getItemsStockMatrix(true, loanId);
 		double totalLoansInterest = 0;
 		double totalMaturity = 0;
@@ -50,7 +52,7 @@ public class InterbankAsFunctionOfLoanRateStrategy extends AbstractStrategy impl
 		double riskFreeRate = reserve.getInterestRate();
 		double totalRiskPremium = averageLoanInterestRate - riskFreeRate;
 		double matRiskPremium = totalRiskPremium / averageLoanMaturity;
-		return riskFreeRate+matRiskPremium*length;
+		return Math.min(Math.max(riskFreeRate+matRiskPremium*length, bank.getInterestRateLowerBound(mktId)),bank.getInterestRateUpperBound(mktId));
 
 	}
 
@@ -80,6 +82,14 @@ public class InterbankAsFunctionOfLoanRateStrategy extends AbstractStrategy impl
 
 	public void setReserveId(int reserveId) {
 		this.reserveId = reserveId;
+	}
+
+	public int getMktId() {
+		return mktId;
+	}
+
+	public void setMktId(int mktId) {
+		this.mktId = mktId;
 	}
 	
 }
