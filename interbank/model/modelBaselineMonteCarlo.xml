@@ -3682,11 +3682,12 @@
 	</bean>
 
 	<bean id="banksDividendsStrategy" scope="prototype" parent="strategy"
-		class="interbank.strategies.FixedShareOfProfitsToPopulationAsShareOfWealthDividends">
+		class="interbank.strategies.FixedShareOfProfitsDividendsWithCapitalRatio">
 		<property name="profitsLagId">
 			<util:constant static-field="interbank.StaticValues.LAG_PROFITAFTERTAX" />
 		</property>
 		<property name="profitShare" value="0.6" />
+		<property name="capitalRatioSensitivity" value="0.1" />
 		<property name="receiversId">
 			<util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID" />
 		</property>

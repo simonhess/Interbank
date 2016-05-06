@@ -22,13 +22,15 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
  * This is an extension of the general fixed shares of profits strategy which lets banks adjust dividend payments
  * as a result of the targeted capital ratio 
  */
+@SuppressWarnings("serial")
 public class FixedShareOfProfitsDividendsWithCapitalRatio extends AbstractStrategy implements DividendsStrategy {
 
-	int profitsLagId;
-	double profitShare;
-	int receiversId;
-	int depositId;
-	int reservesId;
+	private int profitsLagId;
+	private double profitShare;
+	private int receiversId;
+	private int depositId;
+	private int reservesId;
+	private double capitalRatioSensitivity;
 
 	/* (non-Javadoc)
 	 * @see jmab.strategies.DividendsStrategy#payDividends()
@@ -55,7 +57,6 @@ public class FixedShareOfProfitsDividendsWithCapitalRatio extends AbstractStrate
 				// get the actual capital ratio
 				double actualCapitalRatio = bank.getCapitalRatio();
 				// get the sensitivity to capital ratios from the bank, 
-				double capitalRatioSensitivity = bank.getcapitalRatioSensitivity(); // I think this should be a fixed parameter
 				// determine a rule in which the bank increases dividends if it is above the capital ratio and decreases them if below
 				if (targetedCapitalRatio < actualCapitalRatio) {
 					bank.setDividends(profits*profitShare*(1+capitalRatioSensitivity));
@@ -171,6 +172,16 @@ public class FixedShareOfProfitsDividendsWithCapitalRatio extends AbstractStrate
 	public void setDepositId(int depositId) {
 		this.depositId = depositId;
 	}
+
+	public double getCapitalRatioSensitivity() {
+		return capitalRatioSensitivity;
+	}
+
+
+	public void setCapitalRatioSensitivity(double capitalRatioSensitivity) {
+		this.capitalRatioSensitivity = capitalRatioSensitivity;
+	}
+
 
 	/**
 	 * Generate the byte array structure of the strategy. The structure is as follow:

@@ -291,12 +291,12 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 				for(Agent bTemp:banks.getAgents()){
 					Bank b = (Bank) bTemp;
 					// Check if their targeted CAR is above the required level, if not put it at that level
-					double targetCAR = b.getTargetedCapitalAdequacyRatio();
-					if (targetCAR < this.CAR)
+					//double targetCAR = b.getTargetedCapitalAdequacyRatio();
+					//if (targetCAR < this.CAR)
 						b.setTargetedCapitalAdequacyRatio(this.CAR);
 					// check if their liquidity ratio is above the required level, if not put it at that level
-					double targetLR = b.getTargetedLiquidityRatio();
-					if (targetLR < this.liquidityRatio)
+					//double targetLR = b.getTargetedLiquidityRatio();
+					//if (targetLR < this.liquidityRatio)
 						b.setTargetedLiquidityRatio(this.liquidityRatio);
 				}
 	}
