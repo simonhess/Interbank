@@ -103,7 +103,7 @@
 				<ref bean="reservesMarketBaselTic" />
 				<!-- Illiquidity TIC -->
 				<ref bean="illiquidityTic" />
-
+				<ref bean="computeAggregatesTic" />
 				<!-- <ref bean="microLoansKfirmsReportTic" /> <ref bean="microLoansCfirmsReportTic" 
 					/> <ref bean="microRealConsReportTic" /> <ref bean="microNominalConsReportTic" 
 					/> <ref bean="microRealDesInvReportTic" /> <ref bean="microNominalInvReportTic" 
@@ -198,6 +198,7 @@
 				<!-- End of New interbank reporter TICs -->
 				<ref bean="BSNetworkReportTic" />
 				<ref bean="populationHandlerTic" />
+				
 				<ref bean="updateExpectationsTic" />
 				<!-- <ref bean="serializationTic" /> -->
 			</list>
@@ -905,6 +906,11 @@
 			<util:constant static-field="interbank.StaticValues.TIC_ILLIQUIDITY" />
 		</property>
 	</bean>	
+	<bean id="computeAggregatesTic" class="jmab.events.MacroTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_COMPUTEAGGREGATES" />
+		</property>
+	</bean>
 	<bean id="updateExpectationsTic" class="jmab.events.MacroTicEvent">
 		<property name="tic">
 			<util:constant static-field="interbank.StaticValues.TIC_UPDATEEXPECTATIONS" />
@@ -4020,6 +4026,7 @@
 				<util:constant static-field="interbank.StaticValues.TIC_WAGEPAYMENT" />
 				<util:constant static-field="interbank.StaticValues.TIC_BONDINTERESTS" />
 				<util:constant static-field="interbank.StaticValues.TIC_BONDSUPPLY" />
+				<util:constant static-field="interbank.StaticValues.TIC_COMPUTEAGGREGATES" />
 				<util:constant static-field="interbank.StaticValues.TIC_UPDATEEXPECTATIONS" />
 			</list>
 		</property>
@@ -4173,7 +4180,7 @@
 		<property name="prudentialThreshold" value="0.1" />
 		<property name="prudentialMarkUp" value="0.0025" />
 		<property name="monetaryMarkUp" value="0.0025" />
-		<property name="monetaryPolicyMarkUp" value="0.0025" />
+		<property name="monetaryPolicyMarkUp" value="0.00025" />
 		<property name="monetaryThreshold" value="0.0025" />
 		<property name="targetInflation" value="0.0075" />
 		<property name="minBankRate" value="0" />

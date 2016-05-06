@@ -190,8 +190,9 @@ public interface StaticValues {
 	public static int TIC_MICROHHEMPLOYERREPORT=164;
 
 	public static int TIC_POPULATIONHANDLER=1000;
-	public static int TIC_UPDATEEXPECTATIONS=1001;
-	public static int TIC_SERIALIZATION=1002;
+	public static int TIC_COMPUTEAGGREGATES=1001;
+	public static int TIC_UPDATEEXPECTATIONS=1002;
+	public static int TIC_SERIALIZATION=1003;
 
 	
 	public static int EXPECTATIONS_NOMINALSALES=0;

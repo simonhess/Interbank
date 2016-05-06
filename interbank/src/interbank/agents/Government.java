@@ -149,8 +149,11 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 			determineBondsInterestRate();
 			emitBonds();
 			break;
-		case StaticValues.TIC_UPDATEEXPECTATIONS:
+		case StaticValues.TIC_COMPUTEAGGREGATES:
 			this.updateAggregateVariables();
+			break;
+		case StaticValues.TIC_UPDATEEXPECTATIONS:
+			this.updateExpectations();
 			break;
 		}
 	}
@@ -167,6 +170,9 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 				nominalGdpComputer.computeVariable(sim));
 		this.setAggregateValue(StaticValues.LAG_INFLATION, 
 				avpComputer.computeVariable(sim));
+	}
+	
+	protected void updateExpectations(){
 		this.cleanSM();
 	}
 

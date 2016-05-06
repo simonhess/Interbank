@@ -335,6 +335,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 			System.out.println("Insolvency " + this.getAgentId() +" due to interbankdebt service");
 			BankruptcyStrategy strategy = (BankruptcyStrategy)this.getStrategy(StaticValues.STRATEGY_BANKRUPTCY);
 			strategy.bankrupt(); 
+			this.defaulted=true;
 		}
 	}
 	
