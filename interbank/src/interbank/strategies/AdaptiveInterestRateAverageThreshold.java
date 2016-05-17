@@ -52,6 +52,7 @@ public class AdaptiveInterestRateAverageThreshold extends AbstractStrategy imple
 		SimulationController controller = (SimulationController)this.getScheduler();
 		MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
 		Population banks = macroPop.getPopulation(StaticValues.BANKS_ID);
+		// first calculate the average interest rate of other banks (either for deposit or credit market)
 		if (mktId==StaticValues.MKT_DEPOSIT){
 			double tot=0;
 			double inter=0;
@@ -82,6 +83,7 @@ public class AdaptiveInterestRateAverageThreshold extends AbstractStrategy imple
 		}
 		Bank lender=(Bank) this.getAgent();
 		double referenceVariable=0;
+		// Get liquidity / capital ratio for deposit / credit market
 		if (mktId==StaticValues.MKT_DEPOSIT){
 			referenceVariable=lender.getLiquidityRatio();
 		}
@@ -90,6 +92,7 @@ public class AdaptiveInterestRateAverageThreshold extends AbstractStrategy imple
 		}
 		//double iR = lender.getInterestRate(mktId);
 		double iR=0;
+		// increase or decrease the interest rate in line with the average interest rate. 
 		if(referenceVariable>threshold){
 			if(increase)
 				iR=avInterest+(adaptiveParameter*avInterest*distribution.nextDouble());
