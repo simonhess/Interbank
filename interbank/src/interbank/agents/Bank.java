@@ -62,6 +62,10 @@ import net.sourceforge.jabm.event.RoundFinishedEvent;
  * @author Alessandro Caiani and Antoine Godin
  *
  */
+/**
+ * @author joerischasfoort
+ *
+ */
 @SuppressWarnings("serial")
 public class Bank extends AbstractBank implements CreditSupplier, CreditDemander,
 DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, DepositDemander, BaselIIIAgent {
@@ -102,6 +106,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 	//	private boolean interbankSeller; // to facilitate who is supplier demander?
 	private double targetedCapitalAdequacyRatio;
 	private double riskAversionMarkUp;
+	private double interBankRiskPremium;
 
 	/* (non-Javadoc)
 	 * @see jmab.agents.MacroAgent#onRoundFinished(net.sourceforge.jabm.event.RoundFinishedEvent)
@@ -831,6 +836,14 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 
 	public void setRiskAversionMarkUp(double riskAversionMarkUp) {
 		this.riskAversionMarkUp = riskAversionMarkUp;
+	}
+
+	public double getInterBankRiskPremium() {
+		return interBankRiskPremium;
+	}
+
+	public void setInterBankRiskPremium(double interBankRiskPremium) {
+		this.interBankRiskPremium = interBankRiskPremium;
 	}
 
 	/**
