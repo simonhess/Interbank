@@ -3213,7 +3213,7 @@
 		</property>
 	</bean>
 
-	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
+	<!-- <bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.AdaptiveMarkUpOnAC">
 		<property name="adaptiveParameter" value="1" />
 		<property name="distribution" ref="foldedNormal1" />
@@ -3221,6 +3221,28 @@
 		<property name="markUp" value="0.318857"></property>
 
 	</bean>
+	 -->
+	 
+	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
+		class="jmab.strategies.AdaptiveReturnOnAC">
+		<property name="adaptiveParameter" value="1" />
+		<property name="distribution" ref="foldedNormal1" />
+		<property name="threshold" value="0.1"></property>
+		<property name="returnRate" value="0.1887055680579684"></property><!-- TODO ANTOIN CHANGED THIS 6/6/2016 -->
+		<property name="idCapacity">
+			<util:constant static-field="interbank.StaticValues.LAG_CAPACITY" />
+		</property>
+		<property name="idCapitalValue">
+			<util:constant static-field="interbank.StaticValues.LAG_CAPITALFINANCIALVALUE" />
+		</property>
+		<property name="idLoans">
+			<util:constant static-field="interbank.StaticValues.SM_LOAN" />
+		</property>
+		<property name="idProduction">
+			<util:constant static-field="interbank.StaticValues.LAG_PRODUCTION" />
+		</property>
+	</bean>
+	
 
 	<bean id="consumptionTaxesStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.ProfitsWealthTaxStrategy">

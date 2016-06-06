@@ -18,11 +18,11 @@ public class StaticMonetary extends AbstractStrategy implements
 		return staticInterestRate;
 	}
 
-	public double getstaticInterestRate() {
+	public double getStaticInterestRate() {
 		return staticInterestRate;
 	}
 
-	public void setstaticInterestRate(double staticInterestRate) {
+	public void setStaticInterestRate(double staticInterestRate) {
 		this.staticInterestRate = staticInterestRate;
 	}
 	
