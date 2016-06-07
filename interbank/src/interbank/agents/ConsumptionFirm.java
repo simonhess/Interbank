@@ -532,7 +532,7 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 		TaxPayerStrategy strategy = (TaxPayerStrategy)this.getStrategy(StaticValues.STRATEGY_TAXES);
 		double taxes=0;
 		if (!this.defaulted){
-		taxes=strategy.computeTaxes();
+			taxes=strategy.computeTaxes();
 		}
 		else{
 			taxes=0;

@@ -3213,13 +3213,13 @@
 		</property>
 	</bean>
 
-	<!-- <bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
+	<!-- 
+	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.AdaptiveMarkUpOnAC">
 		<property name="adaptiveParameter" value="1" />
 		<property name="distribution" ref="foldedNormal1" />
 		<property name="threshold" value="0.1"></property>
 		<property name="markUp" value="0.318857"></property>
-
 	</bean>
 	 -->
 	 
@@ -3228,6 +3228,7 @@
 		<property name="adaptiveParameter" value="1" />
 		<property name="distribution" ref="foldedNormal1" />
 		<property name="threshold" value="0.1"></property>
+		<property name="capacityUtilisation" value="0.8"></property>
 		<property name="returnRate" value="0.1887055680579684"></property><!-- TODO ANTOIN CHANGED THIS 6/6/2016 -->
 		<property name="idCapacity">
 			<util:constant static-field="interbank.StaticValues.LAG_CAPACITY" />
