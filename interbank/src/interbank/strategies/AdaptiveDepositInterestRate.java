@@ -30,10 +30,12 @@ public class AdaptiveDepositInterestRate extends AbstractStrategy implements Int
 
 	private double adaptiveParameter;
 	private AbstractDelegatedDistribution distribution; 
-	private boolean increase;
 	private int[] liabilitiesId;
-	private double markup;
 	private int mktId;
+	private int baseParameter;
+	private int liquidityParameter;
+	private int fundingParameter;
+	private int profitabilityParameter;
 	
 	/* 
 	 * Main method used to compute the deposit interest rate
@@ -64,6 +66,7 @@ public class AdaptiveDepositInterestRate extends AbstractStrategy implements Int
 		double targetLiquidityRatio=lender.getTargetedLiquidityRatio();
 		liquidityMarkUp = ((liquidityRatio-targetLiquidityRatio)/targetLiquidityRatio)+(adaptiveParameter*previousDepositRate*distribution.nextDouble());
 		// determine the funding mark-up
+		double previousFundingRate = lender.getFundingRate();
 		double interestPay=0;
 		double totValue=0;
 		for(int liabilityId:liabilitiesId){
@@ -74,13 +77,15 @@ public class AdaptiveDepositInterestRate extends AbstractStrategy implements Int
 				totValue +=liability.getValue();
 			}
 		}
-		double fundingMarkUp=0;
-		double fundingRate = interestPay/totValue; //TODO change to reflect change in funding rate
-		// profit mark-up
-		double profitabilityMarkUp=0;
-		
+		double fundingRate = interestPay/totValue;
+		double fundingMarkUp= (fundingRate - previousFundingRate) / previousFundingRate;
+		lender.setFundingRate(fundingRate);
+		// profit mark-up //
+		double previousInterestRate = lender.getPassedValue(StaticValues.LAG_LOANINTEREST, 1);
+		double currentInterestRate = lender.getBankInterestRate();
+		double profitabilityMarkUp=(currentInterestRate-previousInterestRate)/previousInterestRate;
 		// the deposit rate = previous deposit rate + liquidity mark-up + funding-mark-up + profit-mark-up
-		double iR = previousDepositRate + liquidityMarkUp + fundingMarkUp + profitabilityMarkUp; 
+		double iR = baseParameter * previousDepositRate + liquidityParameter * liquidityMarkUp + fundingParameter * fundingMarkUp + profitabilityParameter * profitabilityMarkUp; 
 		return Math.min(Math.max(iR, lender.getInterestRateLowerBound(mktId)),lender.getInterestRateUpperBound(mktId));
 	}
 

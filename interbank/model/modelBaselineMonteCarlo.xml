@@ -3410,6 +3410,7 @@
 		<property name="numberMarkets" value="8" />
 		<property name="riskAversionC" value="3.922445" />
 		<property name="riskAversionK" value="21.513347" />
+		<property name="riskAversionMarkUp" value="0.001" />
 		<property name="bankInterestRate" value="0.0075" />
 		<property name="numberStocks" value="9" />
 		<property name="populationId">
@@ -3426,6 +3427,7 @@
 		<property name="advancesInterestRate" value="0.005" />
 		<property name="bondInterestRate" value="0.0025" />
 		<property name="depositInterestRate" value="0.0025" />
+		<property name="fundingRate" value="0.0025" />
 		<property name="targetedLiquidityRatio" value="0.258026342"></property>
 		<property name="targetedCapitalAdequacyRatio" value="0.06"></property>
 	</bean>
@@ -3662,7 +3664,8 @@
 	<bean id="banksBondStrategy" scope="prototype" parent="strategy"
 		class="interbank.strategies.BondDemandStrategyReserves">
 	</bean>
-
+	
+	<!-- 
 	<bean id="banksDepInterestStrategy" scope="prototype" parent="strategy"
 		class="interbank.strategies.AdaptiveInterestRateAverageThreshold">
 		<property name="distribution" ref="foldedNormal2" />
@@ -3672,6 +3675,39 @@
 		<property name="increase" value="false" />
 		<!-- <property name="adaptiveParameter" value="1"/> -->
 		<property name="adaptiveParameter" value="1" />
+	</bean>
+	
+	<!--  
+	<bean id="banksDepInterestStrategy" scope="prototype" parent="strategy"
+		class="interbank.strategies.AdaptiveInterestRateAverageThreshold">
+		<property name="distribution" ref="foldedNormal2" />
+		<property name="mktId">
+			<util:constant static-field="interbank.StaticValues.MKT_DEPOSIT" />
+		</property>
+		<property name="increase" value="false" />
+		<!-- <property name="adaptiveParameter" value="1"/> --
+		<property name="adaptiveParameter" value="1" />
+	</bean>
+	-->
+	
+	<bean id="banksDepInterestStrategy" scope="prototype" parent="strategy"
+		class="interbank.strategies.AdaptiveDepositInterestRate">
+		<property name="distribution" ref="foldedNormal2" />
+		<property name="mktId">
+			<util:constant static-field="interbank.StaticValues.MKT_DEPOSIT" />
+		</property>
+		<property name="adaptiveParameter" value="1" />
+		<property name="baseParameter" value="0.85" />
+		<property name="liquidityParameter" value="0.05" />
+		<property name="fundingParameter" value="0.05" />
+		<property name="profitabilityParameter" value="0.05" />
+		<property name="liabilitiesId">
+			<list>
+				<util:constant static-field="interbank.StaticValues.SM_DEP" />
+				<util:constant static-field="interbank.StaticValues.SM_ADVANCES" />
+				<util:constant static-field="interbank.StaticValues.SM_INTERBANK" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Old credit supply with CAR <bean id="banksTotalCreditSupplyStrategy" 

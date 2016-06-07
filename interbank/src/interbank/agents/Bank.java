@@ -95,7 +95,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 	//private double preTaxProfits;
 	//private double profitsAfterTax;
 	protected double interestsReceived;
-
+	private double fundingRate;
 	protected double totInterestsInterbank;
 	private double interbankAsk;
 	private double interbankDemand;
@@ -1345,6 +1345,14 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 
 	public void setTotInterestsInterbank(double totInterestsInterbank) {
 		this.totInterestsInterbank = totInterestsInterbank;
+	}
+	
+	public double getFundingRate() {
+		return fundingRate;
+	}
+
+	public void setFundingRate(double fundingRate) {
+		this.fundingRate = fundingRate;
 	}
 
 	public void setInterbankDemand(double interbankDemand) {
