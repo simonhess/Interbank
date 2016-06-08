@@ -62,7 +62,7 @@ public class InterbankAskCBMarkUp extends AbstractStrategy implements InterestRa
 			interbankAskPrice=avInterest-(adaptiveParameter*avInterest*distribution.nextDouble());
 		}
 		
-		if (interbankAskPrice<centralBankDepositRate){
+		if (interbankAskPrice<centralBankDepositRate+ interBankRiskPremium){
 			return centralBankDepositRate + interBankRiskPremium;
 		}
 		if (interbankAskPrice>centralBankAdvancesRate) {

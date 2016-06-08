@@ -426,8 +426,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 		this.addValue(StaticValues.LAG_DEPOSITINTEREST, depositInterestRate);
 		this.addValue(StaticValues.LAG_LOANINTEREST, bankInterestRate);
 		// interbank expectations
-		this.addValue(StaticValues.LAG_INTERBANKINTEREST,nW);
-		this.addValue(StaticValues.LAG_TOTINTERBANKSUPPLY,nW);
+		this.addValue(StaticValues.LAG_INTERBANKINTEREST,interbankAsk);
 		// end interbank expectations
 		double[] deposit = new double[1];
 		deposit[0]=this.getNumericBalanceSheet()[1][StaticValues.SM_DEP];
@@ -1105,9 +1104,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 	public double getTotInterestsInterbank() {
 		return totInterestsInterbank;
 	}
-	public double getinterbankAsk() {
-		return interbankAsk;
-	}
+	
 	public double getInterbankDemand() {
 		return this.interbankDemand;
 	}
