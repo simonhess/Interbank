@@ -3673,10 +3673,10 @@
 			<util:constant static-field="interbank.StaticValues.MKT_DEPOSIT" />
 		</property>
 		<property name="increase" value="false" />
-		<!-- <property name="adaptiveParameter" value="1"/> -->
+		<property name="adaptiveParameter" value="1"/> 
 		<property name="adaptiveParameter" value="1" />
 	</bean>
-	
+	-->
 	<!--  
 	<bean id="banksDepInterestStrategy" scope="prototype" parent="strategy"
 		class="interbank.strategies.AdaptiveInterestRateAverageThreshold">
@@ -3685,7 +3685,7 @@
 			<util:constant static-field="interbank.StaticValues.MKT_DEPOSIT" />
 		</property>
 		<property name="increase" value="false" />
-		<!-- <property name="adaptiveParameter" value="1"/> --
+		<property name="adaptiveParameter" value="1"/> 
 		<property name="adaptiveParameter" value="1" />
 	</bean>
 	-->

@@ -3,15 +3,10 @@
  */
 package interbank.strategies;
 
-import java.util.List;
-
 import interbank.StaticValues;
 import interbank.agents.Bank;
 import jmab.agents.MacroAgent;
 import jmab.population.MacroPopulation;
-import jmab.stockmatrix.Deposit;
-import jmab.stockmatrix.Item;
-import jmab.stockmatrix.Loan;
 import jmab.strategies.InterestRateStrategy;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.SimulationController;
@@ -28,6 +23,7 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
  * Using this strategy banks set their interbank ask as a risk adjusted mark-up for stashing their 
  * liquidity at the central bank.
  */
+@SuppressWarnings("serial")
 public class InterbankAskCBMarkUp extends AbstractStrategy implements InterestRateStrategy {
 
 	private double adaptiveParameter;
@@ -55,10 +51,8 @@ public class InterbankAskCBMarkUp extends AbstractStrategy implements InterestRa
 		avInterest=inter/banks.getSize();
 		threshold=tot/banks.getSize();
 		Bank bank = (Bank)this.agent;
-		Deposit reserve = (Deposit)bank.getItemStockMatrix(true, reserveId);
-		Loan advance = (Loan)bank.getItemsStockMatrix(false, advancesId);
-		double centralBankDepositRate = reserve.getInterestRate();
-		double centralBankAdvancesRate = advance.getInterestRate();
+		double centralBankDepositRate = bank.getReserveInterestRate();
+		double centralBankAdvancesRate = bank.getAdvancesInterestRate();
 		double interBankRiskPremium = bank.getInterBankRiskPremium();
 		double interbankAskPrice = 0;
 		double referenceVariable=bank.getLiquidityRatio();
