@@ -3697,10 +3697,6 @@
 			<util:constant static-field="interbank.StaticValues.MKT_DEPOSIT" />
 		</property>
 		<property name="adaptiveParameter" value="1" />
-		<property name="baseParameter" value="0.85" />
-		<property name="liquidityParameter" value="0.05" />
-		<property name="fundingParameter" value="0.05" />
-		<property name="profitabilityParameter" value="0.05" />
 		<property name="liabilitiesId">
 			<list>
 				<util:constant static-field="interbank.StaticValues.SM_DEP" />
@@ -3812,9 +3808,11 @@
 		<property name="reserveId">
 			<util:constant static-field="interbank.StaticValues.SM_RESERVES"/>
 		</property>
-		<property name="mktId">
-			<util:constant static-field="interbank.StaticValues.MKT_INTERBANK"/>
+		<property name="advancesId">
+			<util:constant static-field="interbank.StaticValues.SM_ADVANCES"/>
 		</property>
+		<property name="distribution" ref="foldedNormal1" />
+		<property name="adaptiveParameter" value="1" />
 	</bean>  
 
 	<bean id="banksIlliquiditytrategy" scope="prototype" parent="strategy"

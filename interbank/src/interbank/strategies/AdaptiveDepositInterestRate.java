@@ -32,40 +32,30 @@ public class AdaptiveDepositInterestRate extends AbstractStrategy implements Int
 	private AbstractDelegatedDistribution distribution; 
 	private int[] liabilitiesId;
 	private int mktId;
-	private int baseParameter;
-	private int liquidityParameter;
-	private int fundingParameter;
-	private int profitabilityParameter;
 	
 	/* 
 	 * Main method used to compute the deposit interest rate
 	 */
 	@Override
 	public double computeInterestRate(MacroAgent creditDemander, double amount, int length) {
-		double threshold=0;
 		double avInterest=0;
 		SimulationController controller = (SimulationController)this.getScheduler();
 		MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
 		Population banks = macroPop.getPopulation(StaticValues.BANKS_ID);
-		double tot=0;
 		double inter=0;
 		for (Agent b:banks.getAgents()){
 			Bank bank = (Bank) b;
-			tot+=bank.getLiquidityRatio();
 			inter+=bank.getPassedValue(StaticValues.LAG_DEPOSITINTEREST, 1);
 			}
-		threshold=tot/banks.getSize();
 		avInterest=inter/banks.getSize();
-
 		Bank lender=(Bank) this.getAgent();
-		// first get the interest rate in the previous period
-		double previousDepositRate = lender.getDepositInterestRate();
-		// determine the liquidity mark-up by comparing the liquidity ratio with the target liquidity ratio
-		double liquidityMarkUp = 0;
+		// determine the liquidity position by comparing the liquidity ratio with the target liquidity ratio
 		double liquidityRatio=lender.getLiquidityRatio();
 		double targetLiquidityRatio=lender.getTargetedLiquidityRatio();
-		liquidityMarkUp = ((liquidityRatio-targetLiquidityRatio)/targetLiquidityRatio)+(adaptiveParameter*previousDepositRate*distribution.nextDouble());
-		// determine the funding mark-up
+		int liquidityPosition = 0;
+		if ((liquidityRatio-targetLiquidityRatio)/targetLiquidityRatio < 0) {liquidityPosition = 1;
+		}else {liquidityPosition = -1;}
+		// determine the funding position
 		double previousFundingRate = lender.getFundingRate();
 		double interestPay=0;
 		double totValue=0;
@@ -78,14 +68,24 @@ public class AdaptiveDepositInterestRate extends AbstractStrategy implements Int
 			}
 		}
 		double fundingRate = interestPay/totValue;
-		double fundingMarkUp= (fundingRate - previousFundingRate) / previousFundingRate;
+		int fundingPosition = 0;
+		if ((fundingRate - previousFundingRate) / previousFundingRate > 0) {fundingPosition = 1;
+		}else {fundingPosition = -1;}
 		lender.setFundingRate(fundingRate);
 		// profit mark-up //
 		double previousInterestRate = lender.getPassedValue(StaticValues.LAG_LOANINTEREST, 1);
 		double currentInterestRate = lender.getBankInterestRate();
-		double profitabilityMarkUp=(currentInterestRate-previousInterestRate)/previousInterestRate;
-		// the deposit rate = previous deposit rate + liquidity mark-up + funding-mark-up + profit-mark-up
-		double iR = baseParameter * previousDepositRate + liquidityParameter * liquidityMarkUp + fundingParameter * fundingMarkUp + profitabilityParameter * profitabilityMarkUp; 
+		int profitabilityPosition = 0;
+		if ((currentInterestRate-previousInterestRate)/previousInterestRate > 0) {profitabilityPosition = 1;
+		}else {profitabilityPosition = -1;}
+		// the deposit rate = average deposit rate + random if (liquidity mark-up + funding-mark-up + profit-mark-up > threshold)
+		double referenceVariable = liquidityPosition + fundingPosition + profitabilityPosition;
+		double iR=0;
+		if(referenceVariable>0){
+			iR=avInterest+(adaptiveParameter*avInterest*distribution.nextDouble());
+		}else{
+			iR=avInterest-(adaptiveParameter*avInterest*distribution.nextDouble());
+		}
 		return Math.min(Math.max(iR, lender.getInterestRateLowerBound(mktId)),lender.getInterestRateUpperBound(mktId));
 	}
 
@@ -114,6 +114,38 @@ public class AdaptiveDepositInterestRate extends AbstractStrategy implements Int
 		ByteBuffer buf = ByteBuffer.wrap(content);
 		this.adaptiveParameter = buf.getDouble();
 		this.mktId = buf.getInt();
+	}
+
+	public double getAdaptiveParameter() {
+		return adaptiveParameter;
+	}
+
+	public void setAdaptiveParameter(double adaptiveParameter) {
+		this.adaptiveParameter = adaptiveParameter;
+	}
+
+	public AbstractDelegatedDistribution getDistribution() {
+		return distribution;
+	}
+
+	public void setDistribution(AbstractDelegatedDistribution distribution) {
+		this.distribution = distribution;
+	}
+
+	public int[] getLiabilitiesId() {
+		return liabilitiesId;
+	}
+
+	public void setLiabilitiesId(int[] liabilitiesId) {
+		this.liabilitiesId = liabilitiesId;
+	}
+
+	public int getMktId() {
+		return mktId;
+	}
+
+	public void setMktId(int mktId) {
+		this.mktId = mktId;
 	}
 
 }
