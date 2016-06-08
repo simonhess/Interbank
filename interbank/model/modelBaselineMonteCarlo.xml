@@ -132,6 +132,7 @@
 					/> <ref bean="govWageBillReportTic" /> <ref bean="govDoleReportTic" /> <ref 
 					bean="govInterestsBondsReportTic" /> <ref bean="microCGrowthReportTic" /> 
 					<ref bean="govCBProfitsReportTic" /> <ref bean="TFMReportTic" /> -->
+				<ref bean="cFirmsPricesReportTic" />
 				<ref bean="nominalGDPReportTic" />
 				<ref bean="nominalInvReportTic" />
 				<ref bean="unemploymentReportTic" />
