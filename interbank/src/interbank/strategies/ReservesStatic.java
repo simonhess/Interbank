@@ -1,8 +1,8 @@
 package interbank.strategies;
 
 import jmab.population.MacroPopulation;
-import net.sourceforge.jabm.EventScheduler;
-import net.sourceforge.jabm.agent.Agent;
+import jmab.simulations.MacroSimulation;
+import net.sourceforge.jabm.SimulationController;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
 /**
@@ -12,9 +12,15 @@ public class ReservesStatic extends AbstractStrategy implements
 		ReservesRateStrategy {
 	
 	private double staticReservesRate;
+	private int shockRound;
+	private double shockAdd;
 
 	@Override
 	public double computeReservesRate() {
+		SimulationController controller = (SimulationController)this.scheduler;
+		int round = ((MacroSimulation)controller.getSimulation()).getRound();
+		if(round >shockRound)
+			return staticReservesRate+shockAdd;
 		return staticReservesRate;
 	}
 	
@@ -26,6 +32,22 @@ public class ReservesStatic extends AbstractStrategy implements
 		this.staticReservesRate = staticReservesRate;
 	}
 	
+	public int getShockRound() {
+		return shockRound;
+	}
+
+	public void setShockRound(int shockRound) {
+		this.shockRound = shockRound;
+	}
+
+	public double getShockAdd() {
+		return shockAdd;
+	}
+
+	public void setShockAdd(double shockAdd) {
+		this.shockAdd = shockAdd;
+	}
+
 	@Override
 	public byte[] getBytes() {
 		// TODO Auto-generated method stub

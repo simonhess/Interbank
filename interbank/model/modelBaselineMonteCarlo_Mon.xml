@@ -3221,6 +3221,7 @@
 		<property name="distribution" ref="foldedNormal1" />
 		<property name="threshold" value="0.1"></property>
 		<property name="markUp" value="0.318857"></property>
+
 	</bean>
 	 -->
 	 
@@ -3405,6 +3406,7 @@
 						<util:constant static-field="interbank.StaticValues.LAG_TOTINTERBANKDEMAND" />
 					</key>
 				</entry>
+
 			</map>
 		</property>
 		<property name="numberMarkets" value="8" />
@@ -4366,10 +4368,10 @@
 	</bean>
 	
 	<bean id="reservesInterestRateStrategy" scope="prototype"
-		parent="strategy" class="interbank.strategies.ReservesRateAsBankRateInflationTargeting">
-		<property name="lagInflation">
-			<util:constant static-field="interbank.StaticValues.LAG_INFLATION" />
-		</property>
+		parent="strategy" class="interbank.strategies.ReservesStatic">
+		<property name="staticReservesRate" value="0.01"/>
+		<property name="shockRound" value="200"/>
+		<property name="shockAdd" value="0.0025"/>
 	</bean>
 	
 	<!-- TODO -->
