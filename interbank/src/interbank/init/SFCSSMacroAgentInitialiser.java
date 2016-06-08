@@ -51,7 +51,7 @@ import cern.jet.random.engine.RandomEngine;
  */
 public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser implements MacroAgentInitialiser{
 
-	
+
 	//Stocks
 	//Households
 	private double hhsDep;
@@ -66,7 +66,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 	private int csInv;
 	private double csLoans;
 	private double csLoans0;
-	
+
 	private int csKap;
 	//Banks
 	private double bsBonds;
@@ -115,7 +115,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 	 */
 	@Override
 	public void initialise(MacroPopulation population, MacroSimulation sim) {	
-		
+
 		Population households = population.getPopulation(StaticValues.HOUSEHOLDS_ID);
 		Population banks = population.getPopulation(StaticValues.BANKS_ID);
 		Population kFirms = population.getPopulation(StaticValues.CAPITALFIRMS_ID);
@@ -159,18 +159,18 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 
 			//Make sure there are no employer
 			hh.setEmployer(null);
-			
+
 			//Set previous seller
 			int sellerId= (int) i/hhPercFirm;
 			GoodSupplier previousSeller= (GoodSupplier) cFirms.getAgentList().get(sellerId);
 			CheapestGoodSupplierWithSwitching buyingStrategy= (CheapestGoodSupplierWithSwitching) hh.getStrategy(StaticValues.STRATEGY_BUYING);
 			buyingStrategy.setPreviousSeller(previousSeller);
-			
+
 			//Set Previous Deposit Supplier
 			MostPayingDepositWithSwitching depositStrategy= (MostPayingDepositWithSwitching) hh.getStrategy(StaticValues.STRATEGY_DEPOSIT);
 			DepositSupplier previousBankDeposit= (DepositSupplier) banks.getAgentList().get(bankId);
 			depositStrategy.setPreviousDepositSupplier(previousBankDeposit);
-			
+
 			//Expectations and Lagged values
 			hh.setWage(hhWage);
 			hh.addValue(StaticValues.LAG_NETWEALTH, hh.getNetWealth());
@@ -185,9 +185,9 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 			hh.addValue(StaticValues.LAG_EMPLOYED,0);
 			hh.addValue(StaticValues.LAG_CONSUMPTION,hhCons*(1+distr.nextDouble()));
 			hh.computeExpectations();
-			
+
 		}
-		
+
 		households.getAgentList().shuffle(prng);
 
 		//Capital Firms
@@ -230,14 +230,14 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 			MostPayingDepositWithSwitching depositStrategy= (MostPayingDepositWithSwitching) k.getStrategy(StaticValues.STRATEGY_DEPOSIT);
 			DepositSupplier previousBankDeposit= (DepositSupplier) banks.getAgentList().get(bankId);
 			depositStrategy.setPreviousDepositSupplier(previousBankDeposit);
-			
+
 
 			//Cash
 			Cash cash = new Cash(0,(SimpleAbstractAgent)k,(SimpleAbstractAgent)cb);
 			k.addItemStockMatrix(cash, true, StaticValues.SM_CASH);
 			cb.addItemStockMatrix(cash, false, StaticValues.SM_CASH);
 
-			
+
 			//Loans
 			bankLoanIterator=bankId;
 			lMat = k.getLoanLength();
@@ -256,7 +256,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 					borrowingStrategy.setPreviousLender(previousCreditor);
 				}
 			}
-			
+
 			//Expectations and Lagged Values
 			k.addValue(StaticValues.LAG_PROFITPRETAX, kProfit*(1+distr.nextDouble()));
 			k.addValue(StaticValues.LAG_PROFITAFTERTAX, kProfit*(1+distr.nextDouble()));
@@ -331,12 +331,12 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 				capitalValue+=kGood.getValue();
 				c.addItemStockMatrix(kGood, true, StaticValues.SM_CAPGOOD);
 			}
-			
+
 			//Previous cpaital supplier
 			BestQualityPriceCapitalSupplierWithSwitching buyingStrategy= (BestQualityPriceCapitalSupplierWithSwitching) c.getStrategy(StaticValues.STRATEGY_BUYING);
 			buyingStrategy.setPreviousSupplier(kFirm);
-			
-			
+
+
 			//Workers
 			for(int j=0;j<cEmpl;j++){
 				Households hh = (Households) households.getAgentList().get(hWorkerCounter);
@@ -361,11 +361,11 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 			Cash cash = new Cash(0,(SimpleAbstractAgent)c,(SimpleAbstractAgent)cb);
 			c.addItemStockMatrix(cash, true, StaticValues.SM_CASH);
 			cb.addItemStockMatrix(cash, false, StaticValues.SM_CASH);
-			
+
 			//Loans
 			bankLoanIterator=bankId;
 			lMat = c.getLoanLength();
-			
+
 			for(int j = 0 ; j <= lMat-1 ; j++){
 				Bank loanBank = (Bank) banks.getAgentList().get(bankLoanIterator);
 				bankLoanIterator++;
@@ -380,9 +380,9 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 					CreditSupplier previousCreditor= (CreditSupplier) bank;
 					borrowingStrategy.setPreviousLender(previousCreditor);
 				}
-				
+
 			}
-			
+
 			//Expectations and Lagged Values
 			c.addValue(StaticValues.LAG_PROFITPRETAX, cProfit*(1+distr.nextDouble()));
 			c.addValue(StaticValues.LAG_PROFITAFTERTAX, cProfit*(1+distr.nextDouble()));
@@ -422,7 +422,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 				passedRSales[j][1]=cOutput*(1+distr.nextDouble());
 			}
 			cRSalesExp.setPassedValues(passedRSales);
-			
+
 			c.computeExpectations();
 		}
 
@@ -457,7 +457,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 				b.addItemStockMatrix(bond, true, StaticValues.SM_BONDS);
 				govt.addItemStockMatrix(bond, false, StaticValues.SM_BONDS);
 			}
-			
+
 			//Advances			
 			int aMat = b.getAdvancesLength();
 			double aValue = bAdv/aMat;
@@ -469,7 +469,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 			}
 
 			//Expectations and Lagged Values
-			
+
 			b.addValue(StaticValues.LAG_PROFITPRETAX, bProfit*(1+distr.nextDouble()));
 			b.addValue(StaticValues.LAG_PROFITAFTERTAX, bProfit*(1+distr.nextDouble()));
 			b.addValue(StaticValues.LAG_NONPERFORMINGLOANS, 0*(1+distr.nextDouble()));
@@ -478,6 +478,9 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 			b.addValue(StaticValues.LAG_BANKTOTLOANSUPPLY, (((csLoans+ksLoans)/bSize))*2/(lMat+1)*(1+distr.nextDouble()));
 			b.addValue(StaticValues.LAG_DEPOSITINTEREST,iDep);
 			b.addValue(StaticValues.LAG_LOANINTEREST,iLoans);
+			b.addValue(StaticValues.LAG_INTERBANKINTEREST,this.iAdv);
+			b.addValue(StaticValues.LAG_TOTINTERBANKSUPPLY,0);
+			b.addValue(StaticValues.LAG_TOTINTERBANKDEMAND,0);
 			double[][] bs = b.getNumericBalanceSheet();
 			Expectation bDepExp = b.getExpectation(StaticValues.EXPECTATIONS_DEPOSITS);
 			int nbObs = bDepExp.getNumberPeriod();
@@ -488,10 +491,10 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 				passedbDep[j][1]=passedDebValue;
 			}
 			bDepExp.setPassedValues(passedbDep);
-			
+
 			b.computeExpectations();
 		}
-		
+
 		//Government
 		//Employment
 		for(int i = 0 ; i < gEmpl ; i++){
@@ -501,7 +504,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 			govt.addEmployee(hh);
 			hWorkerCounter++;
 		}
-		
+
 		//HERE ADD THE DEPOSIT ACCOUNT OF THE GOVERNMENT IN ALL PRIVATE BANKS
 		// for every bank add an empty government account
 		for(int i = 0; i<bSize; i++) {
@@ -510,12 +513,12 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 			govt.addItemStockMatrix(govtDep, true, StaticValues.SM_DEP);
 			bank.addItemStockMatrix(govtDep, false, StaticValues.SM_DEP);			
 		}
-		
+
 		//Central Bank Deposit
 		Deposit govtRes = new Deposit(0,(SimpleAbstractAgent)govt,(SimpleAbstractAgent)cb,0);
 		govt.addItemStockMatrix(govtRes, true, StaticValues.SM_RESERVES);
 		cb.addItemStockMatrix(govtRes, false, StaticValues.SM_RESERVES);
-		
+
 		//Central Bank
 		int nbBondsPerPeriod1 = (int) this.cbBonds/(bondMat*bondPrice);
 		for(int j = 1 ; j<=bondMat; j++){
@@ -531,8 +534,8 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 		govt.setAggregateValue(StaticValues.LAG_NOMINALGDP, nomGDP);//TODO
 	}
 
-	
-	
+
+
 	/**
 	 * @return the infl
 	 */
@@ -942,7 +945,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 	public void setgEmpl(int gEmpl) {
 		this.gEmpl = gEmpl;
 	}
-	
+
 	/**
 	 * @return the kUnitCost
 	 */
@@ -970,7 +973,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 	public void setcUnitCost(double cUnitCost) {
 		this.cUnitCost = cUnitCost;
 	}
-	
+
 
 	/**
 	 * @return the dividendsReceived
@@ -1119,5 +1122,5 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 	public void setNomGDP(double nomGDP) {
 		this.nomGDP = nomGDP;
 	}
-	
+
 }
