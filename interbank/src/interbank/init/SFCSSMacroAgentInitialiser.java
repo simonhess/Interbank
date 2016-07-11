@@ -42,6 +42,7 @@ import jmab.strategies.CheapestGoodSupplierWithSwitching;
 import jmab.strategies.CheapestLenderWithSwitching;
 import jmab.strategies.MostPayingDepositWithSwitching;
 import net.sourceforge.jabm.Population;
+import net.sourceforge.jabm.prng.MersenneTwister;
 import cern.jet.random.Uniform;
 import cern.jet.random.engine.RandomEngine;
 
@@ -117,6 +118,17 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 	public void initialise(MacroPopulation population, MacroSimulation sim) {	
 
 		Population households = population.getPopulation(StaticValues.HOUSEHOLDS_ID);
+		
+		
+		//This allows to control the seed: every MC simulation starts with a different seed
+		//as the id of agents increases from mc repetition to mc repetition. But it is reset
+		// when it starts a new experiment of a sensitivity so that every mc repetition of a sens
+		//experiment has the same seed of the correspondent mc repetition in the other experiments.
+		int seed= (int) h.getAgentId();
+		MersenneTwister prng1 = (MersenneTwister) this.prng;
+		prng1.setSeed(seed);
+		System.out.println("Seed is: " + seed);
+		
 		Population banks = population.getPopulation(StaticValues.BANKS_ID);
 		Population kFirms = population.getPopulation(StaticValues.CAPITALFIRMS_ID);
 		Population cFirms = population.getPopulation(StaticValues.CONSUMPTIONFIRMS_ID);
