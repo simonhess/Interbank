@@ -195,7 +195,32 @@
 				<ref bean="microCBLREventReportTic" />
 				<ref bean="microGovBondRateEventReportTic" />
 				<ref bean="microHHEmployerEventReportTic" />
-				
+				<!-- 12 July Joeri added reporter Tics -->
+				<ref bean="microBankCreditReportTic" />
+				<ref bean="creditDegreeReportTic" />
+				<ref bean="realCDesOutputReportTic" />
+				<ref bean="realKDesOutputReportTic" />
+				<ref bean="banksProfitsReportTic" />
+				<ref bean="cFirmsProfitsReportTic" />
+				<ref bean="kFirmsProfitsReportTic" />
+				<ref bean="hhWageReportTic" />
+				<ref bean="hhNetIncomeReportTic" />
+				<ref bean="cFirmsPricesReportTic" />
+				<ref bean="kFirmsPricesReportTic" />
+				<ref bean="microRealDesConsReportTic" />
+				<ref bean="cFirmsDebtServiceReportTic" />
+				<ref bean="kFirmsDebtServiceReportTic" />
+				<ref bean="cFirmsWageBillReportTic" />
+				<ref bean="kFirmsWageBillReportTic" />
+				<ref bean="cFirmsLevReportTic" />
+				<ref bean="kFirmsLevReportTic" />
+				<ref bean="cFirmsConsCredReportTic" />
+				<ref bean="kFirmsConsCredReportTic" />
+				<ref bean="banksSpecificInterestReportTic" />
+				<ref bean="banksDepositInterestReportTic" />
+				<ref bean="banksDepositsReportTic" />
+				<ref bean="govDoleReportTic" />
+				<ref bean="hhDepositsReportTic" />
 				<!-- End of New interbank reporter TICs -->
 				<ref bean="BSNetworkReportTic" />
 				<ref bean="populationHandlerTic" />
@@ -2299,6 +2324,10 @@
 		<property name="variableName" value="Households Employer"></property>
 		<property name="computer" ref="microHHEmployerComputer"></property>
 	</bean>
+	
+	<!-- Joeri 12 July 2016 added new reporter TICS -->
+	
+	
 
 
 	<!-- The basic initialiser of agents -->
