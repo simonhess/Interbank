@@ -197,7 +197,6 @@
 				<ref bean="microHHEmployerEventReportTic" />
 				<!-- 12 July Joeri added reporter Tics -->
 				<ref bean="microBankCreditReportTic" />
-				<ref bean="creditDegreeReportTic" />
 				<ref bean="realCDesOutputReportTic" />
 				<ref bean="realKDesOutputReportTic" />
 				<ref bean="banksProfitsReportTic" />

@@ -4383,7 +4383,7 @@
 
 <!--CONSUMPTION FIRMS REMAINING CREDIT -->
 
-<bean id="cFirmsConsCredComputer" class="jmab.report.MicroFirmsConstrainedCreditComputer">
+<bean id="cFirmsConsCredComputer" class="jmab.report.MicroAgentsConstrainedCreditComputer">
 	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 	<property name="idLoanSM"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
 </bean>
@@ -4434,7 +4434,7 @@
 
 <!--CAPITAL FIRMS REMAINING CREDIT -->
 
-<bean id="kFirmsConsCredComputer" class="jmab.report.MicroFirmsConstrainedCreditComputer">
+<bean id="kFirmsConsCredComputer" class="jmab.report.MicroAgentsConstrainedCreditComputer">
 	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
 	<property name="idLoanSM"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
 </bean>
