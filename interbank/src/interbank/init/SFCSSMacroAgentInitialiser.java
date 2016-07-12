@@ -124,6 +124,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 		//as the id of agents increases from mc repetition to mc repetition. But it is reset
 		// when it starts a new experiment of a sensitivity so that every mc repetition of a sens
 		//experiment has the same seed of the correspondent mc repetition in the other experiments.
+		Households h = (Households) households.getAgentList().get(0);
 		int seed= (int) h.getAgentId();
 		MersenneTwister prng1 = (MersenneTwister) this.prng;
 		prng1.setSeed(seed);
