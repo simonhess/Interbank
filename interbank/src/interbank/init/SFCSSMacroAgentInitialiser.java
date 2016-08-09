@@ -126,8 +126,8 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 		//experiment has the same seed of the correspondent mc repetition in the other experiments.
 		Households h = (Households) households.getAgentList().get(0);
 		int seed= (int) h.getAgentId();
-		MersenneTwister prng1 = (MersenneTwister) this.prng;
-		prng1.setSeed(seed);
+		MersenneTwister prng = (MersenneTwister) this.prng;
+		prng.setSeed(seed);
 		System.out.println("Seed is: " + seed);
 		
 		Population banks = population.getPopulation(StaticValues.BANKS_ID);
