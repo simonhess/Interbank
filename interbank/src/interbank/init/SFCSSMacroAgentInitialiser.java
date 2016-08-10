@@ -21,6 +21,10 @@ import interbank.agents.CentralBank;
 import interbank.agents.ConsumptionFirm;
 import interbank.agents.Government;
 import interbank.agents.Households;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 import jmab.agents.CreditSupplier;
 import jmab.agents.DepositSupplier;
 import jmab.agents.GoodSupplier;
@@ -43,6 +47,7 @@ import jmab.strategies.CheapestLenderWithSwitching;
 import jmab.strategies.MostPayingDepositWithSwitching;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.prng.MersenneTwister;
+import net.sourceforge.jabm.report.CSVWriter;
 import cern.jet.random.Uniform;
 import cern.jet.random.engine.RandomEngine;
 
@@ -110,12 +115,22 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 	private double gr;
 	private double nomGDP;
 	private double infl;
+	
+	private CSVWriter seedsWriter;
 
 	/* (non-Javadoc)
 	 * @see jmab.init.MacroAgentInitialiser#initialise(jmab.population.MacroPopulation)
 	 */
 	@Override
 	public void initialise(MacroPopulation population, MacroSimulation sim) {	
+		
+		try {
+			String folderName = "data/";
+			seedsWriter = new CSVWriter(new FileOutputStream(folderName.concat("seed.csv"),true),',');
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		Population households = population.getPopulation(StaticValues.HOUSEHOLDS_ID);
 		
@@ -129,7 +144,9 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 		MersenneTwister prng = (MersenneTwister) this.prng;
 		prng.setSeed(seed);
 		System.out.println("Seed is: " + seed);
-		
+		seedsWriter.newData(seed);
+		seedsWriter.endRecord();
+		seedsWriter.close();
 		Population banks = population.getPopulation(StaticValues.BANKS_ID);
 		Population kFirms = population.getPopulation(StaticValues.CAPITALFIRMS_ID);
 		Population cFirms = population.getPopulation(StaticValues.CONSUMPTIONFIRMS_ID);
