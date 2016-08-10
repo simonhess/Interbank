@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 import java.util.List;
 
 import interbank.StaticValues;
+import cern.jet.random.engine.RandomEngine;
 import jmab.agents.CreditDemander;
 import jmab.agents.DepositDemander;
 import jmab.agents.FinanceAgent;
