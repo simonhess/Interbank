@@ -18,8 +18,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import cern.jet.random.engine.RandomEngine;
 
 import interbank.StaticValues;
 import jmab.agents.BondDemander;
@@ -278,9 +278,14 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 			// get accounts to pay from, list of deposits + reserves
 			List<Item> deposits = this.getItemsStockMatrix(true, StaticValues.SM_DEP);
 			// pay the employees 
-			Collections.shuffle(this.employees);
-			for(int i=0;i<employees.size();i++){
-				LaborSupplier employee = (LaborSupplier) employees.get(i);
+			int currentWorkers = this.employees.size();
+			AgentList emplPop = new AgentList();
+			for(MacroAgent ag : this.employees)
+				emplPop.add(ag);
+			emplPop.shuffle(prng);
+			//Collections.shuffle(this.employees);
+			for(int i=0;i<currentWorkers;i++){
+				LaborSupplier employee = (LaborSupplier) emplPop.get(i);
 				Item payableStock = employee.getPayableStock(StaticValues.MKT_LABOR);
 				double wage = employee.getWage();
 				// loop through the deposits to reduce government deposit accounts in wages

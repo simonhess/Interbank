@@ -14,11 +14,15 @@
  */
 package interbank.agents;
 
-import interbank.StaticValues;
-
-import java.util.Collections;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import interbank.StaticValues;
+import cern.jet.random.engine.RandomEngine;
 import jmab.agents.CreditDemander;
 import jmab.agents.DepositDemander;
 import jmab.agents.FinanceAgent;
@@ -29,9 +33,11 @@ import jmab.agents.LaborDemander;
 import jmab.agents.LaborSupplier;
 import jmab.agents.LiabilitySupplier;
 import jmab.agents.PriceSetterWithTargets;
+import jmab.agents.MacroAgent;
 import jmab.agents.ProfitsTaxPayer;
 import jmab.events.MacroTicEvent;
 import jmab.expectations.Expectation;
+import jmab.population.MacroPopulation;
 import jmab.stockmatrix.CapitalGood;
 import jmab.stockmatrix.Cash;
 import jmab.stockmatrix.ConsumptionGood;
@@ -42,6 +48,8 @@ import jmab.strategies.FinanceStrategy;
 import jmab.strategies.ProfitsWealthTaxStrategy;
 import jmab.strategies.SelectSellerStrategy;
 import jmab.strategies.TargetExpectedInventoriesOutputStrategy;
+import net.sourceforge.jabm.agent.Agent;
+import net.sourceforge.jabm.agent.AgentList;
 
 
 /**
@@ -131,9 +139,13 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 				neededDiscount = deposit.getQuantity()/wageBill;
 			}
 			if(neededDiscount<this.minWageDiscount){
-				Collections.shuffle(this.employees);
-				for(int i=0;i<employees.size();i++){
-					LaborSupplier employee = (LaborSupplier) employees.get(i);
+				int currentWorkers = this.employees.size();
+				AgentList emplPop = new AgentList();
+				for(MacroAgent ag : this.employees)
+					emplPop.add(ag);
+				emplPop.shuffle(prng);
+				for(int i=0;i<currentWorkers;i++){
+					LaborSupplier employee = (LaborSupplier) emplPop.get(i);
 					Item payableStock = employee.getPayableStock(StaticValues.MKT_LABOR);
 					LiabilitySupplier payingSupplier = (LiabilitySupplier) deposit.getLiabilityHolder();
 					payingSupplier.transfer(deposit, payableStock, wageBill*neededDiscount/employees.size());
@@ -144,9 +156,13 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 				
 			}else{
 				//3. Pay wages
-				Collections.shuffle(this.employees);
-				for(int i=0;i<employees.size();i++){
-					LaborSupplier employee = (LaborSupplier) employees.get(i);
+				int currentWorkers = this.employees.size();
+				AgentList emplPop = new AgentList();
+				for(MacroAgent ag : this.employees)
+					emplPop.add(ag);
+				emplPop.shuffle(prng);
+				for(int i=0;i<currentWorkers;i++){
+					LaborSupplier employee = (LaborSupplier) emplPop.get(i);
 					double wage = employee.getWage();
 					if(wage<deposit.getValue()){
 						Item payableStock = employee.getPayableStock(StaticValues.MKT_LABOR);
@@ -168,9 +184,12 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 	protected void computeLaborDemand() {
 		
 		int currentWorkers = this.employees.size();
-		Collections.shuffle(employees);
+		AgentList emplPop = new AgentList();
+		for(MacroAgent ag : this.employees)
+			emplPop.add(ag);
+		emplPop.shuffle(prng);
 		for(int i=0;i<this.turnoverLabor*currentWorkers;i++){
-			fireAgent(employees.get(i));
+			fireAgent((MacroAgent)emplPop.get(i));
 		}
 		cleanEmployeeList();
 		currentWorkers = this.employees.size();
@@ -180,10 +199,13 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 			this.laborDemand=nbWorkers-currentWorkers;
 		}else{
 			this.laborDemand=0;
-			Collections.shuffle(this.employees);
+			emplPop = new AgentList();
+			for(MacroAgent ag : this.employees)
+				emplPop.add(ag);
+			emplPop.shuffle(prng);
 			this.setActive(false, StaticValues.MKT_LABOR);
 			for(int i=0;i<currentWorkers-nbWorkers;i++){
-				fireAgent(employees.get(i));
+				fireAgent((MacroAgent)emplPop.get(i));
 			}
 		}
 		if (laborDemand>0){

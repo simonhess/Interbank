@@ -14,6 +14,7 @@
  */
 package interbank;
 
+import net.sourceforge.jabm.DesktopSimulationManager;
 import net.sourceforge.jabm.SimulationManager;
 
 /**
@@ -22,6 +23,6 @@ import net.sourceforge.jabm.SimulationManager;
 public class Main {
     
     public static void main(String [] args) {
-        SimulationManager.main(new String[] {});
+    	SimulationManager.main(new String[] {});
     }
 }
