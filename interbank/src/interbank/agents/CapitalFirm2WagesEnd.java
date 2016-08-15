@@ -34,11 +34,14 @@ import jmab.agents.ProfitsTaxPayer;
 import jmab.events.MacroTicEvent;
 import jmab.expectations.Expectation;
 import jmab.population.MacroPopulation;
+import jmab.stockmatrix.CapitalGood;
 import jmab.stockmatrix.Cash;
 import jmab.stockmatrix.Deposit;
 import jmab.stockmatrix.Item;
 import jmab.strategies.DividendsStrategy;
 import jmab.strategies.FinanceStrategy;
+import jmab.strategies.ProfitsWealthTaxStrategy;
+import jmab.strategies.TargetExpectedInventoriesOutputStrategy;
 import net.sourceforge.jabm.agent.AgentList;
 
 
@@ -298,6 +301,14 @@ public class CapitalFirm2WagesEnd extends CapitalFirm implements GoodSupplier,
 			this.populateStrategies(stratBytes, pop);
 		}
 	}
+	public RandomEngine getPrng() {
+		return prng;
+	}
+
+	public void setPrng(RandomEngine prng) {
+		this.prng = prng;
+	}
+	
 	
 	/**
 	 * Generates the byte array containing all relevant informations regarding the capital firm agent. The structure is as follows:
