@@ -138,7 +138,7 @@ public class CapitalFirm2WagesEnd extends CapitalFirm implements GoodSupplier,
 				AgentList emplPop = new AgentList();
 				for(MacroAgent ag : this.employees)
 					emplPop.add(ag);
-				emplPop.shuffle(prng);
+				if (currentWorkers > 0) emplPop.shuffle(prng);
 				for(int i=0;i<currentWorkers;i++){
 					LaborSupplier employee = (LaborSupplier) emplPop.get(i);
 					double wage = employee.getWage();
@@ -165,7 +165,7 @@ public class CapitalFirm2WagesEnd extends CapitalFirm implements GoodSupplier,
 		AgentList emplPop = new AgentList();
 		for(MacroAgent ag : this.employees)
 			emplPop.add(ag);
-		emplPop.shuffle(prng);
+		if (currentWorkers > 0) emplPop.shuffle(prng);
 		for(int i=0;i<this.turnoverLabor*currentWorkers;i++){
 			fireAgent((MacroAgent)emplPop.get(i));
 		}
@@ -182,7 +182,7 @@ public class CapitalFirm2WagesEnd extends CapitalFirm implements GoodSupplier,
 			emplPop = new AgentList();
 			for(MacroAgent ag : this.employees)
 				emplPop.add(ag);
-			emplPop.shuffle(prng);
+			if (currentWorkers > 0) emplPop.shuffle(prng);
 			for(int i=0;i<currentWorkers-nbWorkers;i++){
 				fireAgent((MacroAgent)emplPop.get(i));
 			}
