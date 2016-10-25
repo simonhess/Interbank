@@ -1477,7 +1477,7 @@
 			<util:constant static-field="interbank.StaticValues.MICROCMARKUPREPORT_ID" />
 		</property>
 		<property name="variableName" value="Consumption Firms mark up"></property>
-		<property name="computer" ref="microCMarkUpComputer"></property>
+		<property name="computer" ref="cFirmsMarkUpComputer"></property>
 	</bean>
 
 	<bean id="microKMarkUpReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
@@ -1488,7 +1488,7 @@
 			<util:constant static-field="interbank.StaticValues.MICROKMARKUPREPORT_ID" />
 		</property>
 		<property name="variableName" value="Capital Firms mark up"></property>
-		<property name="computer" ref="microKMarkUpComputer"></property>
+		<property name="computer" ref="cFirmsMarkUpComputer"></property>
 	</bean>
 	
 

@@ -225,9 +225,9 @@ Caiani, A., Godin, A., Caverzasi, E., Ricetti, L., Russo, A., Gallegati, M., Kin
     			<ref bean="microRealKInventCSVReport" />
     			<!-- Joeri created a mark-up report TIC -->
     			<ref bean="cFirmsMarkUpEventReport" />
-    			<ref bean="microCMarkUpCSVReport" />
+    			<ref bean="cFirmsMarkUpCSVReport" />
     			<ref bean="kFirmsMarkUpEventReport" />
-    			<ref bean="microKMarkUpCSVReport" />
+    			<ref bean="kFirmsMarkUpCSVReport" />
     				
 			</list>
 		</property>
