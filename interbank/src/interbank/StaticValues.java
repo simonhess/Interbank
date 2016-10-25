@@ -188,6 +188,8 @@ public interface StaticValues {
 	public static int TIC_MICROCBLRREPORT=162;
 	public static int TIC_MICROGOVBONDRATEREPORT=163;
 	public static int TIC_MICROHHEMPLOYERREPORT=164;
+	public static int TIC_MICROCMARKUPREPORT=165;
+	public static int TIC_MICROKMARKUPREPORT=166;
 
 	public static int TIC_POPULATIONHANDLER=1000;
 	public static int TIC_COMPUTEAGGREGATES=1001;
@@ -426,6 +428,8 @@ public interface StaticValues {
 	public static int MICROCBLRREPORT_ID=119;
 	public static int MICROGOVBONDRATEREPORT_ID=120;
 	public static int MICROHHEMPLOYERREPORT_ID=121;
+	public static int MICROCMARKUPREPORT_ID=122;
+	public static int MICROKMARKUPREPORT_ID=123;
 
 
 

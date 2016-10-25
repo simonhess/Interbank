@@ -2455,6 +2455,113 @@
 	<property name="reportVariables" ref="microRealKInventReportVariables"/>
 </bean>
 
+<!-- K firms mark-up -->
+
+<bean id="microKMarkUpComputer" class="jmab.report.MicroFirmsMarkupComputer">
+	<!-- Is this property nescessary? 
+	<property name="strategyId"><util:constant static-field="interbank.StaticValues.SM_CAPGOOD"/></property>
+	-->
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
+</bean>
+
+<bean id="kFirmsMarkUpEventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROKMARKUPREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microRealKInventTimeSeries"/>
+</bean>
+
+<bean id="microKMarkUpCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROKMARKUPREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microRealKInventCSVReportVariables"/>
+</bean>
+
+<bean id="microKMarkUpCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microKMarkUpReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="kFirmsMarkUp" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microKMarkUpReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Capital Firms Mark Up"/>
+	<property name="numberOfSeries" value="20"/>
+</bean>
+
+<bean id="microKMarkUpTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microKMarkUpTimeSeries"/>
+	<property name="chartTitle" value="Mark Up"/>
+	<property name="rangeAxisLabel" value="Capital Firms"/>
+</bean>
+
+<bean id="microKMarkUpTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microKMarkUpReportVariables"/>
+</bean>
+
+<!-- C firms mark-up -->
+
+<bean id="microCMarkUpComputer" class="jmab.report.MicroFirmsMarkupComputer">
+	<!-- Is this property nescessary? 
+	<property name="strategyId"><util:constant static-field="interbank.StaticValues.SM_CAPGOOD"/></property>
+	-->
+	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
+</bean>
+
+<bean id="cFirmsMarkUpEventReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent">
+		</bean>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROCMARKUPREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microRealCInventTimeSeries"/>
+</bean>
+
+<bean id="microCMarkUpCSVReport" class="jmab.report.MicroSimEventReport">
+	<property name="eventPrototype">
+		<bean class="jmab.events.MicroSimEvent"/>
+	</property>
+	<property name="variableId">
+	        <util:constant static-field="interbank.StaticValues.MICROCMARKUPREPORT_ID"/>
+	</property>
+	<property name="reportVariables" ref="microRealCInventCSVReportVariables"/>
+</bean>
+
+<bean id="microCMarkUpCSVReportVariables" class="jmab.report.MacroCSVReportVariables">
+	<property name="reportVariables" ref="microCMarkUpReportVariables"/>
+	<property name="fileNamePrefix" ref="fileNamePrefix" />
+	<property name="fileNameSuffix" value="cFirmsMarkUp" />
+	<property name="fileNameExtension" value=".csv" />
+	<property name="passThrough" value="true" />
+</bean>
+
+<bean id="microCMarkUpReportVariables" class="jmab.report.MicroMultiVariablesReport">
+	<property name="name" value="Consumption Firms Mark Up"/>
+	<property name="numberOfSeries" value="20"/>
+</bean>
+
+<bean id="microCMarkUpTimeSeriesChart" class="net.sourceforge.jabm.view.TimeSeriesChart">
+	<property name="series" ref="microCMarkUpTimeSeries"/>
+	<property name="chartTitle" value="Mark Up"/>
+	<property name="rangeAxisLabel" value="Consumption Firms"/>
+</bean>
+
+<bean id="microCMarkUpTimeSeries" class="jmab.report.MicroSeriesReportVariables">
+	<property name="reportVariables" ref="microCMarkUpReportVariables"/>
+</bean>
+
+
 <!--C Firms desired growth -->
 
 <bean id="microCGrowthComputer" class="interbank.report.MicroGrowthConsFirmsComputer">
@@ -3162,7 +3269,8 @@
 <!--BANKS SPECIFIC INTEREST LOANS-->
 
 <bean id="banksSpecificInterestComputer" class="interbank.report.MicroBankSpecificInterest">
-	<property name="banksId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
+ <property name="banksId"><util:constant static-field="interbank.StaticValues.BANKS_ID"/></property>
+ <property name="mktId"><util:constant static-field="interbank.StaticValues.MKT_CREDIT"/></property>
 </bean>
 
 <bean id="banksSpecificInterestEventReport" class="jmab.report.MicroSimEventReport">

@@ -104,6 +104,12 @@
 				<!-- Illiquidity TIC -->
 				<ref bean="illiquidityTic" />
 				<ref bean="computeAggregatesTic" />
+				<!-- Added ticks for inventories -->
+				<ref bean="microRealCInventReportTic" /> 
+				<ref bean="microRealKInventReportTic" />
+				<!-- Added ticks for markups -->
+				<ref bean="microCMarkUpReportTic" /> 
+				<ref bean="microKMarkUpReportTic" />
 				<!-- <ref bean="microLoansKfirmsReportTic" /> <ref bean="microLoansCfirmsReportTic" 
 					/> <ref bean="microRealConsReportTic" /> <ref bean="microNominalConsReportTic" 
 					/> <ref bean="microRealDesInvReportTic" /> <ref bean="microNominalInvReportTic" 
@@ -1460,6 +1466,31 @@
 		<property name="variableName" value="Capital Firms Real Inventories"></property>
 		<property name="computer" ref="microRealKInventComputer"></property>
 	</bean>
+	
+	<!-- Joeri added new mark-up reporters-->
+	
+	<bean id="microCMarkUpReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROCMARKUPREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROCMARKUPREPORT_ID" />
+		</property>
+		<property name="variableName" value="Consumption Firms mark up"></property>
+		<property name="computer" ref="microCMarkUpComputer"></property>
+	</bean>
+
+	<bean id="microKMarkUpReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
+		<property name="tic">
+			<util:constant static-field="interbank.StaticValues.TIC_MICROKMARKUPREPORT" />
+		</property>
+		<property name="variableId">
+			<util:constant static-field="interbank.StaticValues.MICROKMARKUPREPORT_ID" />
+		</property>
+		<property name="variableName" value="Capital Firms mark up"></property>
+		<property name="computer" ref="microKMarkUpComputer"></property>
+	</bean>
+	
 
 	<bean id="microCGrowthReportTic" class="jmab.events.MicroMultiVariablesTicEvent">
 		<property name="tic">

@@ -217,7 +217,18 @@ Caiani, A., Godin, A., Caverzasi, E., Ricetti, L., Russo, A., Gallegati, M., Kin
 				<ref bean="hhDepositsEventReport" />
 				<ref bean="hhDepositsCSVReport" />
 				<ref bean="TFMEventReport" />
-				<ref bean="TFMCSVReport" />		
+				<ref bean="TFMCSVReport" />
+				<!-- Joeri added micro reports voor ACS paper -->
+				<ref bean="realCInventEventReport" />
+    			<ref bean="microRealCInventCSVReport" />
+    			<ref bean="realKInventEventReport" />
+    			<ref bean="microRealKInventCSVReport" />
+    			<!-- Joeri created a mark-up report TIC -->
+    			<ref bean="cFirmsMarkUpEventReport" />
+    			<ref bean="microCMarkUpCSVReport" />
+    			<ref bean="kFirmsMarkUpEventReport" />
+    			<ref bean="microKMarkUpCSVReport" />
+    				
 			</list>
 		</property>
 		
