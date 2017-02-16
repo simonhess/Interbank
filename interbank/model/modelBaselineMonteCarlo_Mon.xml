@@ -2880,13 +2880,17 @@
 		<property name="inventoriesLostShare" value="0"></property>
 	</bean>
 
-	<!-- OLD FINANCING STRATEGY BASED ON DYNAMIC TRADEOFF <bean id="capitalFinanceStrategy" 
+	<!-- OLD FINANCING STRATEGY BASED ON DYNAMIC TRADEOFF 
+	<bean id="capitalFinanceStrategy" 
 		scope="prototype" parent="strategy" class="jmab.strategies.DynamicTradeOffFinance2_0"> 
 		<property name="leverageTarget" value="0.3"></property> <property name="pastSalesId"><util:constant 
 		static-field="interbank.StaticValues.LAG_NOMINALSALES"/></property> <property 
 		name="loansId" ><util:constant static-field="interbank.StaticValues.SM_LOAN" 
 		/> </property> <property name="threshold" value="0.2"/> <property name="distribution" 
-		ref="foldedNormal1"/> <property name="adaptiveParameter" value="0.5" /> </bean> -->
+		ref="foldedNormal1"/> <property name="adaptiveParameter" value="0.5" /> 
+	</bean> 
+	-->
+		
 	<bean id="capitalFinanceStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.PeckingOrderTheory">
 		<property name="stocksId">
@@ -2897,12 +2901,32 @@
 		</property>
 	</bean>
 
+<!-- OLD MARK-UP CLASS FOR CAPITAL FIRMS
 	<bean id="capitalPricingStrategy" scope="prototype" parent="strategy"
-		class="jmab.strategies.AdaptiveMarkUpOnAC">
+		class="jmab.strategies.AdaptiveMarkUpOnACandCU">
 		<property name="adaptiveParameter" value="1" />
 		<property name="distribution" ref="foldedNormal1" />
 		<property name="threshold" value="0.1"></property>
 		<property name="markUp" value="0.075"></property>
+	</bean>
+-->
+
+	<bean id="capitalPricingStrategy" scope="prototype" parent="strategy"
+		class="jmab.strategies.AdaptiveMarkUpOnACandCU">
+		<property name="adaptiveParameter" value="1" />
+		<property name="distribution" ref="foldedNormal1" />
+		<property name="threshold" value="0.1"></property>
+		<property name="markUp" value="0.075"></property>
+		<property name="capitalOwner" value="0"></property>
+		<property name="capacityId">
+			<util:constant static-field="interbank.StaticValues.LAG_CAPACITY" />
+		</property>
+		<property name="productionId">
+			<util:constant static-field="interbank.StaticValues.LAG_PRODUCTION" />
+		</property>
+		<property name="realSalesId">
+			<util:constant static-field="interbank.StaticValues.LAG_REALSALES" />
+		</property>
 	</bean>
 
 	<bean id="capitalTaxesStrategy" scope="prototype" parent="strategy"
@@ -3274,7 +3298,7 @@
 		</property>
 	</bean>
 
-	<!-- 
+	<!-- OLD PRICING STARTEGIES FOR CONSUMPTION FIRMS
 	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.AdaptiveMarkUpOnAC">
 		<property name="adaptiveParameter" value="1" />
@@ -3282,7 +3306,7 @@
 		<property name="threshold" value="0.1"></property>
 		<property name="markUp" value="0.318857"></property>
 	</bean>
-	 -->
+	
 	 
 	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.AdaptiveReturnOnAC">
@@ -3290,7 +3314,7 @@
 		<property name="distribution" ref="foldedNormal1" />
 		<property name="threshold" value="0.1"></property>
 		<property name="capacityUtilisation" value="0.8"></property>
-		<property name="returnRate" value="0.1887055680579684"></property><!-- TODO ANTOIN CHANGED THIS 6/6/2016 -->
+		<property name="returnRate" value="0.1887055680579684"></property>
 		<property name="idCapacity">
 			<util:constant static-field="interbank.StaticValues.LAG_CAPACITY" />
 		</property>
@@ -3302,6 +3326,35 @@
 		</property>
 		<property name="idProduction">
 			<util:constant static-field="interbank.StaticValues.LAG_PRODUCTION" />
+		</property>
+	</bean>
+	 -->
+	 
+	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
+		class="jmab.strategies.AdaptiveReturnOnACandCU">
+		<property name="adaptiveParameter" value="1" />
+		<property name="distribution" ref="foldedNormal1" />
+		<property name="threshold" value="0.1"></property>
+		<property name="capacityUtilisation" value="0.8"/>
+		<property name="capitalOwner" value="1"/>
+		<property name="returnRate" value="0.1887055680579684"/>
+		<property name="idCapacity">
+			<util:constant static-field="interbank.StaticValues.LAG_CAPACITY" />
+		</property>
+		<property name="idCapitalValue">
+			<util:constant static-field="interbank.StaticValues.LAG_CAPITALFINANCIALVALUE" />
+		</property>
+		<property name="idLoans">
+			<util:constant static-field="interbank.StaticValues.SM_LOAN" />
+		</property>
+		<property name="idProduction">
+			<util:constant static-field="interbank.StaticValues.LAG_PRODUCTION" />
+		</property>
+		<property name="productionId">
+			<util:constant static-field="interbank.StaticValues.LAG_PRODUCTION" />
+		</property>
+		<property name="realSalesId">
+			<util:constant static-field="interbank.StaticValues.LAG_REALSALES" />
 		</property>
 	</bean>
 	
@@ -4159,6 +4212,13 @@
 				<util:constant static-field="interbank.StaticValues.TIC_UPDATEEXPECTATIONS" />
 			</list>
 		</property>
+		<property name="passedValues">
+		<map>
+			<entry value-ref="pastPublicDebt"> 
+				<key>
+				<util:constant static-field="interbank.StaticValues.LAG_PUBLICDEBT"/></key></entry>
+		</map>
+		</property>
 		<property name="numberMarkets" value="8" />
 		<property name="numberStocks" value="9" />
 		<property name="populationId">
@@ -4191,6 +4251,11 @@
 		<property name="loansId"><util:constant static-field="interbank.StaticValues.SM_LOAN" /></property>
 	</bean>
 
+	<bean id="pastPublicDebt" class="jmab.expectations.TreeMapPassedValues"
+		scope="prototype">
+		<property name="nbLags" value="4"/>
+	</bean>
+	
 	<bean id="governmentMacroStrategy" scope="prototype"
 		class="jmab.strategies.MacroMultipleStrategy">
 		<property name="strategies">
@@ -4204,6 +4269,11 @@
 					<key>
 						<util:constant static-field="interbank.StaticValues.STRATEGY_BONDINTERESTRATE" />
 					</key>
+				</entry>
+				<entry value-ref="governmentDeficitManagementStrategy"> 
+					<key>
+						<util:constant static-field="interbank.StaticValues.STRATEGY_DEFICITMANAGEMENT" />
+					</key> 
 				</entry>
 			</map>
 		</property>
@@ -4221,6 +4291,18 @@
 		<property name="interestRate" value="0.0025"></property>
 	</bean>
 
+	<bean id="governmentDeficitManagementStrategy" scope="prototype" parent="strategy"
+		class="jmab.strategies.DeficitManagementStrategy">
+		<property name="adjustmentParameter" value="0.05"/>
+		<property name="deficitLowerThreshold" value="0.02"/>
+		<property name="deficitUpperThreshold" value="0.05"/>
+		<property name="multiplyingFactor" value="1"/>
+		<property name="iDNominalGDP">
+			<util:constant static-field="interbank.StaticValues.LAG_NOMINALGDP" />
+		</property><property name="idPublicDebt">
+			<util:constant static-field="interbank.StaticValues.LAG_PUBLICDEBT" />
+		</property>
+	</bean>
 
 	<!-- The population of CB (only one here) -->
 	<bean id="centralBanksPopulation" class="net.sourceforge.jabm.Population"

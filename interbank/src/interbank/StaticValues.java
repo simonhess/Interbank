@@ -235,6 +235,7 @@ public interface StaticValues {
 	public static int LAG_AGGCREDIT = 27;
 	public static int LAG_NOMINALGDP = 28;
 	public static int LAG_INFLATION = 29;
+	public static int LAG_PUBLICDEBT=30;
 	
 	public static int SM_CASH=0;
 	public static int SM_DEP=1;
@@ -294,7 +295,7 @@ public interface StaticValues {
 	public static int STRATEGY_LEVERAGERATIO=36;
 	public static int STRATEGY_RESERVEREQUIREMENTS=37;
 	public static int STRATEGY_INCOMERATIO=38;
-	
+	public static int STRATEGY_DEFICITMANAGEMENT=39;
 	
 	public static int CAPITALFIRMS_ID=0;
 	public static int CONSUMPTIONFIRMS_ID=1;

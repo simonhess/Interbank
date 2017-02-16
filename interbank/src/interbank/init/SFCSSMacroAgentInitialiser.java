@@ -40,6 +40,7 @@ import jmab.stockmatrix.CapitalGood;
 import jmab.stockmatrix.Cash;
 import jmab.stockmatrix.ConsumptionGood;
 import jmab.stockmatrix.Deposit;
+import jmab.stockmatrix.Item;
 import jmab.stockmatrix.Loan;
 import jmab.strategies.BestQualityPriceCapitalSupplierWithSwitching;
 import jmab.strategies.CheapestGoodSupplierWithSwitching;
@@ -549,6 +550,13 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 		govt.addItemStockMatrix(govtRes, true, StaticValues.SM_RESERVES);
 		cb.addItemStockMatrix(govtRes, false, StaticValues.SM_RESERVES);
 
+		double initialPublicDebt=0;
+	    for (Item bond:govt.getItemsStockMatrix(false, StaticValues.SM_BONDS)){
+	    	initialPublicDebt+=bond.getValue();
+	    }
+	    //govt.getPassedValues().get(StaticValues.LAG_PUBLICDEBT).addObservation(initialPublicDebt, 0);
+	    govt.addValue(StaticValues.LAG_PUBLICDEBT, initialPublicDebt);
+		
 		//Central Bank
 		int nbBondsPerPeriod1 = (int) this.cbBonds/(bondMat*bondPrice);
 		for(int j = 1 ; j<=bondMat; j++){

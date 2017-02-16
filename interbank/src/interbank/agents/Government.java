@@ -14,15 +14,15 @@
  */
 package interbank.agents;
 
+import interbank.StaticValues;
+import interbank.report.TotalCreditComputer;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import cern.jet.random.engine.RandomEngine;
-import interbank.StaticValues;
-import interbank.report.TotalCreditComputer;
 import jmab.agents.BondDemander;
 import jmab.agents.BondSupplier;
 import jmab.agents.DepositDemander;
@@ -41,14 +41,17 @@ import jmab.simulations.MacroSimulation;
 import jmab.stockmatrix.Bond;
 import jmab.stockmatrix.Deposit;
 import jmab.stockmatrix.Item;
+import jmab.strategies.DeficitManagementStrategy;
 import jmab.strategies.InterestRateStrategy;
 import jmab.strategies.SelectWorkerStrategy;
+import jmab.strategies.TaxPayerStrategy;
 import net.sourceforge.jabm.Population;
 import net.sourceforge.jabm.SimulationController;
 import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.agent.AgentList;
 import net.sourceforge.jabm.event.AgentArrivalEvent;
 import net.sourceforge.jabm.event.RoundFinishedEvent;
+import cern.jet.random.engine.RandomEngine;
 
 /**
  * @author Alessandro Caiani and Antoine Godin
@@ -170,6 +173,11 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 				nominalGdpComputer.computeVariable(sim));
 		this.setAggregateValue(StaticValues.LAG_INFLATION, 
 				avpComputer.computeVariable(sim));
+		double publicDebt=0;
+		for (Item bond:this.getItemsStockMatrix(false, StaticValues.SM_BONDS)){
+			publicDebt+=bond.getValue();
+		}
+		this.addValue(StaticValues.LAG_PUBLICDEBT, publicDebt);
 	}
 	
 	protected void updateExpectations(){
@@ -265,12 +273,16 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 		//Item account = this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
 		MacroPopulation populations = (MacroPopulation)simulationController.getPopulation();
 //		double taxesRevenues=0;
+		DeficitManagementStrategy defManagementStrategy= (DeficitManagementStrategy) this.getStrategy(StaticValues.STRATEGY_DEFICITMANAGEMENT);
+		double taxRatesMultiplyingFactor=defManagementStrategy.computeTaxRatesMultiplyingFactor();
 		for(int popId:this.taxedPopulations){
 			Population pop = populations.getPopulation(popId);
 			// ask every agent to pay taxes in turn
 			for(Agent a:pop.getAgents()){
 				TaxPayer agent=(TaxPayer) a;
 				if(!agent.isDead()){
+					TaxPayerStrategy strategy = (TaxPayerStrategy)agent.getStrategy(StaticValues.STRATEGY_TAXES);
+					strategy.updateRates(taxRatesMultiplyingFactor);
 					if(agent instanceof Bank){
 						Item account = this.getItemStockMatrix(true, StaticValues.SM_DEP, agent);
 						agent.payTaxes(account);
@@ -282,7 +294,6 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 				}
 			}
 		}
-		
 	}
 
 	/**
