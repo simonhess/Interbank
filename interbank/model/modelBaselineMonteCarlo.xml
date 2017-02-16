@@ -2519,6 +2519,7 @@
 		<property name="shareOfExpIncomeAsDeposit" value="1" />
 		<property name="minWageDiscount" value="1" />
 		<property name="turnoverLabor" ref="turnoverVal" />
+		<property name="prng" ref="prng" />
 	</bean>
 
 	<bean id="expSales" class="jmab.expectations.SimpleAdaptiveExpectation"
@@ -2804,7 +2805,7 @@
 	</bean>
 
 	<bean id="prng" class="net.sourceforge.jabm.prng.MersenneTwister">
-		<!-- <property name="seed" value="1979050355"/> -->
+		<property name="seed" value="1"/>
 	</bean>
 
 	<bean id="capitalRDOutcomeStrategy" scope="prototype" parent="strategy"

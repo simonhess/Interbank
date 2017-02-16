@@ -3281,7 +3281,6 @@
 		<property name="distribution" ref="foldedNormal1" />
 		<property name="threshold" value="0.1"></property>
 		<property name="markUp" value="0.318857"></property>
-
 	</bean>
 	 -->
 	 
@@ -3466,7 +3465,6 @@
 						<util:constant static-field="interbank.StaticValues.LAG_TOTINTERBANKDEMAND" />
 					</key>
 				</entry>
-
 			</map>
 		</property>
 		<property name="numberMarkets" value="8" />
