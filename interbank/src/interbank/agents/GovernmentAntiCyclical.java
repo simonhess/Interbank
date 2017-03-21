@@ -197,24 +197,26 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 		for(Agent agent:households.getAgents()){
 			Households worker= (Households) agent;
 			if (worker.getEmployer()==null){
+				double toPay = unemploymentBenefit;
+				doleAmount+=toPay;
 				LaborSupplier unemployed = (LaborSupplier) worker;
 				Item payableStock = unemployed.getPayableStock(StaticValues.MKT_LABOR);
 				List<Item> remainingDeposits = new ArrayList<Item>();
 				for (Item dep:deposits) {
 					double value = dep.getValue();
-					if (unemploymentBenefit > 0) {
+					if (toPay > 0) {
 						// if there is insufficient amount in the deposit account to pay the bill
-						if (value <= unemploymentBenefit) {
+						if (value <= toPay ) {
 							// pay as much as possible
 							LiabilitySupplier payingSupplier = (LiabilitySupplier) dep.getLiabilityHolder();
 							payingSupplier.transfer(dep, payableStock, value);
-							unemploymentBenefit -= value;
+							toPay -= value;
 						}
 						else {
 							// if the deposit is sufficiently large pay the unemploymentBenefitbill in total
 							LiabilitySupplier payingSupplier = (LiabilitySupplier) dep.getLiabilityHolder();
-							payingSupplier.transfer(dep, payableStock, unemploymentBenefit);
-							unemploymentBenefit = 0;
+							payingSupplier.transfer(dep, payableStock, toPay );
+							toPay = 0;
 							if(dep.getValue()>0){
 								remainingDeposits.add(dep);
 							}
@@ -223,11 +225,10 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 				}
 				deposits = remainingDeposits;
 				//If there are insufficient deposits pay using reserves
-				if (unemploymentBenefit > 0) {
+				if (toPay > 0) {
 					Deposit depositGov = (Deposit) this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
 					LiabilitySupplier payingSupplier = (LiabilitySupplier) depositGov.getLiabilityHolder();
-					payingSupplier.transfer(depositGov, payableStock, unemploymentBenefit);
-					doleAmount+=unemploymentBenefit;
+					payingSupplier.transfer(depositGov, payableStock, toPay );
 				}	
 			}
 		}

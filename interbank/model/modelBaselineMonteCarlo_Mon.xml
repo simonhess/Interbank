@@ -110,35 +110,64 @@
 				<!-- Added ticks for markups -->
 				<ref bean="microCMarkUpReportTic" /> 
 				<ref bean="microKMarkUpReportTic" />
-				<!-- <ref bean="microLoansKfirmsReportTic" /> <ref bean="microLoansCfirmsReportTic" 
-					/> <ref bean="microRealConsReportTic" /> <ref bean="microNominalConsReportTic" 
-					/> <ref bean="microRealDesInvReportTic" /> <ref bean="microNominalInvReportTic" 
-					/> <ref bean="microRealCInventReportTic" /> <ref bean="microRealKInventReportTic" 
-					/> <ref bean="microOutputKfirmsReportTic" /> <ref bean="microOutputCfirmsReportTic" 
-					/> <ref bean="microCreditObtainedKfirmsReportTic" /> <ref bean="microCreditObtainedCfirmsReportTic" 
-					/> <ref bean="realCDesOutputReportTic" /> <ref bean="realKDesOutputReportTic" 
-					/> <ref bean="cEmployeeReportTic" /> <ref bean="kEmployeeReportTic" /> <ref 
-					bean="banksProfitsReportTic" /> <ref bean="cFirmsProfitsReportTic" /> <ref 
-					bean="kFirmsProfitsReportTic" /> <ref bean="hhWageReportTic" /> <ref bean="hhNetIncomeReportTic" 
-					/> <ref bean="cFirmsPricesReportTic" /> <ref bean="kFirmsPricesReportTic" 
-					/> <ref bean="microRealDesConsReportTic" /> <ref bean="cOperatingCashFlowReportTic" 
-					/> <ref bean="kOperatingCashFlowReportTic" /> <ref bean="cExpAvVarCostsReportTic" 
-					/> <ref bean="kExpAvVarCostsReportTic" /> <ref bean="cFirmsIRReportTic" /> 
-					<ref bean="kFirmsIRReportTic" /> <ref bean="hhIRReportTic" /> <ref bean="cFirmsIPReportTic" 
-					/> <ref bean="kFirmsIPReportTic" /> <ref bean="cFirmsDebtServiceReportTic" 
-					/> <ref bean="kFirmsDebtServiceReportTic" /> <ref bean="cFirmsWageBillReportTic" 
-					/> <ref bean="kFirmsWageBillReportTic" /> <ref bean="cFirmsAggregateDebtReportTic" 
-					/> <ref bean="kFirmsAggregateDebtReportTic" /> <ref bean="cFirmsLevReportTic" 
-					/> <ref bean="kFirmsLevReportTic" /> <ref bean="kFirmsDividendsReportTic" 
-					/> <ref bean="cFirmsDividendsReportTic" /> <ref bean="banksDividendsReportTic" 
-					/> <ref bean="bMaxExposureReportTic" /> <ref bean="banksSpecificInterestReportTic" 
-					/> <ref bean="banksDepositInterestReportTic" /> <ref bean="banksTaxesReportTic" 
-					/> <ref bean="cFirmsTaxesReportTic" /> <ref bean="hhTaxesReportTic" /> <ref 
-					bean="kFirmsTaxesReportTic" /> <ref bean="hhDepositsReportTic" /> <ref bean="banksDepositsReportTic" 
-					/> <ref bean="govWageBillReportTic" /> <ref bean="govDoleReportTic" /> <ref 
-					bean="govInterestsBondsReportTic" /> <ref bean="microCGrowthReportTic" /> 
-					<ref bean="govCBProfitsReportTic" /> <ref bean="TFMReportTic" /> -->
+				<ref bean="microLoansKfirmsReportTic" /> 
+				<ref bean="microLoansCfirmsReportTic"/> 
+				<ref bean="microRealConsReportTic" /> 
+				<ref bean="microNominalConsReportTic"/> 
+				<ref bean="microRealDesInvReportTic" />
+				<ref bean="microNominalInvReportTic"/> 
+				<ref bean="microRealCInventReportTic" /> 
+				<ref bean="microRealKInventReportTic"/> 
+				<ref bean="microOutputKfirmsReportTic" /> 
+				<ref bean="microOutputCfirmsReportTic"/> 
+				<ref bean="microCreditObtainedKfirmsReportTic" /> 
+				<ref bean="microCreditObtainedCfirmsReportTic"/> 
+				<ref bean="realCDesOutputReportTic" /> 
+				<ref bean="realKDesOutputReportTic"/> 
+				<ref bean="cEmployeeReportTic" /> 
+				<ref bean="kEmployeeReportTic" /> 
+				<ref bean="banksProfitsReportTic" />
+				<ref bean="cFirmsProfitsReportTic" />
+				<ref bean="kFirmsProfitsReportTic" /> 
+				<ref bean="hhWageReportTic" />
+				<ref bean="hhNetIncomeReportTic"/>
 				<ref bean="cFirmsPricesReportTic" />
+				<ref bean="kFirmsPricesReportTic" />
+				<ref bean="microRealDesConsReportTic" />
+				<ref bean="cOperatingCashFlowReportTic"	/>
+				<ref bean="kOperatingCashFlowReportTic" />
+				<ref bean="cExpAvVarCostsReportTic"	/>
+				<ref bean="kExpAvVarCostsReportTic" />
+				<ref bean="cFirmsIRReportTic" /> 
+				<ref bean="kFirmsIRReportTic" />
+				<ref bean="hhIRReportTic" />
+				<ref bean="cFirmsIPReportTic"/>
+				<ref bean="kFirmsIPReportTic" />
+				<ref bean="cFirmsDebtServiceReportTic"/>
+				<ref bean="kFirmsDebtServiceReportTic" />
+				<ref bean="cFirmsWageBillReportTic"/>
+				<ref bean="kFirmsWageBillReportTic" />
+				<ref bean="cFirmsAggregateDebtReportTic"/>
+				<ref bean="kFirmsAggregateDebtReportTic" />
+				<ref bean="cFirmsLevReportTic"/>
+				<ref bean="kFirmsLevReportTic" />
+				<ref bean="kFirmsDividendsReportTic"/>
+				<ref bean="cFirmsDividendsReportTic" />
+				<ref bean="banksDividendsReportTic"/>
+				<ref bean="bMaxExposureReportTic" />
+				<ref bean="banksSpecificInterestReportTic"/>
+				<ref bean="banksDepositInterestReportTic" />
+				<ref bean="banksTaxesReportTic"/>
+				<ref bean="cFirmsTaxesReportTic" />
+				<ref bean="hhTaxesReportTic" />
+				<ref bean="kFirmsTaxesReportTic" />
+				<ref bean="hhDepositsReportTic" />
+				<ref bean="banksDepositsReportTic"/>
+				<ref bean="govWageBillReportTic" />
+				<ref bean="govDoleReportTic" />
+				<ref bean="govInterestsBondsReportTic" />
+				<ref bean="microCGrowthReportTic" /> 
+				<ref bean="govCBProfitsReportTic" />
 				<ref bean="nominalGDPReportTic" />
 				<ref bean="nominalInvReportTic" />
 				<ref bean="unemploymentReportTic" />
@@ -202,30 +231,10 @@
 				<ref bean="microGovBondRateEventReportTic" />
 				<ref bean="microHHEmployerEventReportTic" />
 				<!-- 12 July Joeri added reporter Tics -->
-				<ref bean="microBankCreditReportTic" />
 				<ref bean="realCDesOutputReportTic" />
 				<ref bean="realKDesOutputReportTic" />
-				<ref bean="banksProfitsReportTic" />
-				<ref bean="cFirmsProfitsReportTic" />
-				<ref bean="kFirmsProfitsReportTic" />
-				<ref bean="hhWageReportTic" />
-				<ref bean="hhNetIncomeReportTic" />
-				<ref bean="cFirmsPricesReportTic" />
-				<ref bean="kFirmsPricesReportTic" />
-				<ref bean="microRealDesConsReportTic" />
-				<ref bean="cFirmsDebtServiceReportTic" />
-				<ref bean="kFirmsDebtServiceReportTic" />
-				<ref bean="cFirmsWageBillReportTic" />
-				<ref bean="kFirmsWageBillReportTic" />
-				<ref bean="cFirmsLevReportTic" />
-				<ref bean="kFirmsLevReportTic" />
 				<ref bean="cFirmsConsCredReportTic" />
 				<ref bean="kFirmsConsCredReportTic" />
-				<ref bean="banksSpecificInterestReportTic" />
-				<ref bean="banksDepositInterestReportTic" />
-				<ref bean="banksDepositsReportTic" />
-				<ref bean="govDoleReportTic" />
-				<ref bean="hhDepositsReportTic" />
 				<!-- End of New interbank reporter TICs -->
 				<ref bean="BSNetworkReportTic" />
 				<ref bean="populationHandlerTic" />
@@ -2901,7 +2910,7 @@
 		</property>
 	</bean>
 
-<!-- OLD MARK-UP CLASS FOR CAPITAL FIRMS
+
 	<bean id="capitalPricingStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.AdaptiveMarkUpOnACandCU">
 		<property name="adaptiveParameter" value="1" />
@@ -2909,8 +2918,8 @@
 		<property name="threshold" value="0.1"></property>
 		<property name="markUp" value="0.075"></property>
 	</bean>
--->
 
+<!-- OLD MARK-UP CLASS FOR CAPITAL FIRMS
 	<bean id="capitalPricingStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.AdaptiveMarkUpOnACandCU">
 		<property name="adaptiveParameter" value="1" />
@@ -2928,7 +2937,7 @@
 			<util:constant static-field="interbank.StaticValues.LAG_REALSALES" />
 		</property>
 	</bean>
-
+-->
 	<bean id="capitalTaxesStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.ProfitsWealthTaxStrategy">
 		<property name="profitTaxRate" ref="profitTaxVal" />
@@ -3298,7 +3307,7 @@
 		</property>
 	</bean>
 
-	<!-- OLD PRICING STARTEGIES FOR CONSUMPTION FIRMS
+	
 	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.AdaptiveMarkUpOnAC">
 		<property name="adaptiveParameter" value="1" />
@@ -3307,7 +3316,7 @@
 		<property name="markUp" value="0.318857"></property>
 	</bean>
 	
-	 
+	 <!-- OLD PRICING STARTEGIES FOR CONSUMPTION FIRMS
 	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.AdaptiveReturnOnAC">
 		<property name="adaptiveParameter" value="1" />
@@ -3330,6 +3339,7 @@
 	</bean>
 	 -->
 	 
+	 <!--
 	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.AdaptiveReturnOnACandCU">
 		<property name="adaptiveParameter" value="1" />
@@ -3357,7 +3367,7 @@
 			<util:constant static-field="interbank.StaticValues.LAG_REALSALES" />
 		</property>
 	</bean>
-	
+-->	
 
 	<bean id="consumptionTaxesStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.ProfitsWealthTaxStrategy">

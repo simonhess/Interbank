@@ -1117,11 +1117,11 @@
 
 <!-- K and C Credit Obtained -->
 
-<bean id="microCreditObtainedKComputer" class="jmab.report.MicroFirmsCreditObtainedComputer">
+<bean id="microCreditObtainedKComputer" class="jmab.report.MicroAgentsCreditObtainedComputer">
 	<property name="populationId"><util:constant static-field="interbank.StaticValues.CAPITALFIRMS_ID"/></property>
     <property name="idLoanSM"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
 </bean>
-<bean id="microCreditObtainedCComputer" class="jmab.report.MicroFirmsCreditObtainedComputer">
+<bean id="microCreditObtainedCComputer" class="jmab.report.MicroAgentsCreditObtainedComputer">
 	<property name="populationId"><util:constant static-field="interbank.StaticValues.CONSUMPTIONFIRMS_ID"/></property>
 	<property name="idLoanSM"><util:constant static-field="interbank.StaticValues.SM_LOAN"/></property>
 </bean>
