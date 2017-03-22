@@ -68,7 +68,11 @@ DividendsStrategy {
 					Households receiver =(Households) rec; 
 					double nw = receiver.getNetWealth();
 					Deposit recDep = (Deposit)receiver.getItemStockMatrix(true, depositId);
-					double toPay=profits*profitShare*nw/totalNW;			
+					double toPay;
+					if(totalNW==0)
+						toPay = profits*profitShare/receivers.getSize();
+					else
+						toPay= profits*profitShare*nw/totalNW;			
 					recDep.setValue(recDep.getValue()+toPay);
 					payerDep.setValue(payerDep.getValue()-toPay);
 					Deposit otherBankReserves = (Deposit)((Bank)recDep.getLiabilityHolder()).getItemStockMatrix(true, reservesId);
@@ -87,7 +91,11 @@ DividendsStrategy {
 					for(Agent rec:receivers.getAgents()){
 						Households receiver =(Households) rec; 
 						double nw = receiver.getNetWealth();
-						double toPay=profits*profitShare*nw/totalNW;
+						double toPay;
+						if(totalNW==0)
+							toPay = profits*profitShare/receivers.getSize();
+						else
+							toPay= profits*profitShare*nw/totalNW;			
 						Deposit recDep = (Deposit)receiver.getItemStockMatrix(true, depositId);
 						((Bank)payerDep.getLiabilityHolder()).transfer(payerDep, recDep,toPay);
 						receiver.setDividendsReceived(receiver.getDividendsReceived()+toPay);

@@ -14,14 +14,14 @@
  */
 package interbank.agents;
 
+import interbank.StaticValues;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import cern.jet.random.engine.RandomEngine;
 
-import interbank.StaticValues;
 import jmab.agents.BondDemander;
 import jmab.agents.BondSupplier;
 import jmab.agents.LaborDemander;
