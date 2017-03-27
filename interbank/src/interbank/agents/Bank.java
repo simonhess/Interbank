@@ -370,6 +370,12 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 			this.setActive(true, StaticValues.MKT_INTERBANK);
 			this.addToMarketPopulation(StaticValues.MKT_INTERBANK, true);
 		}
+		else if (interbankSupplyDemand==0) {
+			setInterbankSupply(0);
+			setInterbankDemand(0);
+			this.addValue(StaticValues.LAG_TOTINTERBANKSUPPLY, 0);
+			this.addValue(StaticValues.LAG_TOTINTERBANKDEMAND, 0);
+		}
 	}
 		
 	
