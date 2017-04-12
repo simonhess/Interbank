@@ -244,7 +244,7 @@
 			</list>
 		</property>
 		<property name="simulationController" ref="simulationController" />
-		<property name="maximumRounds" value="1500" />
+		<property name="maximumRounds" value="400" />
 		<property name="population" ref="macroPopulation" />
 		<property name="agentInitialiser" ref="sfcAgentsInitialiser" />
 		<property name="handler" ref="populationHandler" />
@@ -3309,7 +3309,7 @@
 		</property>
 	</bean>
 
-	
+	<!--
 	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.AdaptiveMarkUpOnAC">
 		<property name="adaptiveParameter" value="0.25" />
@@ -3317,6 +3317,25 @@
 		<property name="threshold" value="0.1"></property>
 		<property name="markUp" value="0.318857"></property>
 	</bean>
+	-->
+	
+	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
+  		class="jmab.strategies.AdaptiveMarkUpOnACandCU">
+  		<property name="adaptiveParameter" value="1" />
+  		<property name="distribution" ref="foldedNormal1" />
+  		<property name="threshold" value="0.1"></property>
+  		<property name="markUp" value="0.318857"></property>
+  		<property name="capitalOwner" value="1"></property>
+  		<property name="capacityId">
+   			<util:constant static-field="interbank.StaticValues.LAG_CAPACITY" />
+  		</property>
+  		<property name="productionId">
+   			<util:constant static-field="interbank.StaticValues.LAG_PRODUCTION" />
+  		</property>
+  		<property name="realSalesId">
+   			<util:constant static-field="interbank.StaticValues.LAG_REALSALES" />
+  		</property>
+ 	</bean>
 	
 	 <!-- OLD PRICING STARTEGIES FOR CONSUMPTION FIRMS
 	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
@@ -3975,7 +3994,7 @@
 	<!-- The agentList of households -->
 	<bean id="households" scope="simulation" class="net.sourceforge.jabm.agent.AgentList"
 		init-method="populateFromFactory">
-		<property name="size" value="8000" />
+		<property name="size" value="4000" />
 		<property name="agentFactory" ref="householdsFactory" />
 	</bean>
 
