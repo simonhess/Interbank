@@ -108,7 +108,7 @@ public class FirmBankruptcyFireSales extends AbstractStrategy implements
 			totalBanksLoss+=loan.getValue();
 		}
 		
-		if (totalDebt!=0){
+		if (totalDebt > 0){
 			//5. Distribute liquidity according to the share of debt of each creditor
 			for(int i=0;i<loans.size();i++){
 				Loan loan = (Loan) loans.get(i);
@@ -158,8 +158,12 @@ public class FirmBankruptcyFireSales extends AbstractStrategy implements
 					MacroAgent hh = (MacroAgent) h;
 					for(int i=0;i<loans.size();i++){
 						Loan loan = (Loan) loans.get(i);
+						double bankShare = (banksLosses[i])/totalBanksLoss;
 						//each owner (household contribute according to his share of net-wealth, each creditor is refunded according to his share of credit.
-						double amountToPay=ownersDisbursment*hh.getNetWealth()/totalHouseholdsWealth*(banksLosses[i])/totalBanksLoss;
+						double amountToPay=bankShare*ownersDisbursment*hh.getNetWealth()/totalHouseholdsWealth;
+						if(Double.isNaN(amountToPay)){
+						       System.out.println("Here!");
+						      }
 						CreditSupplier lendingBank= (CreditSupplier) loan.getAssetHolder();
 						Deposit depositHH =(Deposit)hh.getItemStockMatrix(true, StaticValues.SM_DEP);
 						if (depositHH.getLiabilityHolder()==lendingBank){
