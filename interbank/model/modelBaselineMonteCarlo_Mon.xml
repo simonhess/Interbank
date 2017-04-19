@@ -4265,7 +4265,7 @@
 		<property name="bondMaturity" value="4" />
 		<property name="bondInterestRate" value="0.001651581" />
 		<property name="bondPrice" value="1.0" />
-		<property name="fixedLaborDemand" value="680" />
+		<property name="fixedLaborDemand" value="1500" />
 		<property name="prng" ref="prng" />
 		<property name="turnoverLabor" ref="turnoverVal" />
 		<property name="unemploymentBenefit" value="0.3" />
