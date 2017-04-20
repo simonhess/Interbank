@@ -55,20 +55,20 @@ InterestRateStrategy {
 		SimulationController controller = (SimulationController)this.getScheduler();
 		MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
 		Population banks = macroPop.getPopulation(StaticValues.BANKS_ID);
-		double tot=0;
+//		double tot=0;
 		double inter=0;
 		double n=(double) banks.getSize();
 		for (Agent b:banks.getAgents()){
 			Bank bank = (Bank) b;
 			if (bank.getNumericBalanceSheet()[0][StaticValues.SM_LOAN]!=0&&bank.getNetWealth()>0){
-				tot+=bank.getCapitalRatio();
+//				tot+=bank.getCapitalRatio();
 				inter+=bank.getPassedValue(StaticValues.LAG_LOANINTEREST, 1);
 			}
 			else{
 				n-=1;
 			}
 		}
-		threshold=tot/n;
+//		threshold=tot/n;
 		avInterest=inter/n;
 
 		Bank lender=(Bank) this.getAgent();
@@ -82,22 +82,27 @@ InterestRateStrategy {
 				totValue +=liability.getValue();
 			}
 		}
+		threshold= lender.getTargetedCapitalAdequacyRatio(); 
 		double fundingRate = interestPay/totValue;
+		
 		double referenceVariable=lender.getCapitalRatio();
 		//double iR = lender.getInterestRate(mktId);
-		if(referenceVariable>threshold){
-			markup-=markup*adaptiveParameter*distribution.nextDouble();
-		}else{
-			markup+=markup*adaptiveParameter*distribution.nextDouble();
-		}
 		if(fundingRate+markup>avInterest){
 			markup-=markup*adaptiveParameter*distribution.nextDouble();
 		}else{
 			markup+=markup*adaptiveParameter*distribution.nextDouble();
 		}
+		if(referenceVariable>threshold){
+			markup-=markup*adaptiveParameter*distribution.nextDouble();
+		}else{
+			markup+=markup*adaptiveParameter*distribution.nextDouble();
+		}
+		if (markup < 0) markup = 0;
+		
 		double iR=fundingRate+markup;
 		
-		return Math.min(Math.max(iR, lender.getInterestRateLowerBound(mktId)),lender.getInterestRateUpperBound(mktId));
+		double finalRate = Math.min(Math.max(iR, lender.getInterestRateLowerBound(mktId)),lender.getInterestRateUpperBound(mktId));
+		return finalRate;
 	}
 
 	/**

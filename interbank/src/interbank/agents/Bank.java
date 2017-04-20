@@ -743,10 +743,10 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 	public double getInterestRateLowerBound(int mktId) {
 		switch(mktId){
 		case StaticValues.MKT_CREDIT:
-			return (0);
+			return (0.0000001);
 			//return (0-this.advancesInterestRate);
 		case StaticValues.MKT_DEPOSIT:
-			return 0;
+			return (0.0000001);
 		case StaticValues.MKT_INTERBANK:
 			return this.getReserveInterestRate(); // or also make difference between supply/demand?
 		}
@@ -814,7 +814,7 @@ DepositSupplier, ProfitsTaxPayer, BondDemander, InterestRateSetterWithTargets, D
 		case StaticValues.MKT_CREDIT:
 			return Double.POSITIVE_INFINITY;
 		case StaticValues.MKT_DEPOSIT:
-			return this.advancesInterestRate;
+			return Double.POSITIVE_INFINITY;
 		case StaticValues.MKT_INTERBANK:
 			return this.advancesInterestRate;
 		}
