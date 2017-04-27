@@ -46,7 +46,7 @@ public class ExpectedReturnCreditSupplyWithDiscountFactor extends
 		double capitalValue=0;
 		// set the reserve rate charged by the CB as the discount factor
 		Bank creditSupplierAdvanced = (Bank) this.getAgent();
-		double discountFactor =  creditSupplierAdvanced.getReserveInterestRate(); // Does this work in Bank class?
+		double discountFactor =  creditSupplierAdvanced.getReserveInterestRate();
 		// For the company that applies for a loan calculate its total debt
 		for (Item loan:creditDemander.getItemsStockMatrix(false, loansId)){
 			totCurrentDebt+=loan.getValue();
@@ -55,13 +55,12 @@ public class ExpectedReturnCreditSupplyWithDiscountFactor extends
 		for (Item capital:creditDemander.getItemsStockMatrix(true, capitalId) ){
 				capitalValue+=capital.getValue()*haircut;
 			}
-		expectedShareRecovered=Math.min(1, capitalValue/totCurrentDebt);
 		int duration=((CreditDemander)creditDemander).decideLoanLength(loansId);
 		double shareRepaid=(double) 1/ (double) duration;
 		double interest=creditSupplier.getInterestRate(loansId, creditDemander, required, duration);
+		expectedShareRecovered=Math.min(1, capitalValue/totCurrentDebt);
 		double amount=0;
 		for(int i=0; i<101; i++){
-			
 			amount=required*(1-(double)i/100);
 			//double interest=creditSupplier.getInterestRate(creditDemander, amount, duration);
 			//if you put the line above also the interest rate is re-computed (so that the strategy to set interest can depend also on the amount demanded)

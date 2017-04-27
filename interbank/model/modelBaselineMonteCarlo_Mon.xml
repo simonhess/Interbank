@@ -2581,7 +2581,7 @@
 		<property name="loanAmortizationType" value="0" />
 		<property name="capitalAmortization" value="60" />
 		<property name="capitalDuration" value="60" />
-		<property name="capitalProductivity" value="1" />
+		<property name="capitalProductivity" value="0.5" />
 		<property name="laborProductivity" value="4" />
 		<property name="capitalLaborRatio" value="38.4" />
 		<property name="shareOfExpIncomeAsDeposit" value="1" />
@@ -3141,6 +3141,7 @@
 		<property name="loanLength" value="60" />
 		<property name="loanAmortizationType" value="0" />
 		<property name="turnoverLabor" ref="turnoverVal" />
+		<property name="reserveInterestRate" value="0" />
 		<property name="prng" ref="prng" />
 		<property name="shareOfExpIncomeAsDeposit" value="1" />
 		<property name="minWageDiscount" value="1" />
@@ -3843,7 +3844,7 @@
 			<util:constant static-field="interbank.StaticValues.MKT_DEPOSIT" />
 		</property>
 		<property name="adaptiveParameter" value="0.1" />
-		<property name="spread" value="0.001" />
+		<!--<property name="spread" value="0.001" /> -->
 		<property name="liabilitiesId">
 			<list>
 				<util:constant static-field="interbank.StaticValues.SM_DEP" />
@@ -3873,9 +3874,23 @@
 		parent="strategy" class="interbank.strategies.MaxExposureStrategyDifferentiated"> 
 		<property name="loansId"><util:constant static-field="interbank.StaticValues.SM_LOAN" 
 		/> </property> <property name="maxShareTotalLoans" value="0.1"/> </bean> -->
-
+	<!--  
 	<bean id="banksSpecificCreditSupplyStrategy" scope="prototype"
 		parent="strategy" class="jmab.strategies.ExpectedReturnCreditSupply">
+		<property name="loansId">
+			<util:constant static-field="interbank.StaticValues.SM_LOAN" />
+		</property>
+		<property name="capitalId">
+			<util:constant static-field="interbank.StaticValues.SM_CAPGOOD" />
+		</property>
+		<property name="haircut" ref="haircutVal" />
+		<property name="binaryDecision" value="false" />
+		<property name="defaultComputer" ref="loanDefaultComputer" />
+	</bean>
+	-->
+	
+	<bean id="banksSpecificCreditSupplyStrategy" scope="prototype"
+		parent="strategy" class="interbank.strategies.ExpectedReturnCreditSupplyWithDiscountFactor">
 		<property name="loansId">
 			<util:constant static-field="interbank.StaticValues.SM_LOAN" />
 		</property>
@@ -4158,8 +4173,7 @@
 	</bean>
 
 	<bean id="householdsConsumptionStrategy" scope="prototype" parent="strategy"
-		class="jmab.strategies.ConsumptionFixedPropensitiesOOIWWithPersistency">
-		<property name="persistency" value="0"></property>
+		class="interbank.strategies.ConsumptionMonetaryPropensityOOW">
 		<property name="propensityOOI" value="0.784014356"></property>
 		<property name="propensityOOW" value="0.05"></property>
 		<!-- TEMP -->
@@ -4549,7 +4563,7 @@
 		parent="strategy" class="interbank.strategies.ReservesStatic">
 		<property name="staticReservesRate" value="0.01"/>
 		<property name="shockRound" value="200"/>
-		<property name="shockAdd" value="0.0"/>
+		<property name="shockAdd" value="0.0025"/>
 	</bean>
 	
 	<!-- TODO -->

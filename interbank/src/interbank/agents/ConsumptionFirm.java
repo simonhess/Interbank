@@ -59,6 +59,8 @@ import jmab.strategies.SelectLenderStrategy;
 import jmab.strategies.SelectSellerStrategy;
 import jmab.strategies.SelectWorkerStrategy;
 import jmab.strategies.TaxPayerStrategy;
+import net.sourceforge.jabm.Population;
+import net.sourceforge.jabm.SimulationController;
 import net.sourceforge.jabm.agent.Agent;
 import net.sourceforge.jabm.agent.AgentList;
 import net.sourceforge.jabm.event.AgentArrivalEvent;
@@ -83,8 +85,17 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 	protected double interestReceived;
 	protected double turnoverLabor;
 	protected double expectedVariableCosts;
+	protected double reserveInterestRate;
 
-//TODO check whether targetStock and its getters/setters are really used.
+	public double getReserveInterestRate() {
+		return reserveInterestRate;
+	}
+
+	public void setReserveInterestRate(double reserveInterestRate) {
+		this.reserveInterestRate = reserveInterestRate;
+	}
+
+	//TODO check whether targetStock and its getters/setters are really used.
 	/**
 	 * @return the targetStock
 	 */
@@ -162,6 +173,7 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 			this.defaulted=false;
 			computeExpectations();
 			determineOutput();
+			this.updateCentralBankInterestRates();
 			break;
 		case StaticValues.TIC_CONSUMPTIONPRICE:
 			computePrice();
@@ -193,6 +205,15 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 		}
 	}
 
+	private void updateCentralBankInterestRates() {
+		// get CB from controller?
+		SimulationController controller = (SimulationController)this.getScheduler();
+		MacroPopulation macroPop = (MacroPopulation) controller.getPopulation();
+		Population pop = macroPop.getPopulation(StaticValues.CB_ID);
+		CentralBank CB= (CentralBank)pop.getAgentList().get(0);
+		this.setReserveInterestRate(CB.getReserveInterestRate());
+	}
+	
 	/**
 	 * 
 	 */
@@ -882,7 +903,7 @@ LaborDemander, DepositDemander, PriceSetterWithTargets, ProfitsTaxPayer, Finance
 				}
 			}
 			double expectedVariableCosts=this.getExpectation(StaticValues.EXPECTATIONS_WAGES).getExpectation()*requiredWorkers;
-			expectedAverageCosts=(expectedVariableCosts)/inventoriesLeft.getQuantity();
+			expectedAverageCosts=(expectedVariableCosts + this.debtInterests)/inventoriesLeft.getQuantity();
 		}
 		expectedVariableCosts=expectedAverageCosts;
 		return expectedAverageCosts;

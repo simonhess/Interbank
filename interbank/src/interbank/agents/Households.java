@@ -62,7 +62,25 @@ DepositDemander, IncomeTaxPayer, WageSetterWithTargets {
 	protected double shareDeposits;
 	protected double interestsReceived;
 	protected double dividendsReceived;
+	protected double previousDepositRate;
+	protected double currentDepositRate;
 
+
+	public double getPreviousDepositRate() {
+		return previousDepositRate;
+	}
+
+	public void setPreviousDepositRate(double previousDepositRate) {
+		this.previousDepositRate = previousDepositRate;
+	}
+
+	public double getCurrentDepositRate() {
+		return currentDepositRate;
+	}
+
+	public void setCurrentDepositRate(double currentDepositRate) {
+		this.currentDepositRate = currentDepositRate;
+	}
 
 	/* (non-Javadoc)
 	 * @see jmab.agents.MacroAgent#onRoundFinished(net.sourceforge.jabm.event.RoundFinishedEvent)
@@ -187,6 +205,7 @@ DepositDemander, IncomeTaxPayer, WageSetterWithTargets {
 			computeWage();
 			break;
 		case StaticValues.TIC_CONSUMPTIONDEMAND:
+			updateCurrentDepositRate();
 			computeConsumptionDemand();
 			break;
 		case StaticValues.TIC_DEPOSITDEMAND:
@@ -196,6 +215,17 @@ DepositDemander, IncomeTaxPayer, WageSetterWithTargets {
 			updateExpectations();
 			break;
 		}
+	}
+	
+	/**
+	 * Method used to update the advances and reserves interest rates
+	 */
+	private void updateCurrentDepositRate() {
+		// get CB from controller?
+		this.setPreviousDepositRate(this.currentDepositRate);
+		Deposit deposit= (Deposit)this.getItemStockMatrix(true, StaticValues.SM_DEP);
+		Bank bank = (Bank) deposit.getLiabilityHolder();
+		this.setCurrentDepositRate(bank.getDepositInterestRate());
 	}
 
 	/**

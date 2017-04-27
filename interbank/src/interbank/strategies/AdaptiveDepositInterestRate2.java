@@ -26,12 +26,13 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
  * the rates of alternative funding, and finally the 
  * rate of profitable investments for which it can use deposits.
  */
-public class AdaptiveDepositInterestRate extends AbstractStrategy implements InterestRateStrategy {
+public class AdaptiveDepositInterestRate2 extends AbstractStrategy implements InterestRateStrategy {
 
 	private double adaptiveParameter;
 	private AbstractDelegatedDistribution distribution; 
 	private int[] liabilitiesId;
 	private int mktId;
+	private double spread;
 	
 	/* 
 	 * Main method used to compute the deposit interest rate
@@ -52,41 +53,25 @@ public class AdaptiveDepositInterestRate extends AbstractStrategy implements Int
 		// determine the liquidity position by comparing the liquidity ratio with the target liquidity ratio
 		double liquidityRatio=lender.getLiquidityRatio();
 		double targetLiquidityRatio=lender.getTargetedLiquidityRatio();
-		int liquidityPosition = 0;
-		if ((liquidityRatio-targetLiquidityRatio)/targetLiquidityRatio < 0) {liquidityPosition = 1;
-		}else {liquidityPosition = -1;}
-		// determine the funding position
-		double previousFundingRate = lender.getFundingRate();
-		double interestPay=0;
-		double totValue=0;
-		for(int liabilityId:liabilitiesId){
-			List<Item> liabilities = lender.getItemsStockMatrix(false, liabilityId);
-			for(Item item:liabilities){
-				InterestBearingItem liability = (InterestBearingItem) item;
-				interestPay += liability.getInterestRate()*liability.getValue();
-				totValue +=liability.getValue();
-			}
-		}
-		double fundingRate = interestPay/totValue;
-		int fundingPosition = 0;
-		if ((fundingRate - previousFundingRate) / previousFundingRate > 0) {fundingPosition = 1;
-		}else {fundingPosition = -1;}
-		lender.setFundingRate(fundingRate);
-		// profit mark-up //
-		double previousInterestRate = lender.getPassedValue(StaticValues.LAG_LOANINTEREST, 1);
-		double currentInterestRate = lender.getBankInterestRate();
-		int profitabilityPosition = 0;
-		if ((currentInterestRate-previousInterestRate)/previousInterestRate > 0) {profitabilityPosition = 1;
-		}else {profitabilityPosition = -1;}
-		// the deposit rate = average deposit rate + random if (liquidity mark-up + funding-mark-up + profit-mark-up > threshold)
-		double referenceVariable = liquidityPosition + fundingPosition + profitabilityPosition;
 		double iR=0;
-		if(referenceVariable>0){
-			iR=avInterest+(adaptiveParameter*avInterest*distribution.nextDouble());
+	    
+		double lendingRate = lender.getBankInterestRate();
+		double spread = this.spread;
+	    if(lendingRate-spread>avInterest){
+			spread-=spread*adaptiveParameter*distribution.nextDouble();
 		}else{
-			iR=avInterest-(adaptiveParameter*avInterest*distribution.nextDouble());
+			spread+=spread*adaptiveParameter*distribution.nextDouble();
 		}
-		return Math.min(Math.max(iR, lender.getInterestRateLowerBound(mktId)),lender.getInterestRateUpperBound(mktId));
+	    if(liquidityRatio>targetLiquidityRatio){
+			spread-=spread*adaptiveParameter*distribution.nextDouble();
+		}else{
+			spread+=spread*adaptiveParameter*distribution.nextDouble();
+		}
+	    if (spread < 0) spread = 0;
+	    
+		iR = lendingRate-spread;
+	    double finalRate = Math.min(Math.max(iR, lender.getInterestRateLowerBound(mktId)),lender.getInterestRateUpperBound(mktId));
+		return finalRate;
 	}
 
 	/** 
@@ -122,6 +107,14 @@ public class AdaptiveDepositInterestRate extends AbstractStrategy implements Int
 
 	public void setAdaptiveParameter(double adaptiveParameter) {
 		this.adaptiveParameter = adaptiveParameter;
+	}
+
+	public double getSpread() {
+		return spread;
+	}
+
+	public void setSpread(double spread) {
+		this.spread = spread;
 	}
 
 	public AbstractDelegatedDistribution getDistribution() {

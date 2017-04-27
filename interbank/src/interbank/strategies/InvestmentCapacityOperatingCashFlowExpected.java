@@ -26,7 +26,7 @@ import jmab.strategies.InvestmentStrategy;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
 /**
- * @author Alessandro Caiani and Antoine Godin
+ * @author Alessandro Caiani, Antoine Godin and Joeri Schasfoort
  *
  */
 @SuppressWarnings("serial")
@@ -145,7 +145,7 @@ public class InvestmentCapacityOperatingCashFlowExpected extends AbstractStrateg
 	
 
 	/* (non-Javadoc)
-	 * @see jmab.strategies.InvestmentStrategy#computeDesiredGrowth()
+	 * computes 
 	 */
 	@Override
 	public double computeDesiredGrowth() {
@@ -160,11 +160,15 @@ public class InvestmentCapacityOperatingCashFlowExpected extends AbstractStrateg
 		}
 		double desiredOutput=investor.getDesiredOutput();
 		double capitalValue=investor.getPassedValue(pastCapitalId, 1);
+		double cbInterestRate = investor.getReserveInterestRate();
+		// cashflowrate is calculated by dividing the past cash flow by the NPV of future capital flows
+		//double cashFlowRate= investor.getPassedValue(pastCashFlowId,1)/((capitalValue*targetCashFlow) / cbInterestRate);
 		double cashFlowRate= investor.getPassedValue(pastCashFlowId,1)/capitalValue;
 		if (capacity==0||capitalValue==0){
 			return -1;
 		}
 		else{
+		// in the first term. cash flow generation of the new capital. How much sales you have.... how the cash flow is being computed
 		double desiredRateOfGrowth=cashFlowRateWeight*(cashFlowRate-targetCashFlow)/targetCashFlow+capacityWeight*((desiredOutput/capacity)-targetCapacityUtlization)/targetCapacityUtlization;
 		return Math.max(-1, desiredRateOfGrowth);
 		}
