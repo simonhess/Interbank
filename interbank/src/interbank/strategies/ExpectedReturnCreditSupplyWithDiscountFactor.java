@@ -22,7 +22,10 @@ import net.sourceforge.jabm.strategy.AbstractStrategy;
 /**
  * @author Joeri Schasfoort. This strategy is a variant of the expected return 
  * credit supply strategy. It now included a discount factor at which the banks
- * discount the cash flows in later periods. 
+ * discount the cash flows in later periods. Banks compute the overall expected 
+ * return of a credit project by summing the payoffs arising from each possible 
+ * outcome of the decision to grant the loan, each one weighted for its 
+ * probability of occurrence.
  */
 public class ExpectedReturnCreditSupplyWithDiscountFactor extends
 		AbstractStrategy implements SpecificCreditSupplyStrategy {
@@ -58,6 +61,11 @@ public class ExpectedReturnCreditSupplyWithDiscountFactor extends
 		int duration=((CreditDemander)creditDemander).decideLoanLength(loansId);
 		double shareRepaid=(double) 1/ (double) duration;
 		double interest=creditSupplier.getInterestRate(loansId, creditDemander, required, duration);
+		double cumulativeCapitalValue = 0;
+		for(int i=0; i<duration; i++){
+			cumulativeCapitalValue += capitalValue / Math.pow((1+interest), duration);
+		}
+		capitalValue = cumulativeCapitalValue / duration;
 		expectedShareRecovered=Math.min(1, capitalValue/totCurrentDebt);
 		double amount=0;
 		for(int i=0; i<101; i++){
@@ -67,16 +75,16 @@ public class ExpectedReturnCreditSupplyWithDiscountFactor extends
 			double probability = defaultComputer.getDefaultProbability(creditDemander, creditSupplier, amount);
 			double expectedReturn=0;
 			//probability=0.01;
-			// TODO what happens here? Why two for loops? Add discount factor here? see last part of the equation
+			// for every period
 			for (int t=0; t<duration; t++){
 				expectedReturn+=(Math.pow((1-probability), t)*(-1+shareRepaid*t)*amount*(1-expectedShareRecovered)+Math.pow((1-probability),t+1)*interest*amount) / Math.pow((1+discountFactor), t);
 			}
+			// for every period after 1 and before the end
 			for (int t=1; t<duration-1; t++){
 				expectedReturn+=Math.pow((1-probability),t+1)*(t-0.5*t*shareRepaid*(1+t))*interest*amount;
 			}
 			expectedReturn=expectedReturn*probability;
 			expectedReturn+=Math.pow((1-probability),duration)*interest*amount*((duration)-0.5*(duration-1)*shareRepaid*duration);
-			
 			if (binaryDecision==true){
 				if (expectedReturn>=0){
 					return required;
