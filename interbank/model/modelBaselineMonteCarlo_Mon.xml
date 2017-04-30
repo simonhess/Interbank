@@ -3555,8 +3555,8 @@
 			</map>
 		</property>
 		<property name="numberMarkets" value="8" />
-		<property name="riskAversionC" value="77.4576186" />
-		<property name="riskAversionK" value="1524.724496" />
+		<property name="riskAversionC" value="2" />
+		<property name="riskAversionK" value="2" />
 		<property name="riskAversionMarkUp" value="0.001" />
 		<property name="bankInterestRate" value="0.0075" />
 		<property name="numberStocks" value="9" />
@@ -3890,7 +3890,7 @@
 	-->
 	
 	<bean id="banksSpecificCreditSupplyStrategy" scope="prototype"
-		parent="strategy" class="interbank.strategies.ExpectedReturnCreditSupplyWithDiscountFactor">
+		parent="strategy" class="interbank.strategies.expectedReturnLossGivenDefault">
 		<property name="loansId">
 			<util:constant static-field="interbank.StaticValues.SM_LOAN" />
 		</property>
@@ -4175,7 +4175,7 @@
 	<bean id="householdsConsumptionStrategy" scope="prototype" parent="strategy"
 		class="interbank.strategies.ConsumptionMonetaryPropensityOOW">
 		<property name="propensityOOI" value="0.784014356"></property>
-		<property name="propensityOOW" value="0.05"></property>
+		<property name="propensityOOW" value="0.15"></property>
 		<!-- TEMP -->
 		<!-- <property name="propensityOOW" value="0.05"></property> -->
 		<property name="consPriceExpectationID">
@@ -4561,9 +4561,9 @@
 	
 	<bean id="reservesInterestRateStrategy" scope="prototype"
 		parent="strategy" class="interbank.strategies.ReservesStatic">
-		<property name="staticReservesRate" value="0.01"/>
-		<property name="shockRound" value="200"/>
-		<property name="shockAdd" value="0.0025"/>
+		<property name="staticReservesRate" value="0.0"/>
+		<property name="shockRound" value="250"/>
+		<property name="shockAdd" value="0.00"/>
 	</bean>
 	
 	<!-- TODO -->
