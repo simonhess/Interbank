@@ -1497,7 +1497,7 @@
 			<util:constant static-field="interbank.StaticValues.MICROKMARKUPREPORT_ID" />
 		</property>
 		<property name="variableName" value="Capital Firms mark up"></property>
-		<property name="computer" ref="cFirmsMarkUpComputer"></property>
+		<property name="computer" ref="kFirmsMarkUpComputer"></property>
 	</bean>
 	
 
@@ -2370,48 +2370,50 @@
 
 
 	<!-- The basic initialiser of agents -->
-	<bean id="sfcAgentsInitialiser" class="interbank.init.SFCSSMacroAgentInitialiser">
+	<bean id="sfcAgentsInitialiser" class="interbank.init.SFCSSMacroAgentInitialiser" scope="prototype">
 		<property name="uniformDistr" value="0.0" />
+		<property name="updateSeed" value="false" />
 		<property name="prng" ref="prng" />
-
-		<property name="hhsDep" value="68117.14662" />
-		<property name="dividendsReceived" value="1075.251327" />
+		<property name="hhsDep" value="352630.677447428" />
+		<property name="dividendsReceived" value="1022.72466237873" />
 		<property name="ksDep" value="2500" />
 		<property name="ksInv" value="200" />
-		<property name="ksLoans" value="1990.504161" />
-		<property name="ksLoans0" value="0.598835218" />
-		<property name="csDep" value="12500" />
+		<property name="ksLoans" value="1990.50416144892" />
+		<property name="ksLoans0" value="0.598835218363311" />
+		<property name="csDep" value="12000" />
 		<property name="csInv" value="9600" />
-		<property name="csLoans" value="40802.13154" />
-		<property name="csLoans0" value="1403.317154" />
+		<property name="csLoans" value="42037.8831532455" />
+		<property name="csLoans0" value="1445.81864573032" />
 		<property name="csKap" value="120000" />
-		<property name="bsBonds" value="21404.25175" />
-		<property name="bsRes" value="26147.83715" />
+		<property name="bsBonds" value="269845.125862729" />
+		<property name="bsRes" value="56965.5549513868" />
 		<property name="bsAdv" value="0" />
 		<property name="bsCash" value="0" />
-		<property name="cbBonds" value="26147.83715" />
+		<property name="cbBonds" value="56965.5549515169" />
 		<property name="hhWage" value="5" />
 		<property name="ksEmpl" value="500" />
 		<property name="ksSales" value="2525" />
-		<property name="ksProfits" value="18.68513543" />
+		<property name="ksProfits" value="18.6851354284745" />
 		<property name="kPrice" value="1.2625" />
 		<property name="kUnitCost" value="1.25" />
-		<property name="csEmpl" value="2500" />
-		<property name="csSales" value="16328.82101" />
-		<property name="csProfits" value="1146.403053" />
-		<property name="cPrice" value="0.170091886" />
-		<property name="cUnitCost" value="0.154628987" />
+		<property name="csEmpl" value="2400" />
+		<property name="csSales" value="15778.8210132756" />
+		<property name="csProfits" value="1102.46994731799" />
+		<property name="cPrice" value="0.164362718888287" />
+		<property name="cUnitCost" value="0.149420653534807" />
 		<property name="iLoans" value="0.00246627" />
-		<property name="iDep" value="0.000829538" />
-		<property name="bsProfits" value="21.63726381" />
+		<property name="iDep" value="0.0008295381" />
+		<property name="bsProfits" value="47.1388411101543" />
 		<property name="iBonds" value="0.001651581" />
-		<property name="iAdv" value="0.000829538" />
-		<property name="ksOCF" value="17.51408523" />
-		<property name="csOCF" value="2184.198124" />
+		<property name="iAdv" value="0.0008295381" />
+		<property name="csOCF" value="2100.92673657657" />
+		<property name="ksOCF" value="17.5140852253558" />
 		<property name="gr" value="0.00246627" />
-		<property name="nomGDP" value="18853.82101" />
+		<property name="nomGDP" value="18303.8210132755" />
 		<property name="infl" value="0.00246627" />
-		<property name="gEmpl" value="680" />
+		<property name="gEmpl" value="780" />
+		<property name="CAR" value="0.0842272657990843" />
+		<property name="liquidityRatio" value="0.155164246549409" />
 	</bean>
 
 
@@ -2581,9 +2583,9 @@
 		<property name="loanAmortizationType" value="0" />
 		<property name="capitalAmortization" value="60" />
 		<property name="capitalDuration" value="60" />
-		<property name="capitalProductivity" value="0.5" />
+		<property name="capitalProductivity" value="1" />
 		<property name="laborProductivity" value="4" />
-		<property name="capitalLaborRatio" value="38.4" />
+		<property name="capitalLaborRatio" value="40" />
 		<property name="shareOfExpIncomeAsDeposit" value="1" />
 		<property name="minWageDiscount" value="1" />
 		<property name="turnoverLabor" ref="turnoverVal" />
@@ -2872,7 +2874,7 @@
 		</property>
 	</bean>
 
-	<bean id="prng" class="net.sourceforge.jabm.prng.MersenneTwister">
+	<bean id="prng" class="net.sourceforge.jabm.prng.MersenneTwister" >
 		<property name="seed" value="1"/>
 	</bean>
 
@@ -2916,7 +2918,17 @@
 		<property name="adaptiveParameter" value="0.25" />
 		<property name="distribution" ref="foldedNormal1" />
 		<property name="threshold" value="0.1"></property>
-		<property name="markUp" value="0.075"></property>
+		<property name="markUp" value="0.01"></property>
+				<property name="capitalOwner" value="0"></property>
+		<property name="capacityId">
+			<util:constant static-field="interbank.StaticValues.LAG_CAPACITY" />
+		</property>
+		<property name="productionId">
+			<util:constant static-field="interbank.StaticValues.LAG_PRODUCTION" />
+		</property>
+		<property name="realSalesId">
+			<util:constant static-field="interbank.StaticValues.LAG_REALSALES" />
+		</property>
 	</bean>
 
 <!-- OLD MARK-UP CLASS FOR CAPITAL FIRMS
@@ -3272,7 +3284,7 @@
 			<util:constant static-field="interbank.StaticValues.LAG_OPERATINGCASHFLOW" />
 		</property>
 		<property name="targetCapacityUtlization" value="0.8"></property>
-		<property name="targetCashFlow" value="0.029751141"></property>
+		<property name="targetCashFlow" value="0.0286168948709284"></property>
 		<property name="capacityWeight" value="0.1"></property>
 		<property name="cashFlowRateWeight" value="0.1"></property>
 
@@ -3310,22 +3322,13 @@
 		</property>
 	</bean>
 
-	<!--
-	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
-		class="jmab.strategies.AdaptiveMarkUpOnAC">
-		<property name="adaptiveParameter" value="0.25" />
-		<property name="distribution" ref="foldedNormal1" />
-		<property name="threshold" value="0.1"></property>
-		<property name="markUp" value="0.318857"></property>
-	</bean>
-	-->
 	
 	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
   		class="jmab.strategies.AdaptiveMarkUpOnACandCU">
   		<property name="adaptiveParameter" value="1" />
   		<property name="distribution" ref="foldedNormal1" />
   		<property name="threshold" value="0.1"></property>
-  		<property name="markUp" value="0.318857"></property>
+  		<property name="markUp" value="0.1"></property>
   		<property name="capitalOwner" value="1"></property>
   		<property name="capacityId">
    			<util:constant static-field="interbank.StaticValues.LAG_CAPACITY" />
@@ -3337,59 +3340,7 @@
    			<util:constant static-field="interbank.StaticValues.LAG_REALSALES" />
   		</property>
  	</bean>
-	
-	 <!-- OLD PRICING STARTEGIES FOR CONSUMPTION FIRMS
-	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
-		class="jmab.strategies.AdaptiveReturnOnAC">
-		<property name="adaptiveParameter" value="1" />
-		<property name="distribution" ref="foldedNormal1" />
-		<property name="threshold" value="0.1"></property>
-		<property name="capacityUtilisation" value="0.8"></property>
-		<property name="returnRate" value="0.1887055680579684"></property>
-		<property name="idCapacity">
-			<util:constant static-field="interbank.StaticValues.LAG_CAPACITY" />
-		</property>
-		<property name="idCapitalValue">
-			<util:constant static-field="interbank.StaticValues.LAG_CAPITALFINANCIALVALUE" />
-		</property>
-		<property name="idLoans">
-			<util:constant static-field="interbank.StaticValues.SM_LOAN" />
-		</property>
-		<property name="idProduction">
-			<util:constant static-field="interbank.StaticValues.LAG_PRODUCTION" />
-		</property>
-	</bean>
-	 -->
 	 
-	 <!--
-	<bean id="consumptionPricingStrategy" scope="prototype" parent="strategy"
-		class="jmab.strategies.AdaptiveReturnOnACandCU">
-		<property name="adaptiveParameter" value="1" />
-		<property name="distribution" ref="foldedNormal1" />
-		<property name="threshold" value="0.1"></property>
-		<property name="capacityUtilisation" value="0.8"/>
-		<property name="capitalOwner" value="1"/>
-		<property name="returnRate" value="0.1887055680579684"/>
-		<property name="idCapacity">
-			<util:constant static-field="interbank.StaticValues.LAG_CAPACITY" />
-		</property>
-		<property name="idCapitalValue">
-			<util:constant static-field="interbank.StaticValues.LAG_CAPITALFINANCIALVALUE" />
-		</property>
-		<property name="idLoans">
-			<util:constant static-field="interbank.StaticValues.SM_LOAN" />
-		</property>
-		<property name="idProduction">
-			<util:constant static-field="interbank.StaticValues.LAG_PRODUCTION" />
-		</property>
-		<property name="productionId">
-			<util:constant static-field="interbank.StaticValues.LAG_PRODUCTION" />
-		</property>
-		<property name="realSalesId">
-			<util:constant static-field="interbank.StaticValues.LAG_REALSALES" />
-		</property>
-	</bean>
--->	
 
 	<bean id="consumptionTaxesStrategy" scope="prototype" parent="strategy"
 		class="jmab.strategies.ProfitsWealthTaxStrategy">
@@ -3555,10 +3506,6 @@
 			</map>
 		</property>
 		<property name="numberMarkets" value="8" />
-		<property name="riskAversionC" value="2" />
-		<property name="riskAversionK" value="2" />
-		<property name="riskAversionMarkUp" value="0.001" />
-		<property name="bankInterestRate" value="0.0075" />
 		<property name="numberStocks" value="9" />
 		<property name="populationId">
 			<util:constant static-field="interbank.StaticValues.BANKS_ID" />
@@ -3571,12 +3518,15 @@
 		<property name="advancesLength" value="1" />
 		<property name="advancesAmortizationType" value="2" />
 		<property name="reserveInterestRate" value="0" />
-		<property name="advancesInterestRate" value="0.000829538" />
+		<property name="advancesInterestRate" value="0.0008295381" />
 		<property name="bondInterestRate" value="0.001651581" />
-		<property name="depositInterestRate" value="0.000829538" />
-		<property name="fundingRate" value="0.0025" />
-		<property name="targetedLiquidityRatio" value="0.258026342"></property>
-		<property name="targetedCapitalAdequacyRatio" value="0.06"></property>
+		<property name="depositInterestRate" value="0.0008295381" />
+		<property name="riskAversionC" value="72.0560242517343" />
+		<property name="riskAversionK" value="1524.72449594001" />
+		<property name="fundingRate" value="0.0008295381" />
+		<property name="targetedLiquidityRatio" value="0.155164246549409"></property>
+		<property name="targetedCapitalAdequacyRatio" value="0.0842272657990843"></property>
+		<property name="bankInterestRate" value="0.00246627" />
 	</bean>
 
 	<bean id="expDeposits" class="jmab.expectations.SimpleAdaptiveExpectation"
@@ -3761,7 +3711,7 @@
 		</property>
 		<!-- <property name="adaptiveParameter" value="1"/> -->
 		<property name="adaptiveParameter" value="1" />
-		<property name="markup" value="0.005" />
+		<property name="markup" value="0.001636732" />
 		<property name="liabilitiesId">
 			<list>
 				<util:constant static-field="interbank.StaticValues.SM_DEP" />
@@ -3812,30 +3762,6 @@
 		class="interbank.strategies.BondDemandStrategyReserves">
 	</bean>
 	
-	<!-- 
-	<bean id="banksDepInterestStrategy" scope="prototype" parent="strategy"
-		class="interbank.strategies.AdaptiveInterestRateAverageThreshold">
-		<property name="distribution" ref="foldedNormal2" />
-		<property name="mktId">
-			<util:constant static-field="interbank.StaticValues.MKT_DEPOSIT" />
-		</property>
-		<property name="increase" value="false" />
-		<property name="adaptiveParameter" value="1"/> 
-		<property name="adaptiveParameter" value="1" />
-	</bean>
-	-->
-	<!--  
-	<bean id="banksDepInterestStrategy" scope="prototype" parent="strategy"
-		class="interbank.strategies.AdaptiveInterestRateAverageThreshold">
-		<property name="distribution" ref="foldedNormal2" />
-		<property name="mktId">
-			<util:constant static-field="interbank.StaticValues.MKT_DEPOSIT" />
-		</property>
-		<property name="increase" value="false" />
-		<property name="adaptiveParameter" value="1"/> 
-		<property name="adaptiveParameter" value="1" />
-	</bean>
-	-->
 	
 	<bean id="banksDepInterestStrategy" scope="prototype" parent="strategy"
 		class="interbank.strategies.AdaptiveDepositInterestRate">
@@ -3844,7 +3770,6 @@
 			<util:constant static-field="interbank.StaticValues.MKT_DEPOSIT" />
 		</property>
 		<property name="adaptiveParameter" value="0.1" />
-		<!--<property name="spread" value="0.001" /> -->
 		<property name="liabilitiesId">
 			<list>
 				<util:constant static-field="interbank.StaticValues.SM_DEP" />
@@ -3854,43 +3779,11 @@
 		</property>
 	</bean>
 
-	<!-- Old credit supply with CAR <bean id="banksTotalCreditSupplyStrategy" 
-		scope="prototype" parent="strategy" class="jmab.strategies.SupplyCreditAdaptiveCARTarget"> 
-		<property name="loansId"><util:constant static-field="interbank.StaticValues.SM_LOAN" 
-		/> </property> <property name="mandatoryCAR" value="0.06"></property> <property 
-		name="targetCAR" value="0.1"></property> <property name="nbPeriods" value="4"></property> 
-		<property name="threshold" value="0.1"></property> <property name="adaptiveParameter" 
-		value="0.5"></property> <property name="distribution" ref="foldedNormal1"/> 
-		<property name="depositsExpectationsId"><util:constant static-field="interbank.StaticValues.EXPECTATIONS_DEPOSITS" 
-		/> </property> <property name="capitalIds"> <list> <util:constant static-field="interbank.StaticValues.SM_CASH"/> 
-		<util:constant static-field="interbank.StaticValues.SM_RESERVES"/> </list> 
-		</property> <property name="assetsIds"> <list> </list> </property> <property 
-		name="capitalsWeights"> <list> <value>1</value> <value>1</value> </list> 
-		</property> <property name="assetsWeights"> <list> </list> </property> </bean> -->
 	<bean id="banksTotalCreditSupplyStrategy" scope="prototype"
 		parent="strategy" class="jmab.strategies.InfiniteSupplyCreditStrategy" />
-
-	<!-- Old Specific supply <bean id="banksSpecificCreditSupplyStrategy" scope="prototype" 
-		parent="strategy" class="interbank.strategies.MaxExposureStrategyDifferentiated"> 
-		<property name="loansId"><util:constant static-field="interbank.StaticValues.SM_LOAN" 
-		/> </property> <property name="maxShareTotalLoans" value="0.1"/> </bean> -->
-	<!--  
-	<bean id="banksSpecificCreditSupplyStrategy" scope="prototype"
-		parent="strategy" class="jmab.strategies.ExpectedReturnCreditSupply">
-		<property name="loansId">
-			<util:constant static-field="interbank.StaticValues.SM_LOAN" />
-		</property>
-		<property name="capitalId">
-			<util:constant static-field="interbank.StaticValues.SM_CAPGOOD" />
-		</property>
-		<property name="haircut" ref="haircutVal" />
-		<property name="binaryDecision" value="false" />
-		<property name="defaultComputer" ref="loanDefaultComputer" />
-	</bean>
-	-->
 	
 	<bean id="banksSpecificCreditSupplyStrategy" scope="prototype"
-		parent="strategy" class="interbank.strategies.expectedReturnLossGivenDefault">
+		parent="strategy" class="interbank.strategies.ExpectedReturnLossGivenDefault">
 		<property name="loansId">
 			<util:constant static-field="interbank.StaticValues.SM_LOAN" />
 		</property>
@@ -3917,7 +3810,7 @@
 			<util:constant static-field="interbank.StaticValues.LAG_PROFITAFTERTAX" />
 		</property>
 		<property name="profitShare" value="0.6" />
-		<property name="capitalRatioSensitivity" value="0.1" />
+		<property name="capitalRatioSensitivity" value="0.0" />
 		<property name="receiversId">
 			<util:constant static-field="interbank.StaticValues.HOUSEHOLDS_ID" />
 		</property>
@@ -3951,21 +3844,6 @@
 		</property>
 		<property name="prng" ref="prng"/>
 	</bean>
-
-	<!--  
-	<bean id="banksInterbankRateStrategy" scope="prototype" parent="strategy"
-		class="interbank.strategies.InterbankAsFunctionOfLoanRateStrategy">
-		<property name="loanId">
-			<util:constant static-field="interbank.StaticValues.SM_LOAN" />
-		</property>
-		<property name="reserveId">
-			<util:constant static-field="interbank.StaticValues.SM_RESERVES" />
-		</property>
-		<property name="mktId">
-			<util:constant static-field="interbank.StaticValues.MKT_INTERBANK" />
-		</property>
-	</bean>
-	-->
 	
 	<bean id="banksInterbankRateStrategy" scope="prototype" parent="strategy"
 		class="interbank.strategies.InterbankAskCBMarkUp">
@@ -3994,13 +3872,6 @@
 	<bean id="banksInterbankSupplyStrategy" scope="prototype" parent="strategy"
 		class="interbank.strategies.InterbankSupplyDemandLR">
 	</bean>
-
-	<!-- <bean id="banksBankruptcyStrategy" scope="prototype" parent="strategy" 
-		class="interbank.strategies.BankBankruptcy"> <property name="liabilityHaircutId"><util:constant 
-		static-field="interbank.StaticValues.SM_DEP" /> </property> <property name="haircut"> 
-		<list> <value>1</value> <value>1</value> <value>1</value> <value>1</value> 
-		<value>1</value> <value>1</value> <value>1</value> </list> </property> </bean> -->
-
 
 	<!-- The population of Households -->
 	<bean id="householdsPopulation" class="net.sourceforge.jabm.Population"
@@ -4174,10 +4045,8 @@
 
 	<bean id="householdsConsumptionStrategy" scope="prototype" parent="strategy"
 		class="interbank.strategies.ConsumptionMonetaryPropensityOOW">
-		<property name="propensityOOI" value="0.784014356"></property>
-		<property name="propensityOOW" value="0.15"></property>
-		<!-- TEMP -->
-		<!-- <property name="propensityOOW" value="0.05"></property> -->
+		<property name="propensityOOI" value="0.736679993550779"></property>
+		<property name="propensityOOW" value="0.01"></property>
 		<property name="consPriceExpectationID">
 			<util:constant static-field="interbank.StaticValues.EXPECTATIONS_CONSPRICE" />
 		</property>
@@ -4200,7 +4069,7 @@
 		class="jmab.strategies.AdaptiveWageStrategy">
 		<property name="distribution" ref="foldedNormal1" />
 		<property name="microThreshold" value="0.49" />
-		<property name="macroThreshold" value="0.08" />
+		<property name="macroThreshold" value="1" />
 		<property name="macroAdaptiveParameter" value="0.05" />
 		<property name="microAdaptiveParameter" value="0.05" />
 	</bean>
@@ -4280,7 +4149,7 @@
 		<property name="bondMaturity" value="4" />
 		<property name="bondInterestRate" value="0.001651581" />
 		<property name="bondPrice" value="1.0" />
-		<property name="fixedLaborDemand" value="1500" />
+		<property name="fixedLaborDemand" value="780" />
 		<property name="prng" ref="prng" />
 		<property name="turnoverLabor" ref="turnoverVal" />
 		<property name="unemploymentBenefit" value="0.3" />
@@ -4429,23 +4298,19 @@
 			<util:constant static-field="interbank.StaticValues.SM_CASH" />
 		</property>
 		<!-- From CentralBank class -->
-		<property name="advancesInterestRate" value="0.000829538" />
+		<property name="advancesInterestRate" value="0.0008295381" />
 		<property name="reserveInterestRate" value="0.0" />
-		<property name="nominalGDP" value="45146.4" />
-		<property name="inflation" value="0.0075" />
-		<property name="CAR" value="0.179959" />
-		<property name="minCAR" value="0.15" />
-		<property name="maxCAR" value="0.2" />
-		<property name="liquidityRatio" value="0.08" />
-		<property name="minReserveRequirement" value="0.2" />
-		<property name="maxReserveRequirement" value="0.3" />
-		<property name="targetCreditToGDP" value="1.1" />
+		<property name="minCAR" value="0.0592272658074119" />
+		<property name="maxCAR" value="0.109227265807412" />
+		<property name="minReserveRequirement" value="0.105164246550006" />
+		<property name="maxReserveRequirement" value="0.205164246550006" />
+		<property name="targetCreditToGDP" value="2.40542055578238" />
 		<property name="prudentialThreshold" value="0.1" />
 		<property name="prudentialMarkUp" value="0.0025" />
 		<property name="monetaryMarkUp" value="0.0025" />
 		<property name="monetaryPolicyMarkUp" value="0.00025" />
 		<property name="monetaryThreshold" value="0.0025" />
-		<property name="targetInflation" value="0.0075" />
+		<property name="targetInflation" value="0.00246627" />
 		<property name="minBankRate" value="0" />
 		<property name="maxBankRate" value="0.15" />
 	</bean>
@@ -4562,7 +4427,7 @@
 	<bean id="reservesInterestRateStrategy" scope="prototype"
 		parent="strategy" class="interbank.strategies.ReservesStatic">
 		<property name="staticReservesRate" value="0.0"/>
-		<property name="shockRound" value="250"/>
+		<property name="shockRound" value="300"/>
 		<property name="shockAdd" value="0.00"/>
 	</bean>
 	
@@ -4625,13 +4490,13 @@
 		<property name="staticNetFundingRatio" value="0.1" />
 	</bean>
 	
-	<bean id="foldedNormal1" class="jmab.distribution.FoldedNormalDistribution">
+	<bean id="foldedNormal1" class="jmab.distribution.FoldedNormalDistribution" scope="prototype">
 		<property name="mean" value="0.0" />
 		<property name="stdev" value="0.0094" />
 		<property name="prng" ref="prng" />
 	</bean>
 
-	<bean id="foldedNormal2" class="jmab.distribution.FoldedNormalDistribution">
+	<bean id="foldedNormal2" class="jmab.distribution.FoldedNormalDistribution" scope="prototype">
 		<property name="mean" value="0.0" />
 		<property name="stdev" value="0.0094" />
 		<property name="prng" ref="prng" />

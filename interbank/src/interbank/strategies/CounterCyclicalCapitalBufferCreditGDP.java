@@ -39,14 +39,13 @@ public class CounterCyclicalCapitalBufferCreditGDP extends AbstractStrategy impl
 		double minCAR = cb.getMinCAR();
 		// then adjust the CAR depending on how far it is above or below target
 		double CreditOfTarget = (creditToGDP - targetCreditToGDP)/targetCreditToGDP;
-		double newCAR;
+		double newCAR = currentCAR;
 		if (CreditOfTarget > prudentialThreshold) {
 			newCAR = Math.min(currentCAR + prudentialMarkUp,maxCAR);
 		}
-		if (CreditOfTarget < -prudentialThreshold) {
+		else if (CreditOfTarget < -prudentialThreshold) {
 			newCAR = Math.max(currentCAR - prudentialMarkUp,minCAR);
 		}
-		else {newCAR = currentCAR;}
 		return newCAR;
 	}
 

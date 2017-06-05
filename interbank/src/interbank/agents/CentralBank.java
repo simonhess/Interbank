@@ -68,8 +68,6 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 	private int QEAssetDemand;
 	protected double expectedNaturalRate;
 	protected double expectedPotentialGDP;
-	protected double nominalGDP;
-	protected double inflation;
 	// Added new variables to support prudential policy
 	protected double CAR;
 	protected double liquidityRatio;
@@ -538,22 +536,6 @@ public class CentralBank extends AbstractBank implements CreditSupplier, Deposit
 
 	public void setExpectedPotentialGDP(double expectedPotentialGDP) {
 		this.expectedPotentialGDP = expectedPotentialGDP;
-	}
-
-	public double getNominalGDP() {
-		return nominalGDP;
-	}
-
-	public void setNominalGDP(double nominalGDP) {
-		this.nominalGDP = nominalGDP;
-	}
-
-	public double getInflation() {
-		return inflation;
-	}
-
-	public void setInflation(double inflation) {
-		this.inflation = inflation;
 	}
 	
 	public double getCAR() {

@@ -58,7 +58,7 @@ public class FixedShareOfProfitsDividendsWithCapitalRatio extends AbstractStrate
 				double actualCapitalRatio = bank.getCapitalRatio();
 				// get the sensitivity to capital ratios from the bank, 
 				// determine a rule in which the bank increases dividends if it is above the capital ratio and decreases them if below
-				if (targetedCapitalRatio < actualCapitalRatio) {
+				if (targetedCapitalRatio > actualCapitalRatio) {
 					bank.setDividends(profits*profitShare*(1+capitalRatioSensitivity));
 				}
 				else if (targetedCapitalRatio < actualCapitalRatio) {
