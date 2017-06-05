@@ -1,0 +1,32 @@
+householdsConsumptionStrategy.propensityOOI 0.40 0.90 Consumption
+householdsConsumptionStrategy.propensityOOW 0.00 0.50 Consumption
+capitalTaxesStrategy.profitTaxRate 0.00 0.50 Taxes
+capitalTaxesStrategy.wealthTaxRate 0.00 0.50 Taxes
+banksTaxesStrategy.profitTaxRate 0.00 0.50 Taxes
+consumptionTaxesStrategy.profitTaxRate 0.00 0.50 Taxes
+householdsTaxesStrategy.incomeTaxRate 0.00 0.50 Taxes
+capitalFirmPrototype.loanLength 10 100 Capital_Duration
+capitalFirmPrototype.capitalAmortization 10 100 Capital_Duration
+capitalFirmPrototype.capitalDuration 10 100 Capital_Duration
+banksDividendsStrategy.profitShare 0.1 0.99 Dividends
+capitalDividendsStrategy.profitShare 0.1 0.99 Dividends
+consumptionDividendsStrategy.profitShare 0.1 0.99 Dividends
+capitalFirmPrototype.capitalProductivity 0.1 8.0 Productivity
+capitalFirmPrototype.laborProductivity 1.0 12.0 Productivity
+capitalFirmPrototype.capitalLaborRatio 12.0 100.0 Productivity
+bankPrototype.riskAversionC 0.0 70.0 BankRiskAversion
+bankPrototype.riskAversionK 0.0 70.0 BankRiskAversion
+governmentPrototype.fixedLaborDemand 100 1600 GovSpending
+governmentPrototype.unemploymentBenefit 0.0 0.7 GovSpending
+centralBankPrototype.advancesInterestRate 0.0 0.02 MonPolicy
+centralBankPrototype.reserveInterestRate 0.0 0.01 MonPolicy
+consumptionInvestmentStrategy.targetCapacityUtlization 0.5 1.0 InvestmentStrat
+consumptionInvestmentStrategy.targetCashFlow 0.01 0.09 InvestmentStrat
+consumptionInvestmentStrategy.capacityWeight 0.01 0.20 InvestmentStrat
+consumptionInvestmentStrategy.cashFlowRateWeight 0.01 0.20 InvestmentStrat
+
+
+
+
+
+
