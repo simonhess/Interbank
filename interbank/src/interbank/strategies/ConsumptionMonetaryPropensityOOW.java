@@ -96,7 +96,7 @@ public class ConsumptionMonetaryPropensityOOW extends AbstractStrategy implement
 		double netWealth=household.getNetWealth();
 		double oldDepositRate=household.getPreviousDepositRate();
 		double newDepositRate = household.getCurrentDepositRate();
-		double markUp = (newDepositRate*100 - oldDepositRate*100) / (oldDepositRate*100);
+		double markUp = newDepositRate - oldDepositRate;
 		double demand=(propensityOOI*(netIncome/priceExpectation)+(propensityOOW + markUp)*(netWealth/priceExpectation));
 		return demand;
 	}
