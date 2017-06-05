@@ -3328,7 +3328,7 @@
   		<property name="adaptiveParameter" value="1" />
   		<property name="distribution" ref="foldedNormal1" />
   		<property name="threshold" value="0.1"></property>
-  		<property name="markUp" value="0.1"></property>
+  		<property name="markUp" value="0.314901751106298"></property>
   		<property name="capitalOwner" value="1"></property>
   		<property name="capacityId">
    			<util:constant static-field="interbank.StaticValues.LAG_CAPACITY" />
