@@ -2404,7 +2404,7 @@
 		<property name="iLoans" value="0.00246627" />
 		<property name="iDep" value="0.0008295381" />
 		<property name="bsProfits" value="47.1388411101543" />
-		<property name="iBonds" value="0.001651581" />
+		<property name="iBonds" value="0.0008295381" />
 		<property name="iAdv" value="0.0008295381" />
 		<property name="csOCF" value="2100.92673657657" />
 		<property name="ksOCF" value="17.5140852253558" />
@@ -4147,7 +4147,7 @@
 		</property>
 		<!-- From Government -->
 		<property name="bondMaturity" value="4" />
-		<property name="bondInterestRate" value="0.001651581" />
+		<property name="bondInterestRate" value="0.0008295381" />
 		<property name="bondPrice" value="1.0" />
 		<property name="fixedLaborDemand" value="780" />
 		<property name="prng" ref="prng" />
@@ -4209,7 +4209,7 @@
 
 	<bean id="governmentBondsInterestStrategy" scope="prototype"
 		parent="strategy" class="interbank.strategies.BondInterestRateStrategy">
-		<property name="interestRate" value="0.001651581"></property>
+		<property name="interestRate" value="0.0008295381"></property>
 	</bean>
 
 	<bean id="governmentDeficitManagementStrategy" scope="prototype" parent="strategy"

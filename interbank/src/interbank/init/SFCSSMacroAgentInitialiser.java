@@ -551,13 +551,6 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 		govt.addItemStockMatrix(govtRes, true, StaticValues.SM_RESERVES);
 		cb.addItemStockMatrix(govtRes, false, StaticValues.SM_RESERVES);
 
-		double initialPublicDebt=0;
-	    for (Item bond:govt.getItemsStockMatrix(false, StaticValues.SM_BONDS)){
-	    	initialPublicDebt+=bond.getValue();
-	    }
-	    //govt.getPassedValues().get(StaticValues.LAG_PUBLICDEBT).addObservation(initialPublicDebt, 0);
-	    govt.addValue(StaticValues.LAG_PUBLICDEBT, initialPublicDebt);
-		
 		//Central Bank
 		int nbBondsPerPeriod1 = (int) this.cbBonds/(bondMat*bondPrice);
 		for(int j = 1 ; j<=bondMat; j++){
@@ -566,6 +559,14 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 			cb.addItemStockMatrix(bond, true, StaticValues.SM_BONDS);
 			govt.addItemStockMatrix(bond, false, StaticValues.SM_BONDS);
 		}
+		
+		double initialPublicDebt=0;
+	    for (Item bond:govt.getItemsStockMatrix(false, StaticValues.SM_BONDS)){
+	    	initialPublicDebt+=bond.getValue();
+	    }
+	    //govt.getPassedValues().get(StaticValues.LAG_PUBLICDEBT).addObservation(initialPublicDebt, 0);
+	    govt.addValue(StaticValues.LAG_PUBLICDEBT, initialPublicDebt);
+		
 		//TODO: Add Aggregate values, we could use the macrosimulation
 		govt.setAggregateValue(StaticValues.LAG_AGGUNEMPLOYMENT, 0.08*(1+distr.nextDouble()));//TODO
 		govt.setAggregateValue(StaticValues.LAG_INFLATION, infl*(1+distr.nextDouble()));//TODO

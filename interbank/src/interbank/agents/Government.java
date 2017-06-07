@@ -173,10 +173,20 @@ public class Government extends SimpleAbstractAgent implements LaborDemander, Bo
 				nominalGdpComputer.computeVariable(sim));
 		this.setAggregateValue(StaticValues.LAG_INFLATION, 
 				avpComputer.computeVariable(sim));
-		double publicDebt=0;
+		double publicBonds=0;
 		for (Item bond:this.getItemsStockMatrix(false, StaticValues.SM_BONDS)){
-			publicDebt+=bond.getValue();
+			publicBonds+=bond.getValue();
 		}
+		double publicDeposits=0;
+		for (Item dep:this.getItemsStockMatrix(true, StaticValues.SM_DEP)){
+			publicDeposits+=dep.getValue();
+		}
+		double publicReserves=0;
+		for (Item res:this.getItemsStockMatrix(true, StaticValues.SM_RESERVES)){
+			publicReserves+=res.getValue();
+		}
+
+		double publicDebt= publicBonds-publicDeposits-publicReserves;
 		this.addValue(StaticValues.LAG_PUBLICDEBT, publicDebt);
 	}
 	
