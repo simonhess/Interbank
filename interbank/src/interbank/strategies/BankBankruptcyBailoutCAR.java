@@ -43,6 +43,7 @@ public class BankBankruptcyBailoutCAR extends AbstractStrategy implements
 	private int depositId;
 	private int depositExpectationId; 
 	protected RandomEngine prng;
+	protected Uniform distribution;
 
 	/**
 	 * @return the depositId
@@ -98,7 +99,7 @@ public class BankBankruptcyBailoutCAR extends AbstractStrategy implements
 			if (bank1.getAgentId()!=bank.getAgentId())
 			tot+=bank1.getCapitalRatio();
 			}
-		Uniform distribution = new Uniform(0,0.1,prng);
+		
 		double car=tot/(banks.getSize()-1)+distribution.nextDouble();
 		List<Item> loans=bank.getItemsStockMatrix(true, StaticValues.SM_LOAN);
 		double loansValue=0;
@@ -136,6 +137,7 @@ public class BankBankruptcyBailoutCAR extends AbstractStrategy implements
 
 	public void setPrng(RandomEngine prng) {
 		this.prng = prng;
+		distribution = new Uniform(0,0.1,prng);
 	}
 
 

@@ -19,7 +19,7 @@ Caiani, A., Godin, A., Caverzasi, E., Ricetti, L., Russo, A., Gallegati, M., Kin
 		   <idref local="macroSimulation"/>
 		</property>
 	
-		<property name="numSimulations" value="15"/>	
+		<property name="numSimulations" value="1"/>	
 		
 		<property name="reports">
 			<list>
@@ -228,6 +228,9 @@ Caiani, A., Godin, A., Caverzasi, E., Ricetti, L., Russo, A., Gallegati, M., Kin
     			<ref bean="cFirmsMarkUpCSVReport" />
     			<ref bean="kFirmsMarkUpEventReport" />
     			<ref bean="kFirmsMarkUpCSVReport" />
+				<!-- Joeri added tax reporters -->
+    			<ref bean="microTaxesHHEventReport" />
+    			<ref bean="microTaxesHHCSVReport" />
     				
 			</list>
 		</property>

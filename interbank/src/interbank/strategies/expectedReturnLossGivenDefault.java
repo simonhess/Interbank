@@ -1,8 +1,9 @@
 package interbank.strategies;
 
+import interbank.agents.Bank;
+
 import java.nio.ByteBuffer;
 
-import interbank.agents.Bank;
 import jmab.agents.CreditDemander;
 import jmab.agents.MacroAgent;
 import jmab.population.MacroPopulation;
@@ -11,7 +12,8 @@ import jmab.strategies.DefaultProbilityComputer;
 import jmab.strategies.SpecificCreditSupplyStrategy;
 import net.sourceforge.jabm.strategy.AbstractStrategy;
 
-public class expectedReturnLossGivenDefault extends AbstractStrategy implements SpecificCreditSupplyStrategy {
+@SuppressWarnings("serial")
+public class ExpectedReturnLossGivenDefault extends AbstractStrategy implements SpecificCreditSupplyStrategy {
 
 	private DefaultProbilityComputer defaultComputer;
 	private int loansId;	

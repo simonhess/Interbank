@@ -115,64 +115,6 @@ public class GovernmentAntiCyclical extends Government implements LaborDemander,
 		profitsFromCB=cb.getCBProfits();
 	}
 
-	/**
-	 * Pay interest and coupon on bonds using deposits until depleted, after that reserves
-	 */
-	protected void payInterests() {
-		List<Item> bonds=this.getItemsStockMatrix(false, StaticValues.SM_BONDS);
-		Item reserves=this.getItemStockMatrix(true, StaticValues.SM_RESERVES);
-		double interestsBonds=0;
-		for(Item b:bonds){
-			Bond bond=(Bond)b;
-			if(bond.getAssetHolder() instanceof Government){
-				//This is due to bad rounding
-				bond.setQuantity(0);
-			}else{
-				// determine amount of interest to be payed
-				BondDemander holder = (BondDemander)bond.getAssetHolder();
-				holder.setBondInterestsReceived(bond.getValue()*bond.getInterestRate());
-				interestsBonds+=bond.getValue()*bond.getInterestRate();
-				// pay the central bank in reserves
-				if(holder instanceof CentralBank){
-					reserves.setValue(reserves.getValue()-bond.getValue()*bond.getInterestRate());
-					if(bond.getAge()==bond.getMaturity()){
-						reserves.setValue(reserves.getValue()-bond.getValue());
-						bond.setQuantity(0);
-					}
-				}
-				// pay banks in its own deposits first in then in reserves
-				else if(holder instanceof Bank){
-					double paymentDue=bond.getValue()*bond.getInterestRate();
-					if(bond.getAge()==bond.getMaturity()) {
-						paymentDue += bond.getValue();
-						// set bond quantity at 0 knowing that it will be repaid. 
-						bond.setQuantity(0);
-					} 
-					// try to pay using deposits
-					if (paymentDue > 0) {
-						Item deposit = getItemStockMatrix(true, StaticValues.SM_DEP, holder);
-						double value = deposit.getValue();
-						if (value <= paymentDue) {
-							// pay as much as possible using the deposit account at the bondholding bank
-							deposit.setValue(deposit.getValue()- value);
-							paymentDue -= value;
-						}else {
-							// if the deposit is sufficiently large pay the duePayment in total
-							deposit.setValue(deposit.getValue()- paymentDue); 
-							paymentDue = 0;
-						}
-					// if payments on bonds are not fully made using deposits, use reserves
-					}if (paymentDue > 0) {
-						Item hDep = holder.getItemStockMatrix(true, StaticValues.SM_RESERVES);
-						hDep.setValue(hDep.getValue()+paymentDue);
-						reserves.setValue(reserves.getValue()-paymentDue);
-						paymentDue = 0;
-					}
-				}
-			}
-		}
-		totInterestsBonds=interestsBonds;
-	}
 	
 	/**
 	 * Pay unemployment benefits to unemployed households. First use deposit accounts 

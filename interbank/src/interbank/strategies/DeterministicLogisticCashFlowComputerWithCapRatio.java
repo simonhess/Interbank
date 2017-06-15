@@ -40,7 +40,9 @@ public class DeterministicLogisticCashFlowComputerWithCapRatio implements
 		if (bankCapitalRatio > targetBankCapitalRatio) {
 			bankRiskAversion = bankRiskAversion - aversionMarkUp;
 		}
-		else {bankRiskAversion = bankRiskAversion + aversionMarkUp;}
+		else {
+			bankRiskAversion = bankRiskAversion + aversionMarkUp;
+		}
 		double probability=1/(1+Math.exp((operatingCashFlow-bankRiskAversion*demandedLoanPaymentsPerPeriod)/demandedLoanPaymentsPerPeriod));
 		return probability;
 	}
