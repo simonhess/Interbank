@@ -143,7 +143,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 		Households h = (Households) households.getAgentList().get(0);
 		int seed= (int) h.getAgentId();
 		MersenneTwister prng = (MersenneTwister) this.prng;
-		prng.setSeed(seed);
+		prng.setSeed(1);
 		System.out.println("Seed is: " + seed);
 		seedsWriter.newData(seed);
 		seedsWriter.endRecord();
@@ -290,6 +290,7 @@ public class SFCSSMacroAgentInitialiser extends AbstractMacroAgentInitialiser im
 
 			//Expectations and Lagged Values
 			k.addValue(StaticValues.LAG_PROFITPRETAX, kProfit*(1+distr.nextDouble()));
+			k.addValue(StaticValues.LAG_TAXES, 0);
 			k.addValue(StaticValues.LAG_PROFITAFTERTAX, kProfit*(1+distr.nextDouble()));
 			//double lagKInv=kInv*(1+distr.nextDouble());
 			double lagKInv=kInv;

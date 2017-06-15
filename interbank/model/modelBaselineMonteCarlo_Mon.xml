@@ -244,7 +244,7 @@
 			</list>
 		</property>
 		<property name="simulationController" ref="simulationController" />
-		<property name="maximumRounds" value="400" />
+		<property name="maximumRounds" value="10" />
 		<property name="population" ref="macroPopulation" />
 		<property name="agentInitialiser" ref="sfcAgentsInitialiser" />
 		<property name="handler" ref="populationHandler" />
@@ -1497,7 +1497,7 @@
 			<util:constant static-field="interbank.StaticValues.MICROKMARKUPREPORT_ID" />
 		</property>
 		<property name="variableName" value="Capital Firms mark up"></property>
-		<property name="computer" ref="cFirmsMarkUpComputer"></property>
+		<property name="computer" ref="kFirmsMarkUpComputer"></property>
 	</bean>
 	
 
@@ -2917,6 +2917,16 @@
 		<property name="distribution" ref="foldedNormal1" />
 		<property name="threshold" value="0.1"></property>
 		<property name="markUp" value="0.075"></property>
+				<property name="capitalOwner" value="0"></property>
+		<property name="capacityId">
+			<util:constant static-field="interbank.StaticValues.LAG_CAPACITY" />
+		</property>
+		<property name="productionId">
+			<util:constant static-field="interbank.StaticValues.LAG_PRODUCTION" />
+		</property>
+		<property name="realSalesId">
+			<util:constant static-field="interbank.StaticValues.LAG_REALSALES" />
+		</property>
 	</bean>
 
 <!-- OLD MARK-UP CLASS FOR CAPITAL FIRMS
@@ -4562,7 +4572,7 @@
 	<bean id="reservesInterestRateStrategy" scope="prototype"
 		parent="strategy" class="interbank.strategies.ReservesStatic">
 		<property name="staticReservesRate" value="0.0"/>
-		<property name="shockRound" value="250"/>
+		<property name="shockRound" value="300"/>
 		<property name="shockAdd" value="0.00"/>
 	</bean>
 	
