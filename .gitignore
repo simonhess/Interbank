@@ -1,1 +1,3 @@
 *.tmp
+# Misc
+.ipynb_checkpoints/
